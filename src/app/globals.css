@@ -2,26 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
+/* ---------- Custom Styles ---------- */
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* تم‌ها */
+.bg-day-gradient {
+  background: linear-gradient(to right, #58A0E0, #2D3BCF);
+}
+
+.bg-green-gradient {
+  background: linear-gradient(to right, #00b09b, #38ef7d);
+}
+
+.bg-purple-gradient {
+  background: linear-gradient(to right, #360064, #4A00E0);
+}
+
+.bg-pink-gradient {
+  background: linear-gradient(to left, #FF6EB4, #FF1493);
+}
+
+.bg-dark-gradient {
+  background: linear-gradient(to right, #1c1c1c, #000000);
+  color: #f5f5f5;
+}
+
+
+
+/* حالت تاریک */
+.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+/* اسکرول‌بار زیباتر */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-blue-500 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue-700;
 }

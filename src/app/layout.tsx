@@ -5,7 +5,9 @@ import { ThemeProvider } from "@/context/ThemeContext";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <ThemeProvider>{children}</ThemeProvider>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

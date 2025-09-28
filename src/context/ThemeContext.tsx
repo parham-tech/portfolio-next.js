@@ -10,26 +10,26 @@ import {
 import { DEFAULT_THEME_CONFIG, ThemeConfig } from "@/config/themeConfig";
 
 type ThemeContextType = {
-  /** تم فعلی برای هایلایت باکس‌ها (همان nextSite) */
+  /** Current theme for highlight boxes (same as nextSite) */
   activeSite: string;
-  /** آیا هیرو روشن است؟ */
+  /** Is Hero enabled? */
   heroEnabled: boolean;
-  /** کلاس هیروی فعلی (وقتی روشن است) */
+  /** Current Hero class (when enabled) */
   heroTheme: string;
 
-  /** تغییر تم سایت (اتمی؛ درصورت روشن بودن Hero ماigrat می‌کند) */
+  /** Change site theme (atomic; if Hero is enabled it migrates) */
   applySite: (siteClass: string, heroClass?: string) => void;
-  /** روشن/خاموش کردن Hero برای تم فعلی */
+  /** Toggle Hero on/off for the current theme */
   toggleHero: (heroClass: string) => void;
 
-  /** قفل ترنزیشن */
+  /** Transition lock */
   isTransitioning: boolean;
 
-  /** لایه‌های Hero (کراس‌فید) */
+  /** Hero layers (crossfade) */
   prevHero: string;
   nextHero: string;
 
-  /** کانفیگ پویا (برای داشبورد) */
+  /** Dynamic config (for dashboard) */
   config: ThemeConfig;
   setConfig: (cfg: ThemeConfig) => void;
 };
@@ -37,7 +37,7 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  /** کانفیگ (قابل تغییر از ادمین) */
+  /** Config (editable from admin) */
   const [config, setConfig] = useState<ThemeConfig>(DEFAULT_THEME_CONFIG);
 
   /** Site layers */
@@ -46,7 +46,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   /** Hero state + layers */
   const [heroEnabled, setHeroEnabled] = useState(false);
-  const [heroTheme, setHeroTheme] = useState(""); // کلاس variant
+  const [heroTheme, setHeroTheme] = useState(""); // variant class
   const [prevHero, setPrevHero] = useState(nextSite);
   const [nextHero, setNextHero] = useState(nextSite);
 
@@ -55,7 +55,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const lockRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /** CSS variables برای زمان ترنزیشن‌ها */
+  /** CSS variables for transition durations */
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--site-transition",
@@ -67,7 +67,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     );
   }, [config.siteTransitionMs, config.heroTransitionMs]);
 
-  /** کلید: مقصد ترنزیشن را ورودی می‌گیریم تا closure قدیمی باعث برگشت نشود */
+  /** Key: target transition is passed to avoid old closure rollback */
   const startLock = (targetSite: string, targetHero: string) => {
     if (lockRef.current) return;
     lockRef.current = true;
@@ -86,7 +86,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }, lockMs);
   };
 
-  /** تغییر تم سایت؛ اگر Hero روشن بود به variant جدید مهاجرت می‌کند */
+  /** Change site theme; if Hero is enabled it migrates to the new variant */
   const applySite = (siteClass: string, heroClass?: string) => {
     if (lockRef.current) return;
 
@@ -103,19 +103,19 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     startLock(targetSite, targetHero);
   };
 
-  /** روشن/خاموش کردن Hero برای تم فعلی */
+  /** Toggle Hero on/off for the current theme */
   const toggleHero = (heroClass: string) => {
     if (lockRef.current) return;
 
     if (heroEnabled && heroTheme === heroClass) {
-      // خاموش → inherit از سایت
+      // Off → inherit from site
       const targetHero = nextSite;
       setHeroEnabled(false);
       setHeroTheme("");
       setNextHero(targetHero);
       startLock(nextSite, targetHero);
     } else {
-      // روشن → heroClass (یا inherit اگر خالی)
+      // On → heroClass (or inherit if empty)
       const targetHero = heroClass && heroClass.length > 0 ? heroClass : nextSite;
       setHeroEnabled(true);
       setHeroTheme(heroClass ?? "");
@@ -124,7 +124,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  /** پاک‌سازی تایمر */
+  /** Cleanup timer */
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);

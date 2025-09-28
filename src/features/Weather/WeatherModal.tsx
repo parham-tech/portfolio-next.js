@@ -12,7 +12,7 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
-  // گرفتن لوکیشن کاربر
+  // Get user's location
   useEffect(() => {
     const fetchInitialWeather = async () => {
       try {
@@ -74,8 +74,8 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-<div className=" backdrop-blur-xl text-white p-6 rounded-2xl w-96 shadow-lg relative border border-white/20">
-        {/* دکمه بستن */}
+      <div className="backdrop-blur-xl text-white p-6 rounded-2xl w-96 shadow-lg relative border border-white/20">
+        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute top-2 right-3 text-gray-300 hover:text-white"
@@ -83,7 +83,7 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
           ✕
         </button>
 
-        {/* نمایش اطلاعات */}
+        {/* Show weather info */}
         {weather ? (
           <div className="text-center space-y-3">
             <p className="text-sm text-yellow-400">
@@ -100,41 +100,40 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
           <p className="text-center text-gray-400">Loading...</p>
         )}
 
-        {/* input جستجو */}
-     <div className="mt-4 flex flex-col items-center gap-3">
-  <input
-    type="text"
-    placeholder="Search city..."
-    value={city}
-    onChange={(e) => setCity(e.target.value)}
-    className="w-full p-2 rounded bg-gray-800 text-white outline-none"
-  />
+        {/* Search input */}
+        <div className="mt-4 flex flex-col items-center gap-3">
+          <input
+            type="text"
+            placeholder="Search city..."
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="w-full p-2 rounded bg-gray-800 text-white outline-none"
+          />
 
-  <div className="flex gap-2 justify-center">
-    <button
-      onClick={() => fetchWeather(city)}
-      className="bg-yellow-600 px-4 py-2 rounded hover:bg-yellow-700"
-    >
-      Search
-    </button>
-    <button
-      onClick={() => {
-        setCity("");
-        setWeather(null);
-      }}
-      className="px-3 py-2 border border-gray-500 rounded hover:bg-gray-700"
-    >
-      Clear
-    </button>
-  </div>
-</div>
-
+          <div className="flex gap-2 justify-center">
+            <button
+              onClick={() => fetchWeather(city)}
+              className="bg-yellow-600 px-4 py-2 rounded hover:bg-yellow-700"
+            >
+              Search
+            </button>
+            <button
+              onClick={() => {
+                setCity("");
+                setWeather(null);
+              }}
+              className="px-3 py-2 border border-gray-500 rounded hover:bg-gray-700"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// مپ کردن وضعیت هوا به آیکن
+// Map weather description to icon
 function mapWeatherToIcon(desc: string, temp: number) {
   desc = desc.toLowerCase();
 

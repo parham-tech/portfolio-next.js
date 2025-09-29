@@ -4,6 +4,7 @@ import { useState } from "react";
 import WeatherModal from "@/features/Weather/WeatherModal";
 import { useThemeContext } from "@/context/ThemeContext";
 
+
 export default function Hero() {
   const [openWeather, setOpenWeather] = useState(false);
   const { prevHero, nextHero, isTransitioning } = useThemeContext();
@@ -42,25 +43,47 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Right Images */}
-      <div className="relative md:w-1/2 flex justify-center mt-10 md:mt-0">
-        <Image
-          src="/hero-monitor.png"
-          alt="Hero"
-          width={300}
-          height={300}
-          className="z-10 w-48 sm:w-64 md:w-72 h-auto"
-        />
-        <Image
-          src="/cloud.png"
-          alt="cloud"
-          width={200}
-          height={200}
-          onClick={() => !isTransitioning && setOpenWeather(true)}
-          className="absolute -top-12 sm:-top-20 left-1/2 -translate-x-1/2 animate-diagonal cursor-pointer w-28 sm:w-40 md:w-52 h-auto"
-        />
-        {openWeather && <WeatherModal onClose={() => setOpenWeather(false)} />}
-      </div>
+    {/* Right Images */}
+<div className="relative md:w-1/2 flex justify-center mt-10 md:mt-0">
+  <picture>
+    <source srcSet="/hero-monitor.avif" type="image/avif" />
+    <source srcSet="/hero-monitor.webp" type="image/webp" />
+    <img
+      src="/hero-monitor.png"
+      alt="Hero"
+      width={300}
+      height={300}
+      className="z-10 w-48 sm:w-64 md:w-72 h-auto"
+      loading="lazy"
+      draggable={false}
+    />
+  </picture>
+  <button
+    type="button"
+    aria-label="Show weather"
+    disabled={isTransitioning}
+    onClick={() => setOpenWeather(true)}
+    className="absolute -top-12 sm:-top-20 left-1/2 -translate-x-1/2 animate-diagonal cursor-pointer w-28 sm:w-40 md:w-52 h-auto bg-transparent border-none p-0 outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+    style={{ background: "none", border: "none", padding: 0 }}
+  >
+    <picture>
+      <source srcSet="/cloud.avif" type="image/avif" />
+      <source srcSet="/cloud.webp" type="image/webp" />
+      <img
+        src="/cloud.png"
+        alt=""
+        width={200}
+        height={200}
+        draggable={false}
+        className="w-full h-auto"
+        loading="lazy"
+      />
+    </picture>
+  </button>
+  {openWeather && <WeatherModal onClose={() => setOpenWeather(false)} />}
+</div>
+
+
     </section>
   );
 }

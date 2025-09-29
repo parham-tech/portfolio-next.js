@@ -1,87 +1,60 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Hero from "./Hero";
 
-// برای mock کردن Next.js Image (چون jest با Image مشکل داره)
-jest.mock("next/image", () => (props: any) => {
-  return <img {...props} alt={props.alt} />;
-});
+// ✅ next/image باید default mock بشه
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => <img {...props} />,
+}));
 
-// برای جلوگیری از ارور WeatherModal (اگر خیلی پیچیده‌ست می‌تونی mock ساده بنویسی)
-jest.mock("@/features/Weather/WeatherModal", () => {
-  return function MockWeatherModal({ onClose }: { onClose: () => void }) {
-    return (
-      <div data-testid="weather-modal">
-        Weather Modal
-        <button onClick={onClose}>Close</button>
-      </div>
-    );
-  };
-});
+// ✅ WeatherModal هم default export داره، پس اینجوری mock کن
+jest.mock("@/features/Weather/WeatherModal", () => ({
+  __esModule: true,
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div data-testid="weather-modal">
+      Weather Modal
+      <button onClick={onClose}>Close</button>
+    </div>
+  ),
+}));
+
+const renderWithProviders = (ui: React.ReactElement) =>
+  render(<ThemeProvider>{ui}</ThemeProvider>);
 
 describe("Hero Component", () => {
   it("renders the main heading", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
+    renderWithProviders(<Hero />);
     expect(screen.getByText(/Hi, I’m Parham/i)).toBeInTheDocument();
   });
 
   it("renders the job title", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
+    renderWithProviders(<Hero />);
     expect(screen.getByText(/Front-end Developer/i)).toBeInTheDocument();
   });
 
   it("renders both buttons", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
+    renderWithProviders(<Hero />);
     expect(screen.getByText(/View My Work/i)).toBeInTheDocument();
     expect(screen.getByText(/Get in Touch/i)).toBeInTheDocument();
   });
 
   it("renders the hero image", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
-    const heroImage = screen.getByAltText("Hero");
-    expect(heroImage).toBeInTheDocument();
+    renderWithProviders(<Hero />);
+    expect(screen.getByAltText("Hero")).toBeInTheDocument();
   });
 
   it("opens WeatherModal when clicking the cloud image", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
-    const cloudImage = screen.getByAltText("cloud");
-    fireEvent.click(cloudImage);
-
+    renderWithProviders(<Hero />);
+    fireEvent.click(screen.getByAltText("cloud"));
     expect(screen.getByTestId("weather-modal")).toBeInTheDocument();
   });
 
-  it("closes WeatherModal when close button is clicked", () => {
-    render(
-      <ThemeProvider>
-        <Hero />
-      </ThemeProvider>
-    );
-    const cloudImage = screen.getByAltText("cloud");
-    fireEvent.click(cloudImage);
-
-    const closeBtn = screen.getByText("Close");
-    fireEvent.click(closeBtn);
-
+  it("closes WeatherModal on close button", () => {
+    renderWithProviders(<Hero />);
+    fireEvent.click(screen.getByAltText("cloud"));
+    fireEvent.click(screen.getByText("Close"));
     expect(screen.queryByTestId("weather-modal")).not.toBeInTheDocument();
   });
 });

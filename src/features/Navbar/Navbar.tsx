@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link"; // ✅ برای لینک‌های داخلی
 import { useThemeContext } from "@/context/ThemeContext";
 import { Lock, Menu, X } from "lucide-react";
 
@@ -36,17 +37,20 @@ export default function Navbar() {
             <ul className="space-y-3">
               {config.themes.map((t) => {
                 const isCurrent = activeSite === t.siteClass;
-                const radioOn = isCurrent && heroEnabled && heroTheme === (t.heroClass ?? "");
+                const radioOn =
+                  isCurrent && heroEnabled && heroTheme === (t.heroClass ?? "");
 
                 return (
                   <li key={t.name} className="flex items-center gap-3">
                     <button
                       onClick={() => applySite(t.siteClass, t.heroClass)}
                       disabled={isTransitioning}
-                      className={`flex w-20 h-10 rounded text-sm items-center justify-center font-medium text-white border-2 border-gray-600 transition ${
-                        isCurrent ? "ring-2 ring-blue-500" : "ring-1 ring-gray-600"
+                      className={`flex w-20 h-10 rounded text-sm items-center justify-center font-medium text-white transition ${
+                        isCurrent ? "bg-blue-600" : "bg-gray-600"
                       } ${t.siteClass} ${
-                        isTransitioning ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                        isTransitioning
+                          ? "opacity-50 cursor-not-allowed"
+                          : "cursor-pointer"
                       }`}
                     >
                       {t.name}
@@ -57,8 +61,14 @@ export default function Navbar() {
                         onClick={() => toggleHero(t.heroClass ?? "")}
                         disabled={isTransitioning}
                         className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-300 ease-in-out ${
-                          radioOn ? "border-blue-600 bg-blue-600" : "border-gray-400 bg-white"
-                        } ${isTransitioning ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                          radioOn
+                            ? "border-blue-600 bg-blue-600"
+                            : "border-gray-400 bg-white"
+                        } ${
+                          isTransitioning
+                            ? "opacity-50 cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
                         aria-pressed={radioOn}
                       >
                         {radioOn && (
@@ -80,10 +90,26 @@ export default function Navbar() {
 
       {/* Right: Desktop Menu */}
       <ul className="hidden md:flex gap-8 font-medium">
-        <li><a href="#home" className="hover:text-gray-200">Home</a></li>
-        <li><a href="#projects" className="hover:text-gray-200">Projects</a></li>
-        <li><a href="#skills" className="hover:text-gray-200">Skills</a></li>
-        <li><a href="#contact" className="hover:text-gray-200">Contact</a></li>
+        <li>
+          <Link href="/" className="hover:text-gray-200">
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link href="/projects" className="hover:text-gray-200">
+            Projects
+          </Link>
+        </li>
+        <li>
+          <Link href="/skills" className="hover:text-gray-200">
+            Skills
+          </Link>
+        </li>
+        <li>
+          <Link href="/contact" className="hover:text-gray-200">
+            Contact
+          </Link>
+        </li>
       </ul>
 
       {/* Right: Mobile Menu Button */}
@@ -97,10 +123,42 @@ export default function Navbar() {
       {menuOpen && (
         <div className="absolute top-16 right-6 bg-white text-black rounded-lg shadow-lg w-40 p-4 md:hidden z-50">
           <ul className="flex flex-col gap-4 font-medium">
-            <li><a href="#home" className="hover:text-gray-600" onClick={() => setMenuOpen(false)}>Home</a></li>
-            <li><a href="#projects" className="hover:text-gray-600" onClick={() => setMenuOpen(false)}>Projects</a></li>
-            <li><a href="#skills" className="hover:text-gray-600" onClick={() => setMenuOpen(false)}>Skills</a></li>
-            <li><a href="#contact" className="hover:text-gray-600" onClick={() => setMenuOpen(false)}>Contact</a></li>
+            <li>
+              <Link
+                href="/"
+                className="hover:text-gray-600"
+                onClick={() => setMenuOpen(false)}
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/projects"
+                className="hover:text-gray-600"
+                onClick={() => setMenuOpen(false)}
+              >
+                Projects
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/skills"
+                className="hover:text-gray-600"
+                onClick={() => setMenuOpen(false)}
+              >
+                Skills
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/contact"
+                className="hover:text-gray-600"
+                onClick={() => setMenuOpen(false)}
+              >
+                Contact
+              </Link>
+            </li>
           </ul>
         </div>
       )}

@@ -43,3 +43,5 @@ next-env.d.ts
 !.vscode/settings.json
 !.vscode/extensions.json
 .idea/
+# sitespeed reports
+/sitespeed-result/

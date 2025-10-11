@@ -1,4 +1,4 @@
-import Skills from "@/features/Skills";
+import {Skills} from "@/features/Skills";
 
 
 // app/skills/page.tsx

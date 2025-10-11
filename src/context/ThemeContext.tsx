@@ -10,26 +10,11 @@ import {
 import { DEFAULT_THEME_CONFIG, ThemeConfig } from "@/config/themeConfig";
 
 type ThemeContextType = {
-  /** Current theme for highlight boxes (same as nextSite) */
-  activeSite: string;
-  /** Is Hero enabled? */
-  heroEnabled: boolean;
-  /** Current Hero class (when enabled) */
-  heroTheme: string;
-
-  /** Change site theme (atomic; if Hero is enabled it migrates) */
-  applySite: (siteClass: string, heroClass?: string) => void;
-  /** Toggle Hero on/off for the current theme */
-  toggleHero: (heroClass: string) => void;
-
-  /** Transition lock */
+  activeSite: string;                // کلاس تم فعلی
+  applySite: (siteClass: string) => void;
   isTransitioning: boolean;
-
-  /** Hero layers (crossfade) */
-  prevHero: string;
-  nextHero: string;
-
-  /** Dynamic config (for dashboard) */
+  prevSite: string;
+  nextSite: string;
   config: ThemeConfig;
   setConfig: (cfg: ThemeConfig) => void;
 };
@@ -37,94 +22,44 @@ type ThemeContextType = {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  /** Config (editable from admin) */
   const [config, setConfig] = useState<ThemeConfig>(DEFAULT_THEME_CONFIG);
 
-  /** Site layers */
   const [prevSite, setPrevSite] = useState("bg-day-gradient");
   const [nextSite, setNextSite] = useState("bg-day-gradient");
 
-  /** Hero state + layers */
-  const [heroEnabled, setHeroEnabled] = useState(false);
-  const [heroTheme, setHeroTheme] = useState(""); // variant class
-  const [prevHero, setPrevHero] = useState(nextSite);
-  const [nextHero, setNextHero] = useState(nextSite);
-
-  /** Transition lock */
   const [isTransitioning, setIsTransitioning] = useState(false);
   const lockRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /** CSS variables for transition durations */
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--site-transition",
       `${config.siteTransitionMs}ms`
     );
-    document.documentElement.style.setProperty(
-      "--hero-transition",
-      `${config.heroTransitionMs}ms`
-    );
-  }, [config.siteTransitionMs, config.heroTransitionMs]);
+  }, [config.siteTransitionMs]);
 
-  /** Key: target transition is passed to avoid old closure rollback */
-  const startLock = (targetSite: string, targetHero: string) => {
+  const startLock = (targetSite: string) => {
     if (lockRef.current) return;
     lockRef.current = true;
     setIsTransitioning(true);
 
-    const lockMs = Math.max(config.siteTransitionMs, config.heroTransitionMs);
+    const lockMs = config.siteTransitionMs;
 
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       setPrevSite(targetSite);
-      setPrevHero(targetHero);
-
       setIsTransitioning(false);
       lockRef.current = false;
       timerRef.current = null;
     }, lockMs);
   };
 
-  /** Change site theme; if Hero is enabled it migrates to the new variant */
-  const applySite = (siteClass: string, heroClass?: string) => {
+  const applySite = (siteClass: string) => {
     if (lockRef.current) return;
-
-    const targetSite = siteClass;
-    const targetHero = heroEnabled
-      ? (heroClass && heroClass.length > 0 ? heroClass : siteClass)
-      : siteClass;
-
-    setNextSite(targetSite);
-    setNextHero(targetHero);
-
-    if (heroEnabled) setHeroTheme(heroClass ?? "");
-
-    startLock(targetSite, targetHero);
+    setNextSite(siteClass);
+    startLock(siteClass);
   };
 
-  /** Toggle Hero on/off for the current theme */
-  const toggleHero = (heroClass: string) => {
-    if (lockRef.current) return;
-
-    if (heroEnabled && heroTheme === heroClass) {
-      // Off → inherit from site
-      const targetHero = nextSite;
-      setHeroEnabled(false);
-      setHeroTheme("");
-      setNextHero(targetHero);
-      startLock(nextSite, targetHero);
-    } else {
-      // On → heroClass (or inherit if empty)
-      const targetHero = heroClass && heroClass.length > 0 ? heroClass : nextSite;
-      setHeroEnabled(true);
-      setHeroTheme(heroClass ?? "");
-      setNextHero(targetHero);
-      startLock(nextSite, targetHero);
-    }
-  };
-
-  /** Cleanup timer */
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -135,24 +70,23 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     <ThemeContext.Provider
       value={{
         activeSite: nextSite,
-        heroEnabled,
-        heroTheme,
         applySite,
-        toggleHero,
         isTransitioning,
-        prevHero,
-        nextHero,
+        prevSite,
+        nextSite,
         config,
         setConfig,
       }}
     >
-      <div className="relative min-h-screen text-white overflow-x-hidden">
-        {/* Site layers */}
-        <div className={`fixed inset-0 -z-10 ${prevSite}`} />
+      {/* 👇 کانتینر کل سایت */}
+      <div className="relative min-h-screen text-white overflow-x-hidden max-w-[1600px] mx-auto ">
+        {/* 👇 بک‌گراند فقط در محدوده container */}
+        <div className={`absolute inset-0 -z-10 ${prevSite}`} />
         <div
-          className={`fixed inset-0 -z-10 ${nextSite} transition-bg-site`}
+          className={`absolute inset-0 -z-10 ${nextSite} transition-bg-site`}
           style={{ opacity: isTransitioning ? 1 : 0 }}
         />
+        
         {children}
       </div>
     </ThemeContext.Provider>

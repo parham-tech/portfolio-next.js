@@ -1,50 +1,7 @@
+// src/features/Skills/Skills.tsx
 "use client";
 import { motion } from "framer-motion";
-
-// Icons
-import { 
-  FaHtml5, FaCss3Alt, FaJsSquare, FaReact, 
-  FaSearch, FaTachometerAlt, FaPalette 
-} from "react-icons/fa";
-import { 
-  SiTailwindcss, SiNextdotjs, SiTypescript, SiDotnet 
-} from "react-icons/si";
-import { MdAccessibilityNew } from "react-icons/md";
-
-const skills = [
-  {
-    category: "Frontend Development",
-    items: [
-      { name: "HTML", level: "Advanced", icon: <FaHtml5 className="text-orange-500 text-3xl" /> },
-      { name: "CSS", level: "Advanced", icon: <FaCss3Alt className="text-blue-500 text-3xl" /> },
-      { name: "JavaScript (ES6+)", level: "Intermediate", icon: <FaJsSquare className="text-yellow-400 text-3xl" /> },
-      { name: "TailwindCSS", level: "Advanced", icon: <SiTailwindcss className="text-cyan-400 text-3xl" /> },
-      { name: "React.js", level: "Intermediate", icon: <FaReact className="text-blue-400 text-3xl" /> },
-      { name: "Next.js + TypeScript", level: "Intermediate", icon: <SiNextdotjs className="text-black dark:text-white text-3xl" /> },
-      { name: "TypeScript", level: "Beginner+", icon: <SiTypescript className="text-blue-600 text-3xl" /> },
-    ],
-  },
-  {
-    category: "Backend & Architecture",
-    items: [
-      { name: ".NET Core", level: "Intermediate", icon: <SiDotnet className="text-purple-500 text-3xl" /> },
-    ],
-  },
-  {
-    category: "Best Practices & Performance",
-    items: [
-      { name: "Accessibility (a11y)", level: "Intermediate", icon: <MdAccessibilityNew className="text-green-500 text-3xl" /> },
-      { name: "SEO Basics", level: "Intermediate", icon: <FaSearch className="text-gray-600 dark:text-gray-300 text-3xl" /> },
-      { name: "Performance (Lighthouse, SiteSpeed.io)", level: "Intermediate", icon: <FaTachometerAlt className="text-red-500 text-3xl" /> },
-    ],
-  },
-  {
-    category: "Design & Product Thinking",
-    items: [
-      { name: "UI/UX", level: "Beginner+", icon: <FaPalette className="text-pink-500 text-3xl" /> },
-    ],
-  },
-];
+import { skills } from "./SkillsData";
 
 export default function SkillsSection() {
   return (
@@ -55,7 +12,7 @@ export default function SkillsSection() {
           My Skills
         </h2>
 
-        {/* Skill Groups */}
+        {/* Groups */}
         <div className="grid md:grid-cols-2 gap-10">
           {skills.map((group, i) => (
             <motion.div
@@ -70,15 +27,19 @@ export default function SkillsSection() {
                 {group.category}
               </h3>
               <ul className="space-y-4">
-                {group.items.map((skill) => (
-                  <li key={skill.name} className="flex items-center gap-4">
-                    {skill.icon}
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-gray-100">{skill.name}</p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">{skill.level}</p>
-                    </div>
-                  </li>
-                ))}
+           {group.items.map((skill) => {
+  const Icon = skill.icon;
+  return (
+    <li key={skill.name} className="flex items-center gap-4">
+      {Icon && <Icon className={`${skill.color} text-3xl`} />}
+      <div>
+        <p className="font-medium text-gray-900 dark:text-gray-100">{skill.name}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">{skill.level}</p>
+      </div>
+    </li>
+  );
+})}
+
               </ul>
             </motion.div>
           ))}

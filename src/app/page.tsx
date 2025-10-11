@@ -1,4 +1,4 @@
-import { Hero } from "@/features/Hero";
+import HomePageClient from "./HomePageClient";
 
 export const metadata = {
   title: "Home | Parham Portfolio",
@@ -16,7 +16,7 @@ export const metadata = {
         alt: "Parham Portfolio Home",
       },
     ],
-    locale: "en_US",
+    locale: "en_",
     type: "website",
   },
   twitter: {
@@ -24,7 +24,6 @@ export const metadata = {
     title: "Home | Parham Portfolio",
     description: "Welcome to my portfolio website. Frontend developer. Explore my work and projects.",
     images: ["https://portfolio-next-js-parham.vercel.app/og-image-home.jpg"],
-    // creator: "",
   },
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/",
@@ -32,9 +31,5 @@ export const metadata = {
 };
 
 export default function Home() {
-  return (
-    <>
-      <Hero />
-    </>
-  );
+  return <HomePageClient />;
 }

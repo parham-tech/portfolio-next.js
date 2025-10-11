@@ -6,6 +6,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+  //       maxWidth: {
+  //   'screen-xl': '1600px',
+  // },
+      
       keyframes: {
         diagonal: {
           "0%, 100%": { transform: "translate(0, 0)" },

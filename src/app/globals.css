@@ -6,38 +6,58 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
+/* globals.css */
+/* body > * {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+} */
+
 
 /* تم‌ها */
 .bg-day-gradient {
-  background: linear-gradient(to right, #58A0E0, #2D3BCF);
+  background: linear-gradient(to right, #2D3BCF, #396dd6);
 }
 .bg-green-gradient {
-  background: linear-gradient(to right, #00b09b, #38ef7d);
+  background: linear-gradient(to right, #103634, #2b4e2c);
 }
 .bg-purple-gradient {
   background: linear-gradient(to right, #360064, #4A00E0);
 }
-.bg-pink-gradient {
-  background: linear-gradient(to left, #FF6EB4, #FF1493);
+.bg-red-gradient {
+  background: linear-gradient(to right, #4A1E1E, #B52626);
+
 }
 .bg-dark-gradient {
-  background: linear-gradient(to right, #1c1c1c, #000000);
+  background: linear-gradient(to right, #101622, #20242e);
   color: #f5f5f5;
 }
 
-/* بک‌گراند مخصوص Hero */
-.bg-hero-day {
-  background: linear-gradient(to right, #35a8ff, #4541ba);
+.box-day-gradient {
+  background: linear-gradient(to right, #2D3BCF, #ffffff);
 }
-.bg-hero-green {
-  background: linear-gradient(to right, #11998e, #38ef7d);
+.box-green-gradient {
+  background: linear-gradient(to right, #103634, #ffffff);
 }
-.bg-hero-purple {
-  background: linear-gradient(to right, #302746, #6700ff);
+.box-purple-gradient {
+  background: linear-gradient(to right, #360064, #ffffff);
 }
-.bg-hero-pink {
-  background: linear-gradient(to right, #c8236b, #e470bf);
+.box-red-gradient {
+  background: linear-gradient(to right, #4A1E1E, #ffffff);
 }
+.box-dark-gradient {
+  background: linear-gradient(to right, #101622, #ffffff);
+  color: #f5f5f5;
+}
+
+/* nav {
+  position: relative;
+  overflow: hidden;
+  transition: background var(--site-transition) ease-in-out, opacity var(--site-transition) ease-in-out;
+} */
+
 
 /* حالت تاریک */
 .dark body {
@@ -45,7 +65,7 @@ body {
 }
 
 /* اسکرول‌بار زیباتر */
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-thumb {
@@ -53,7 +73,7 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-blue-700;
-}
+} */
 
 /* ---------- Custom Utilities ---------- */
 /* @layer utilities {

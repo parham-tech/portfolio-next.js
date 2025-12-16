@@ -6,14 +6,14 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
-/* globals.css */
-/* body > * {
-  max-width: 1600px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+
+/* html, body {
+  height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 } */
+
 
 
 /* تم‌ها */
@@ -52,16 +52,22 @@ body {
   color: #f5f5f5;
 }
 
-/* nav {
-  position: relative;
-  overflow: hidden;
-  transition: background var(--site-transition) ease-in-out, opacity var(--site-transition) ease-in-out;
-} */
+
 
 
 /* حالت تاریک */
 .dark body {
   @apply bg-gray-900 text-gray-100;
+}
+
+
+/* محدود کردن متن به دو خط با سه نقطه */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 👈 تعداد خطوط مجاز */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* اسکرول‌بار زیباتر */
@@ -95,4 +101,80 @@ body {
   .transition-bg-hero {
     transition: opacity var(--hero-transition, 1500ms) ease-in-out;
   }
+}
+
+
+/* ───── شناور شدن ابرها ───── */
+@keyframes cloud1 {
+  0%   { transform: translateX(-50px); }
+  50%  { transform: translateX(50px); }
+  100% { transform: translateX(-50px); }
+}
+
+@keyframes cloud2 {
+  0%   { transform: translateX(-50px); }
+  50%  { transform: translateX(50px); }
+  100% { transform: translateX(-50px); }
+}
+
+@keyframes cloud3 {
+  0%   { transform: translateX(-15px); }
+  50%  { transform: translateX(15px); }
+  100% { transform: translateX(-15px); }
+}
+
+.cloud-1 {
+  animation: cloud1 25s linear infinite;
+}
+
+.cloud-2 {
+  animation: cloud2 25s linear infinite;
+}
+
+.cloud-3 {
+  animation: cloud3 25s linear infinite;
+}
+
+ 
+
+@layer utilities {
+  /* 🔹 انیمیشن شناور شدن ذرات */
+  @keyframes particleFloat {
+    0% {
+      transform: translate3d(0, 0, 0) scale(0.8);
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    50% {
+      transform: translate3d(0, -12px, 0) scale(1);
+      opacity: 0.9;
+    }
+    80% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(0.8);
+      opacity: 0;
+    }
+  }
+
+@keyframes particleFloat {
+  0%   { transform: translate(0, 0); }
+  50%  { transform: translate(0, -15px); }
+  100% { transform: translate(0, 0); }
+}
+
+.particle-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation-name: particleFloat;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+
+
 }

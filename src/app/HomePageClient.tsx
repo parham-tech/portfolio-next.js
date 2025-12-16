@@ -2,18 +2,38 @@
 
 import { useRef } from "react";
 import { Hero } from "@/features/Hero";
+import HeroScrollytelling from "@/features/HeroScrollytelling/HeroScrollytelling";
 import { LandingSkills } from "@/features/LandingSkills";
+import { LandingSkillsStory } from "@/features/LandingSkillsStory/LandingSkillsStory"; // 👈 اینو اضافه کن
 import { ScrollPath } from "@/components/ScrollPath";
+import { LandingProjects } from "@/features/LandingProjects";
+import { useStoryMode } from "@/context/StoryModeContext";
+import { ScrollingGrassBand } from "@/features/ScrollingGrass/ScrollingGrassBand";
+import { StoryModeScene } from "@/app/StoryModeScene";
 
 export default function HomePageClient() {
   const monitorRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLHeadingElement>(null);
+  const { isStoryMode } = useStoryMode();
 
   return (
     <>
-      <Hero monitorRef={monitorRef} />
-      <ScrollPath monitorRef={monitorRef} skillsRef={skillsRef}  />
-      <LandingSkills skillsRef={skillsRef} />
+      {isStoryMode ? (
+                  <StoryModeScene />
+
+      ) : (
+        <>
+          {/* 🎯 حالت معمولی مانیتور + ScrollPath */}
+          <Hero monitorRef={monitorRef} />
+          <ScrollPath monitorRef={monitorRef} skillsRef={skillsRef} />
+
+          {/* 🧩 Skills معمولی */}
+          <LandingSkills skillsRef={skillsRef} />
+        </>
+      )}
+
+      {/* 📂 بخش پروژه‌ها در هر دو حالت یکیه */}
+      <LandingProjects />
     </>
   );
 }

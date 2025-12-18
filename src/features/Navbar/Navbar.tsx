@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import { useThemeContext } from "@/context/ThemeContext";
 import { Menu, X } from "lucide-react";
 import ThemeSwitcherCarousel from "@/components/ThemeSwitcherCarousel";
+import { useStoryMode } from "@/context/StoryModeContext";
+
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -12,8 +14,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const themeRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeContext();
-
+  const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeContext();
+  const { isStoryMode, toggleStoryMode } = useStoryMode();
   // 🔹 بستن theme dropdown با کلیک بیرون
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,12 +50,7 @@ const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeCon
       : "hover:text-gray-600 transition";
 
   return (
-    <nav className="navbar-overlay fixed top-0 left-0 w-full max-w-[1600px] z-50">
-<div className={`absolute inset-0 -z-10 ${prevSite}`} />
-<div
-  className={`absolute inset-0 -z-10 ${activeSite} transition-bg-site`}
-  style={{ opacity: isTransitioning ? 1 : 0 }}
-/>
+    <nav className="navbar-overlay fixed top-0  w-full max-w-[1600px] z-50">
 
 <div className="flex justify-between items-center py-4 px-6 md:px-12 text-white max-w-7xl mx-auto">
   {/* 🔹 Theme Selector */}
@@ -68,7 +65,7 @@ const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeCon
       <button
         onClick={() => setThemeOpen((o) => !o)}
         disabled={isTransitioning}
-        className={`relative px-4 py-2 rounded-xl text-white font-medium z-10 backdrop-blur-sm 
+        className={`relative px-[.7rem] py-[.3rem] theme-button:px-4 theme-button:py-2 rounded-xl text-white font-medium z-10 backdrop-blur-sm 
           transition-all duration-500 border border-white/20 shadow-lg
           ${isTransitioning ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}`}
       >
@@ -77,7 +74,7 @@ const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeCon
     </div>
 
     {themeOpen && (
-      <div className="absolute -left-12 mt-2 rounded-lg shadow-lg p-3 z-50 min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
+      <div className="absolute theme-button:-left-12 -left-[2.2rem] mt-2 rounded-lg shadow-lg theme-button:p-3 p-2 z-50 min-w-0 theme-button:min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
         <ThemeSwitcherCarousel
           activeSite={activeSite}
           applySite={applySite}
@@ -85,7 +82,18 @@ const { activeSite, prevSite, isTransitioning, applySite, config } = useThemeCon
           config={config}
         />
       </div>
-    )}
+    )} {/* 🔄 Story Toggle */}
+      <button
+        onClick={toggleStoryMode}
+        className={`
+          px-3 py-2 rounded-xl text-sm font-medium border transition
+          ${isStoryMode
+            ? "bg-yellow-400 text-black border-yellow-300"
+            : "bg-white/10 text-white border-white/30 hover:bg-white/20"}
+        `}
+      >
+        Story
+      </button>
   </div>
 
 

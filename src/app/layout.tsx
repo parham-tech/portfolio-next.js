@@ -1,17 +1,34 @@
 import "./globals.css";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
-import { Navbar } from "@/features/Navbar";  // ✅ import Navbar
+import { StoryModeProvider } from "@/context/StoryModeContext";
+import { ThemeBackground } from "@/components/ThemeBackground";
+import { Navbar } from "@/features/Navbar";
+import { ScrollProgressProvider } from "@/context/ScrollProgressContext"; // 🆕 اینو اضافه کن
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body>
-        <ThemeProvider>
-          <Navbar />     {/* ✅ Navbar is always visible */}
-          {children}     {/* page content */}
-        </ThemeProvider>
-      </body>
+      <body className="text-white overflow-x-hidden">
+  <ThemeProvider>
+    <StoryModeProvider>
+      <ScrollProgressProvider>
+        {/* بک‌گراند */}
+        <ThemeBackground />
+
+        {/* این کانتینر */}
+        <div
+          id="site-container"
+          className="relative min-h-screen max-w-[1600px] mx-auto"
+        >
+          <Navbar />
+          <main>{children}</main>
+        </div>
+      </ScrollProgressProvider>
+    </StoryModeProvider>
+  </ThemeProvider>
+</body>
+
     </html>
   );
 }

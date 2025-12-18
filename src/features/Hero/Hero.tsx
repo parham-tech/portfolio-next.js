@@ -11,9 +11,42 @@ type HeroProps = {
 
 export default function Hero({ monitorRef }: HeroProps) {
   const [openWeather, setOpenWeather] = useState(false);
-  const { prevSite, nextSite, isTransitioning } = useThemeContext();
+  const { activeSite, isTransitioning } = useThemeContext();
 
-  // Animations
+  // 🎨 رنگ‌های اختصاصی دکمه‌ها بر اساس تم
+  const getThemeButtonColors = (theme: string) => {
+    switch (theme) {
+      case "bg-green-gradient":
+        return {
+          primary: { bg: "#155C40", hover: "#00794b", text: "#ffffff" },
+          secondary: { bg: "#ffffff", hover: "#eafff3", text: "#025c39" },
+        };
+      case "bg-purple-gradient":
+        return {
+          primary: { bg: "#501cb2", hover: "#5c0ce0", text: "#ffffff" },
+          secondary: { bg: "#ffffff", hover: "#f4ebff", text: "#480db6" },
+        };
+      case "bg-red-gradient":
+        return {
+          primary: { bg: "#a0261e", hover: "#741b16", text: "#ffffff" },
+          secondary: { bg: "#ffffff", hover: "#ffe4e2", text: "#a21108" },
+        };
+      case "bg-dark-gradient":
+        return {
+          primary: { bg: "#292e3a", hover: "#1d222f", text: "#ffffff" },
+          secondary: { bg: "#ffffff", hover: "#ebebeb", text: "#22252e" },
+        };
+      default:
+        return {
+          primary: { bg: "#205ee6", hover: "#1e40af", text: "#ffffff" },
+          secondary: { bg: "#ffffff", hover: "#dbeafe", text: "#2563eb" },
+        };
+    }
+  };
+
+  const colors = getThemeButtonColors(activeSite);
+
+  // 🎬 انیمیشن‌ها
   const fadeInText = {
     hidden: { opacity: 0, y: -20 },
     visible: (i: number) => ({
@@ -35,16 +68,9 @@ export default function Hero({ monitorRef }: HeroProps) {
   return (
     <section
       id="home"
-      className=" relative flex flex-col pt-[78px] md:pt-[128px] max-h-[800px] md:flex-row 
-             items-center justify-center px-6 md:px-12 pb-12 md:pb-20 text-white"
+      className="relative flex flex-col pt-[78px] md:pt-[128px] max-h-[1100px] md:flex-row 
+                 items-center justify-center px-6 md:px-12 pb-12 md:pb-20 text-white"
     >
-      {/* Hero Background Layers */}
-      <div className={`absolute inset-0 -z-10 ${prevSite}`} />
-      <div
-        className={`absolute inset-0 -z-10 ${nextSite} transition-bg-hero`}
-        style={{ opacity: isTransitioning ? 1 : 0 }}
-      />
-
       {/* Left Text */}
       <motion.div
         className="pt-[env(safe-area-inset-top)] w-2/3 md:w-1/2 space-y-6 text-center md:text-left"
@@ -54,8 +80,7 @@ export default function Hero({ monitorRef }: HeroProps) {
         <motion.h1
           custom={0}
           variants={fadeInText}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold leading-snug  "  
-          // {mt-20 sm:mt-40 md:mt-0}
+          className="text-3xl sm:text-4xl md:text-5xl font-bold leading-snug"
         >
           Hi, I’m <span className="text-yellow-400">Parham</span>
         </motion.h1>
@@ -77,28 +102,83 @@ export default function Hero({ monitorRef }: HeroProps) {
           Glad to have you here. Explore my work and projects.
         </motion.p>
 
+        {/* 🎨 دکمه‌ها */}
         <motion.div
           custom={3}
           variants={fadeInText}
           className="flex flex-col sm:flex-row gap-4 mt-6 justify-center md:justify-start"
         >
-          <button className="px-6 py-2 sm:py-3 bg-blue-700 hover:bg-blue-900 rounded-lg shadow transition w-auto sm:w-auto text-sm md:text-base">
-            View My Work
-          </button>
-          <button className="px-6 py-2 sm:py-3 bg-white text-blue-700 hover:bg-gray-200 rounded-lg shadow transition w-auto sm:w-auto text-sm md:text-base">
-            Get in Touch
-          </button>
-        </motion.div>
+  <motion.div
+  custom={3}
+  variants={fadeInText}
+  className="flex flex-col sm:flex-row gap-4 mt-6 justify-center md:justify-start"
+>
+  {/* 🔹 Primary Button */}
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+    className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
+    style={{
+      backgroundColor: colors.primary.bg,
+      color: colors.primary.text,
+      // ⬇️ دوتا transition جدا
+      transition: `
+        background-color 0.25s ease-in-out, 
+        color 0.25s ease-in-out, 
+        all var(--site-transition) ease
+      `,
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = colors.primary.hover;
+      e.currentTarget.style.color = colors.primary.text; // اگه رنگ متن در hover خاصه، اینجا ست کن
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = colors.primary.bg;
+      e.currentTarget.style.color = colors.primary.text;
+    }}
+  >
+    View My Work
+  </motion.button>
+
+  {/* 🔹 Secondary Button */}
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+    className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
+    style={{
+      backgroundColor: colors.secondary.bg,
+      color: colors.secondary.text,
+      transition: `
+        background-color 0.25s ease-in-out, 
+        color 0.25s ease-in-out, 
+        all var(--site-transition) ease
+      `,
+    }}
+    onMouseEnter={(e) => {
+      e.currentTarget.style.backgroundColor = colors.secondary.hover;
+      e.currentTarget.style.color = colors.secondary.text;
+    }}
+    onMouseLeave={(e) => {
+      e.currentTarget.style.backgroundColor = colors.secondary.bg;
+      e.currentTarget.style.color = colors.secondary.text;
+    }}
+  >
+    Get in Touch
+  </motion.button>
+</motion.div>
+
+</motion.div>
       </motion.div>
 
       {/* Right Images */}
       <motion.div
-        ref={monitorRef} // 🔑 اتصال ref برای ScrollPath
+        ref={monitorRef}
         className="relative md:w-1/2 flex justify-center mt-10 md:mt-0"
         initial="hidden"
         animate="visible"
       >
-        {/* Monitor Image */}
         <motion.div custom={0} variants={fadeInImage}>
           <Image
             src="/hero-monitor.png"
@@ -109,7 +189,6 @@ export default function Hero({ monitorRef }: HeroProps) {
           />
         </motion.div>
 
-        {/* Cloud Image as Accessible Button */}
         <motion.button
           custom={1}
           variants={fadeInImage}

@@ -104,6 +104,11 @@ export default function ThreeDCarousel({
     [projects, radius]
   );
 
+  const handleCardClick = (id: string) => {
+    console.log("Card clicked:", id);
+    onProjectClick(id);
+  };
+
   return (
     <div
    className="grid place-items-center w-full h-[500px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
@@ -132,7 +137,7 @@ export default function ThreeDCarousel({
               transform={card.transform}
               cardW={cardW}
               cardH={cardH}
-              onClick={() => onProjectClick(card.id)}
+              onClick={() => handleCardClick(card.id)}
             />
           ))}
         </div>

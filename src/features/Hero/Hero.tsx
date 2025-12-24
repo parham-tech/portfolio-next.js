@@ -108,68 +108,65 @@ export default function Hero({ monitorRef }: HeroProps) {
           variants={fadeInText}
           className="flex flex-col sm:flex-row gap-4 mt-6 justify-center md:justify-start"
         >
-  <motion.div
-  custom={3}
-  variants={fadeInText}
-  className="flex flex-col sm:flex-row gap-4 mt-6 justify-center md:justify-start"
->
-  {/* 🔹 Primary Button */}
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-    className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
-    style={{
-      backgroundColor: colors.primary.bg,
-      color: colors.primary.text,
-      // ⬇️ دوتا transition جدا
-      transition: `
+          {/* 🔹 Primary Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
+            style={{
+              backgroundColor: colors.primary.bg,
+              color: colors.primary.text,
+              // ⬇️ دوتا transition جدا
+              transition: `
         background-color 0.25s ease-in-out, 
         color 0.25s ease-in-out, 
         all var(--site-transition) ease
       `,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = colors.primary.hover;
-      e.currentTarget.style.color = colors.primary.text; // اگه رنگ متن در hover خاصه، اینجا ست کن
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = colors.primary.bg;
-      e.currentTarget.style.color = colors.primary.text;
-    }}
-  >
-    View My Work
-  </motion.button>
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = colors.primary.hover;
+              e.currentTarget.style.color = colors.primary.text; // اگه رنگ متن در hover خاصه، اینجا ست کن
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = colors.primary.bg;
+              e.currentTarget.style.color = colors.primary.text;
+            }}
+            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            aria-label="View My Work"
+          >
+            View My Work
+          </motion.button>
 
-  {/* 🔹 Secondary Button */}
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    transition={{ type: "spring", stiffness: 300, damping: 15 }}
-    className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
-    style={{
-      backgroundColor: colors.secondary.bg,
-      color: colors.secondary.text,
-      transition: `
+          {/* 🔹 Secondary Button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
+            style={{
+              backgroundColor: colors.secondary.bg,
+              color: colors.secondary.text,
+              transition: `
         background-color 0.25s ease-in-out, 
         color 0.25s ease-in-out, 
         all var(--site-transition) ease
       `,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = colors.secondary.hover;
-      e.currentTarget.style.color = colors.secondary.text;
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = colors.secondary.bg;
-      e.currentTarget.style.color = colors.secondary.text;
-    }}
-  >
-    Get in Touch
-  </motion.button>
-</motion.div>
-
-</motion.div>
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = colors.secondary.hover;
+              e.currentTarget.style.color = colors.secondary.text;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = colors.secondary.bg;
+              e.currentTarget.style.color = colors.secondary.text;
+            }}
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            aria-label="Get in Touch"
+          >
+            Get in Touch
+          </motion.button>
+        </motion.div>
       </motion.div>
 
       {/* Right Images */}
@@ -193,7 +190,7 @@ export default function Hero({ monitorRef }: HeroProps) {
           custom={1}
           variants={fadeInImage}
           type="button"
-          aria-label="نمایش وضعیت هوا"
+          aria-label="Show weather"
           disabled={isTransitioning}
           onClick={() => setOpenWeather(true)}
           className="absolute -top-12 sm:-top-20 left-1/2 -translate-x-1/2 animate-diagonal cursor-pointer w-28 sm:w-40 md:w-52 h-auto bg-transparent border-none p-0 outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"

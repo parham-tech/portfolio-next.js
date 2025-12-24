@@ -63,7 +63,7 @@ export function LowerSectionParallax() {
       const w = window.innerWidth;
       setVw(w);
 
-      if (w >= 1300) setLayout("desktop");
+      if (w >= 1024) setLayout("desktop");
       else if (w >= 768) setLayout("tablet");
       else setLayout("mobile");
     };

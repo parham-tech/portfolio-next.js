@@ -28,6 +28,7 @@ export default function NeonReflex({ nodes = 6 }: NeonReflexProps) {
   const musicStartedRef = useRef(false);
 
   useEffect(() => {
+    console.log("NeonReflex Component Mounted");
     bgMusicRef.current = new Audio("/audio/background.mp3");
     bgMusicRef.current.loop = true;
     bgMusicRef.current.volume = 0.5;

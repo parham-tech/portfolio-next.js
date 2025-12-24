@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 
 const GRID_SIZE = 20;
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
@@ -12,13 +13,20 @@ export default function SnakeGame() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
 
-  // 🔊 صداها (اختیاری)
-  const eatSound = typeof Audio !== "undefined" ? new Audio("/sounds/eat.mp3") : null;
-  const gameOverSound = typeof Audio !== "undefined" ? new Audio("/sounds/gameover.mp3") : null;
+  // 🔊 صداها (اختیاری) - استفاده از ref برای جلوگیری از بازسازی در هر رندر
+  const eatSoundRef = useRef<HTMLAudioElement | null>(null);
+  const gameOverSoundRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      eatSoundRef.current = new Audio("/sounds/eat.mp3");
+      gameOverSoundRef.current = new Audio("/sounds/gameover.mp3");
+    }
+  }, []);
 
   // 🎮 کنترل جهت
   useEffect(() => {
-        document.body.style.overflow = "hidden"; // ❌ قفل اسکرول
+    document.body.style.overflow = "hidden"; // ❌ قفل اسکرول
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -57,7 +65,7 @@ export default function SnakeGame() {
 
         // برخورد با خودش
         if (newSnake.some((s) => s.x === head.x && s.y === head.y)) {
-          gameOverSound?.play();
+          gameOverSoundRef.current?.play();
           setGameOver(true);
           return prev;
         }
@@ -66,7 +74,7 @@ export default function SnakeGame() {
 
         // خوردن غذا 🍎
         if (head.x === food.x && head.y === food.y) {
-          eatSound?.play();
+          eatSoundRef.current?.play();
           setScore((s) => s + 1);
           setFood({
             x: Math.floor(Math.random() * GRID_SIZE),
@@ -81,7 +89,7 @@ export default function SnakeGame() {
     }, 150);
 
     return () => clearInterval(interval);
-  }, [direction, food, gameOver]);
+  }, [direction, food, gameOver]); // eatSoundRef و gameOverSoundRef نیاز نیستند چون ref هستند
 
   const resetGame = () => {
     setSnake(INITIAL_SNAKE);
@@ -126,9 +134,11 @@ export default function SnakeGame() {
       <div className="text-center text-cyan-300 space-y-2">
         {gameOver ? (
           <div className="flex flex-col items-center gap-4">
-            <img
+            <Image
               src="/gameover.gif"
               alt="Game Over"
+              width={192} // w-48 ~ 192px
+              height={192} // Assuming square or similar, adjust as needed. auto height in css means aspect ratio preserved.
               className="w-48 h-auto drop-shadow-[0_0_30px_#00ffff]"
             />
             <button
@@ -140,10 +150,13 @@ export default function SnakeGame() {
             </button>
           </div>
         ) : (
-          <p className="text-lg font-semibold text-cyan-300 drop-shadow-[0_0_8px_#00ffff]">
+          <div className="text-2xl font-mono tracking-widest">
             Score: {score}
-          </p>
+          </div>
         )}
+        <p className="text-xs text-gray-400 mt-2">
+          Use Arrow Keys to Move
+        </p>
       </div>
     </div>
   );

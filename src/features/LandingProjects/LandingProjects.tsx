@@ -20,6 +20,7 @@ export default function LandingProjects() {
 
   // 🚫 قفل اسکرول وقتی modal باز است
   useEffect(() => {
+    console.log("Active Project Changed:", activeProject);
     if (activeProject) {
       document.body.style.overflow = "hidden";
     } else {
@@ -57,6 +58,7 @@ export default function LandingProjects() {
               <button
                 className="absolute top-4 right-4 text-white text-2xl"
                 onClick={() => setActiveProject(null)}
+                aria-label="Close modal"
               >
                 ✕
               </button>

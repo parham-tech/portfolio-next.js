@@ -107,7 +107,7 @@ export default function Navbar() {
 
         {/* 🔹 Mobile Menu Button */}
         <div className="md:hidden">
-          <button onClick={() => setMenuOpen(!menuOpen)}>
+          <button onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle mobile menu">
             {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>

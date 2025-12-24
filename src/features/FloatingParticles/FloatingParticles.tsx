@@ -40,7 +40,7 @@ export function FloatingParticles({
         color,
       };
     });
-  }, [count, colors, width, height]); // اگر خواستی width/height هم تو seed دخیل باشن
+  }, [count, colors]); // اگر خواستی width/height هم تو seed دخیل باشن
 
   return (
     <div

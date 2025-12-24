@@ -65,50 +65,73 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
   useLayoutEffect(() => {
     if (!monitorRef.current) return;
     const compute = () => {
-      const m = monitorRef.current!.getBoundingClientRect();
-      const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) || window.innerHeight;
-      setDocH(h);
-      const containerWidth = Math.min(window.innerWidth, 1600);
-      const offsetX = (window.innerWidth - containerWidth) / 2;
-      const isMobile = window.innerWidth < 768;
-      const isSmallMobile = window.innerWidth < 640;
+  const container = document.getElementById("site-container");
+  const rect = container?.getBoundingClientRect();
+  const containerLeft = rect ? rect.left + window.scrollX : 0;
+  const containerWidth = rect?.width || 1600;
 
-      let startPoint: Point;
-      if (!isMobile) {
-        startPoint = { x: m.left + window.scrollX + m.width * 0.5 - 80, y: m.top + window.scrollY + m.height * 0.7 + 80 };
-      } else if (isSmallMobile) {
-        startPoint = { x: m.left + window.scrollX + m.width * 0.22, y: m.top + window.scrollY + m.height * 0.95 };
-      } else {
-        startPoint = { x: m.left + window.scrollX + m.width * 0.22, y: m.top + window.scrollY + m.height * 0.95 };
-      }
+  
+  const m = monitorRef.current!.getBoundingClientRect();
+  const h =
+    Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight
+    ) || window.innerHeight;
+  setDocH(h);
 
-      let mids: Point[];
-      let end: Point;
-      if (!isMobile) {
-        mids = [
-          { x: offsetX + containerWidth * 0.6, y: startPoint.y + m.height * 0.18 },
-          { x: offsetX + containerWidth * 0.85, y: startPoint.y + m.height * 0.38 },
-          { x: offsetX + containerWidth * 0.19, y: startPoint.y + m.height * 0.46 },
-          { x: offsetX + containerWidth * 0.31, y: startPoint.y + m.height * 0.67 },
-        ];
-        end = { x: offsetX + containerWidth * 0.5, y: startPoint.y + m.height * 0.83 };
-      } else if (isSmallMobile) {
-        mids = [
-          { x: offsetX + containerWidth * 0.2, y: startPoint.y + m.height * 0.35 },
-          { x: offsetX + containerWidth * 0.8, y: startPoint.y + m.height * 0.52 },
-        ];
-        end = { x: offsetX + containerWidth * 0.5, y: startPoint.y + m.height * 0.85 };
-      } else {
-        mids = [
-          { x: offsetX + containerWidth * 0.2, y: startPoint.y + m.height * 0.35 },
-          { x: offsetX + containerWidth * 0.8, y: startPoint.y + m.height * 0.55 },
-          { x: offsetX + containerWidth * 0.68, y: startPoint.y + m.height * 0.78 },
-        ];
-        end = { x: offsetX + containerWidth * 0.5, y: startPoint.y + m.height * 0.92 };
-      }
+  const isMobile = window.innerWidth < 768;
+  const isSmallMobile = window.innerWidth < 640;
 
-      setPoints([startPoint, ...mids, end]);
+  // 📍 نقطه شروع بر اساس مانیتور
+  let startPoint: Point;
+  if (!isMobile) {
+    startPoint = {
+      x: m.left + window.scrollX + m.width * 0.5 - 80,
+      y: m.top + window.scrollY + m.height * 0.7 + 80,
     };
+  } else if (isSmallMobile) {
+    startPoint = {
+      x: m.left + window.scrollX + m.width * 0.22,
+      y: m.top + window.scrollY + m.height * 0.95,
+    };
+  } else {
+    startPoint = {
+      x: m.left + window.scrollX + m.width * 0.22,
+      y: m.top + window.scrollY + m.height * 0.95,
+    };
+  }
+
+  // 📍 نقاط میانی و پایانی همیشه در محدوده container محاسبه می‌شن
+  const getX = (percent: number) =>
+    containerLeft + containerWidth * percent;
+
+  let mids: Point[];
+  let end: Point;
+
+  if (!isMobile) {
+    mids = [
+      { x: getX(0.6), y: startPoint.y + m.height * 0.18 },
+      { x: getX(0.85), y: startPoint.y + m.height * 0.38 },
+      { x: getX(0.15), y: startPoint.y + m.height * 0.55 },
+    ];
+    end = { x: getX(0.5), y: startPoint.y + m.height * 0.85 };
+  } else if (isSmallMobile) {
+    mids = [
+      { x: getX(0.2), y: startPoint.y + m.height * 0.35 },
+      { x: getX(0.86), y: startPoint.y + m.height * 0.6 },
+    ];
+    end = { x: getX(0.5), y: startPoint.y + m.height * 0.85 };
+  } else {
+    mids = [
+      { x: getX(0.2), y: startPoint.y + m.height * 0.35 },
+      { x: getX(0.8), y: startPoint.y + m.height * 0.55 },
+      { x: getX(0.68), y: startPoint.y + m.height * 0.78 },
+    ];
+    end = { x: getX(0.5), y: startPoint.y + m.height * 0.92 };
+  }
+
+  setPoints([startPoint, ...mids, end]);
+};
 
     compute();
     window.addEventListener("resize", compute);
@@ -128,18 +151,27 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
     const len = pathRef.current.getTotalLength();
     gsap.set(trailRef.current, { strokeDasharray: len, strokeDashoffset: len });
 
+      gsap.set(ballRef.current, { opacity: 0 });
+
     const tl = gsap.timeline({
       defaults: { ease: "none" },
-      scrollTrigger: {
-        trigger: document.documentElement,
-        start: "top top",
-        end: "85% bottom",
-        scrub: true,
-        onUpdate: (self) => {
-          gsap.set(trailRef.current, { strokeDashoffset: len * (1 - (self.progress || 0)) });
-        },
-      },
+     scrollTrigger: {
+  trigger: document.documentElement,
+  start: "top top",
+  endTrigger: skillsRef.current,
+  end: "top center",
+  scrub: true,
+  onUpdate: (self) => {
+    gsap.set(trailRef.current, {
+      strokeDashoffset: len * (1 - (self.progress || 0)),
     });
+    if (self.progress > 0.01) {
+      gsap.to(ballRef.current, { opacity: 1, duration: 0.3 });
+    }
+  },
+},
+
+  });
 
     tl.to(ballRef.current, {
       // @ts-ignore
@@ -165,19 +197,19 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
     const skillCards = document.querySelectorAll(".skill-card");
 
     if (skillsTitle && listContainer && skillCards.length > 0) {
-      ScrollTrigger.create({
-        trigger: document.documentElement,
-        start: "90% bottom",
-        end: "bottom bottom",
-        onEnter: () => {
-          gsap.to(skillsTitle, { opacity: 1, y: 0, duration: 0.8 });
-          gsap.to(listContainer, { opacity: 1, y: 0, duration: 1, delay: 0.2 });
-          gsap.to(skillCards, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, delay: 0.4 });
-        },
-        onLeaveBack: () => {
-          gsap.to([skillsTitle, listContainer, skillCards], { opacity: 0, y: 40, duration: 0.5, stagger: 0.05 });
-        },
-      });
+   ScrollTrigger.create({
+   trigger: skillsRef.current,      // خودِ سکشن مهارت‌ها
+   start: "top 80%",                // وقتی بالای سکشن به 80% ویوپورت رسید
+   end: "bottom 60%",               // تا وقتی هنوز 60% داخل ویوپورت است
+    onEnter: () => {
+      gsap.to(skillsTitle, { opacity: 1, y: 0, duration: 0.8 });
+      gsap.to(listContainer, { opacity: 1, y: 0, duration: 1, delay: 0.2 });
+      gsap.to(skillCards, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, delay: 0.4 });
+    },
+    onLeaveBack: () => {
+      gsap.to([skillsTitle, listContainer, skillCards], { opacity: 0, y: 40, duration: 0.5, stagger: 0.05 });
+    },
+ });
     }
 
     return () => {

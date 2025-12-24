@@ -7,6 +7,7 @@ import { FloatingParticles } from "@/features/FloatingParticles/FloatingParticle
 // ابعاد واقعی تصویر/ویدئوی بک‌گراند
 const BG_WIDTH = 1523;
 const BG_HEIGHT = 1041;
+const SHOW_DEBUG_UI = process.env.NODE_ENV !== "production";
 
 // نوع لایه‌ها
 type LayerId =
@@ -60,10 +61,10 @@ const INITIAL_LAYERS: LayerConfig[] = [
     id: "castle",
     kind: "image",
     src: "/castle.png",
-    top: (29.6 / 100) * BG_HEIGHT,
-    left: (64.4 / 100) * BG_WIDTH,
-    width: 482,
-    height: 509,
+    top: (30 / 100) * BG_HEIGHT,
+    left: (64.7 / 100) * BG_WIDTH,
+    width: 498,
+    height: 519,
     zIndex: 3,
     draggable: true,
   },
@@ -82,8 +83,8 @@ const INITIAL_LAYERS: LayerConfig[] = [
     id: "front-mountain",
     kind: "image",
     src: "/mountain-front.png",
-    top: (25.1 / 100) * BG_HEIGHT,
-    left: (15 / 100) * BG_WIDTH,
+    top: (25.2 / 100) * BG_HEIGHT,
+    left: (13.9 / 100) * BG_WIDTH,
     width: 1110,
     height: 531,
     zIndex: 4,
@@ -187,7 +188,9 @@ const INITIAL_LAYERS: LayerConfig[] = [
 
 export function HeroScrollytelling() {
   const [layers, setLayers] = useState<LayerConfig[]>(INITIAL_LAYERS);
-  const [debug, setDebug] = useState(true);
+  // const [debug, setDebug] = useState(true);
+  const [debug, setDebug] = useState(SHOW_DEBUG_UI);
+
   const [activeId, setActiveId] = useState<LayerId | null>(null);
 
   // رفرنس کانتینری که BG و همه‌ی لایه‌ها داخلش هستن
@@ -273,6 +276,7 @@ export function HeroScrollytelling() {
   );
 
   // ───── Resize ─────
+  
   const handleResizeStart = useCallback(
     (e: React.MouseEvent<HTMLDivElement>, id: LayerId) => {
       if (!debug) return;
@@ -342,20 +346,32 @@ export function HeroScrollytelling() {
 
 
   "
->
+>{SHOW_DEBUG_UI && (
+  <button
+    onClick={() => setDebug((d) => !d)}
+    className="absolute left-4 top-24 z-[9999] rounded-md bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur hover:bg-black/60"
+  >
+    Debug: {debug ? "ON" : "OFF"}
+  </button>
+)}
+
       {/* ✅ Stage: ارتفاع 100%، عرض auto بر اساس نسبت BG، وسط چین */}
-      <div
-        ref={bgRef}
-        className="absolute top-0 left-1/2 h-full -translate-x-1/2"
-        style={{ aspectRatio: `${BG_WIDTH} / ${BG_HEIGHT}` }}
+         <div
+      ref={bgRef}
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      style={{
+        aspectRatio: `${BG_WIDTH} / ${BG_HEIGHT}`,
+        minWidth: "100%",
+        minHeight: "100%",
+      }}
       >
         {/* دکمه دیباگ روی خود Stage */}
-        <button
+        {/* <button
           onClick={() => setDebug((d) => !d)}
           className="absolute left-4 top-4 z-[10000] rounded-md bg-black/40 px-3 py-1 text-xs font-semibold text-white backdrop-blur hover:bg-black/60"
         >
           Debug: {debug ? "ON" : "OFF"}
-        </button>
+        </button> */}
 
         {/* لایه‌ها */}
         {layers.map((layer) => {

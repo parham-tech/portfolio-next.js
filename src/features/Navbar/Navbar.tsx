@@ -54,7 +54,7 @@ export default function Navbar() {
 
 <div className="flex justify-between items-center py-4 px-6 md:px-12 text-white max-w-7xl mx-auto">
   {/* 🔹 Theme Selector */}
-  <div className="relative" ref={themeRef}>
+  <div className="relative flex items-center gap-3" ref={themeRef}>
     {/* دکمه تم با گرادینت و ترنزیشن هماهنگ */}
     <div className="relative">
       <div className={`absolute inset-0 rounded-xl ${prevSite}`} />
@@ -71,18 +71,18 @@ export default function Navbar() {
       >
         Theme
       </button>
-    </div>
 
-    {themeOpen && (
-      <div className="absolute theme-button:-left-12 -left-[2.2rem] mt-2 rounded-lg shadow-lg theme-button:p-3 p-2 z-50 min-w-0 theme-button:min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
-        <ThemeSwitcherCarousel
-          activeSite={activeSite}
-          applySite={applySite}
-          isTransitioning={isTransitioning}
-          config={config}
-        />
-      </div>
-    )} {/* 🔄 Story Toggle */}
+      {themeOpen && (
+        <div className="absolute theme-button:-left-12 -left-[2.2rem] mt-2 rounded-lg shadow-lg theme-button:p-3 p-2 z-50 min-w-0 theme-button:min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
+          <ThemeSwitcherCarousel
+            activeSite={activeSite}
+            applySite={applySite}
+            isTransitioning={isTransitioning}
+            config={config}
+          />
+        </div>
+      )}
+    </div> {/* 🔄 Story Toggle */}
       <button
         onClick={toggleStoryMode}
         className={`

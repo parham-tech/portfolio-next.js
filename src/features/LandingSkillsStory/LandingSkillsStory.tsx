@@ -55,17 +55,17 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 0,
     draggable: true,
   },
-  {
-    id: "portal",
-    kind: "image",
-    src: "/portal.png",
-    top: (52.2 / 100) * BG_HEIGHT,
-    left: (47. / 100) * BG_WIDTH,
-    width: 577,
-    height: 632,
-    zIndex: 2,
-    draggable: true,
-  },
+  // {
+  //   id: "portal",
+  //   kind: "image",
+  //   src: "/portal.png",
+  //   top: (52.2 / 100) * BG_HEIGHT,
+  //   left: (47. / 100) * BG_WIDTH,
+  //   width: 577,
+  //   height: 632,
+  //   zIndex: 2,
+  //   draggable: true,
+  // },
   {
     id: "moon",
     kind: "image",
@@ -75,30 +75,30 @@ const INITIAL_LAYERS: LayerConfig[] = [
     width: 427,
     height: 404,
     zIndex: 2,
-    draggable: true,
+    draggable: false,
   },
-  {
-    id: "column-1",
-    kind: "image",
-    src: "/column-1.png",
-    top: (51.5 / 100) * BG_HEIGHT,
-    left: (81 / 100) * BG_WIDTH,
-    width: 380,
-    height: 440,
-    zIndex: 2,
-    draggable: true,
-  },
-  {
-    id: "column-2",
-    kind: "image",
-    src: "/column-2.png",
-    top: (54 / 100) * BG_HEIGHT,
-    left: (17.4 / 100) * BG_WIDTH,
-    width: 380,
-    height: 440,
-    zIndex: 2,
-    draggable: true,
-  },
+  // {
+  //   id: "column-1",
+  //   kind: "image",
+  //   src: "/column-1.png",
+  //   top: (51.5 / 100) * BG_HEIGHT,
+  //   left: (81 / 100) * BG_WIDTH,
+  //   width: 380,
+  //   height: 440,
+  //   zIndex: 2,
+  //   draggable: true,
+  // },
+  // {
+  //   id: "column-2",
+  //   kind: "image",
+  //   src: "/column-2.png",
+  //   top: (54 / 100) * BG_HEIGHT,
+  //   left: (17.4 / 100) * BG_WIDTH,
+  //   width: 380,
+  //   height: 440,
+  //   zIndex: 2,
+  //   draggable: true,
+  // },
 
   // 🌟 ناحیه‌ی ذرات طلایی، مثل Hero
   // {
@@ -385,7 +385,9 @@ const METEORS: MeteorConfig[] = [
 
 export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: number }) {
   const [layers, setLayers] = useState<LayerConfig[]>(INITIAL_LAYERS);
-  const [debug, setDebug] = useState(true);
+  const [debug, setDebug] = useState(true); 
+  // const debug = true;
+
   const [activeId, setActiveId] = useState<LayerId | null>(null);
 
   // رفرنس کانتینر BG
@@ -561,7 +563,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
   return (
    <section
   ref={sectionRef}
-  className="relative w-full flex justify-center -mt-[4.5rem]"
+  className="relative w-full flex justify-center"
 >
   {/* ✅ Viewport (مثل Hero): ارتفاع کنترل‌شده + crop کننده */}
   <div

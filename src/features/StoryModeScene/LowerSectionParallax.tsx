@@ -16,22 +16,22 @@ type LayoutMode = "mobile" | "tablet" | "desktop";
  */
 function getManualGrassOffsetPx(vw: number) {
   // بزرگ‌تر از 1200
-  if (vw > 1200) return 0;
+  if (vw > 1200) return -32;
 
   // max-[1200px]
-  if (vw <= 1200 && vw > 1024) return -2;
+  if (vw <= 1200 && vw > 1024) return -32;
 
   // max-[1024px]
-  if (vw <= 1024 && vw > 768) return -4;
+  if (vw <= 1024 && vw > 768) return -34;
 
   // max-[768px]
-  if (vw <= 768 && vw > 600) return -6;
+  if (vw <= 768 && vw > 600) return -104;
 
   // max-[600px]
-  if (vw <= 600 && vw > 480) return -8;
+  if (vw <= 600 && vw > 480) return -88;
 
   // max-[480px]
-  return -10;
+  return -88;
 }
 
 export function LowerSectionParallax() {
@@ -99,26 +99,28 @@ export function LowerSectionParallax() {
    * - tablet/desktop: baseOverlap از grassH + کنترل دستی با vw
    */
   const { grassOverlapPx, skillsOverlapPx } = useMemo(() => {
-    const manualOffset = getManualGrassOffsetPx(vw);
+  const manualGrass = getManualGrassOffsetPx(vw);
 
-    // موبایل: فقط Grass را دستی جابه‌جا کن، Skills ثابت بماند
-    if (layout === "mobile") {
-      return { grassOverlapPx: manualOffset, skillsOverlapPx: 0 };
-    }
+  // 1) ✅ فقط بالا بردن Grass نسبت به Hero
+  const factor =
+    layout === "desktop" ? 0.55 : layout === "tablet" ? 0.45 : 0;
 
-    // base overlap نسبتی
-    const factor = layout === "desktop" ? 0.55 : 0.45;
-    const baseGrassOverlap = -Math.round(grassH * factor);
+  const grassOverlap = -Math.round(grassH * factor) + manualGrass;
 
-    // ✅ offset دستی
-    const grassOverlap = baseGrassOverlap + manualOffset;
+  // 2) ✅ فقط چسباندن Skills به Grass (تماس ثابت/نسبتی)
+  // هرچی این عدد بزرگ‌تر (مثلاً 0.35)، Skills بیشتر میاد روی Grass و فاصله از بین میره
+ const contactFactor =
+  layout === "desktop" ? 0.32 : layout === "tablet" ? 0.38 : 0.38;
 
-    // Skills را به grass قفل می‌کنیم (کمی فاصله)
-    const extraGap = layout === "desktop" ? 8 : 6;
-    const skillsOverlap = grassOverlap + extraGap;
 
-    return { grassOverlapPx: grassOverlap, skillsOverlapPx: skillsOverlap };
-  }, [grassH, layout, vw]);
+  const skillsOverlap = -Math.round(grassH * contactFactor);
+
+  return {
+    grassOverlapPx: grassOverlap,
+    skillsOverlapPx: skillsOverlap,
+  };
+}, [grassH, layout, vw]);
+
 
   // اسکرول → raw progress + snap decision
   useEffect(() => {

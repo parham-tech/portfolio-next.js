@@ -84,26 +84,32 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
 
   // 📍 نقطه شروع بر اساس مانیتور
   let startPoint: Point;
+  // اصلاح: مختصات باید نسبت به کانتینر (site-container) باشد، نه کل صفحه
+  // چون SVG داخل site-container است (که position: relative دارد).
+  const monitorLeft = (m.left + window.scrollX) - containerLeft;
+  const monitorTop = (m.top + window.scrollY); // Y همون global باشه چون SVG ارتفاعش docH هست و top=0
+
   if (!isMobile) {
     startPoint = {
-      x: m.left + window.scrollX + m.width * 0.5 - 80,
-      y: m.top + window.scrollY + m.height * 0.7 + 80,
+      x: monitorLeft + m.width * 0.5 - 80,
+      y: monitorTop + m.height * 0.7 + 80,
     };
   } else if (isSmallMobile) {
     startPoint = {
-      x: m.left + window.scrollX + m.width * 0.22,
-      y: m.top + window.scrollY + m.height * 0.95,
+      x: monitorLeft + m.width * 0.22,
+      y: monitorTop + m.height * 0.95,
     };
   } else {
     startPoint = {
-      x: m.left + window.scrollX + m.width * 0.22,
-      y: m.top + window.scrollY + m.height * 0.95,
+      x: monitorLeft + m.width * 0.22,
+      y: monitorTop + m.height * 0.95,
     };
   }
 
   // 📍 نقاط میانی و پایانی همیشه در محدوده container محاسبه می‌شن
+  // اصلاح: getX باید مختصات نسبی به کانتینر برگرداند
   const getX = (percent: number) =>
-    containerLeft + containerWidth * percent;
+    containerWidth * percent;
 
   let mids: Point[];
   let end: Point;

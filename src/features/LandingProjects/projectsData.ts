@@ -28,10 +28,11 @@ export const projectsData = [
     description: "A simple and elegant todo list app.",
   },
   {
-  id: "colorflow",
-  title: "Color Flow Palette",
-  image: "https://i.pinimg.com/originals/fe/your_image_path_here.jpg",
-  description: "An abstract color motion project with dynamic golden flow.",
-}
+    id: "colorflow",
+    title: "Color Flow Palette",
+    // Placeholder image until a real one is provided
+    image: "https://i.pinimg.com/736x/5d/bf/f2/5dbff2b4c0fdcb9815e989f0db386f95.jpg",
+    description: "An abstract color motion project with dynamic golden flow.",
+  }
 
 ];

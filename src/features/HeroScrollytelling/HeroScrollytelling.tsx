@@ -331,7 +331,7 @@ export function HeroScrollytelling() {
   );
 
  return (
-  <section className="relative w-full flex justify-center overflow-hidden">
+  <section id="story-hero" className="relative w-full flex justify-center overflow-hidden">
     {/* ✅ Viewport: عرض 100%، ارتفاع ثابت، crop کننده */}
   <div
   className="

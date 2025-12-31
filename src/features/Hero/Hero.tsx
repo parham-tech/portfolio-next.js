@@ -146,7 +146,7 @@ export default function Hero({ monitorRef }: HeroProps) {
             className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
             style={{
               backgroundColor: colors.secondary.bg,
-              color: colors.secondary.text,
+              color: colors.primary.hover,
               transition: `
         background-color 0.25s ease-in-out, 
         color 0.25s ease-in-out, 

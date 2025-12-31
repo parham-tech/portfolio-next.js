@@ -32,7 +32,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
       {/* 🔹 عنوان My Skills */}
       <h2
         ref={skillsRef}
-        className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16 text-gray-900 dark:text-white opacity-0 translate-y-6"
+        className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-10 sm:mb-16 dark:text-white opacity-0 translate-y-6"
       >
         My Skills
       </h2>

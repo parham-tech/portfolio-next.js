@@ -24,7 +24,7 @@ export const skills = [
     items: [
       { name: "Accessibility (a11y)", level: "Intermediate", icon: MdAccessibilityNew, color: "text-green-500" },
       { name: "SEO", level: "Basic", icon: FaSearch, color: "text-gray-600 dark:text-gray-300" },
-      { name: "Performance Optimization(webpagetest.org, Lighthouse, SiteSpeed.io)", level: "Intermediate", icon: FaTachometerAlt, color: "text-red-500" },
+      { name: "Performance Optimization ( webpagetest.org, Lighthouse, SiteSpeed.io)", level: "Intermediate", icon: FaTachometerAlt, color: "text-red-500" },
       { name: "Best Practices (Security & Web Standards from Lighthouse)", level: "Intermediate", icon: FaShieldAlt, color: "text-purple-600" },
     ],
   },

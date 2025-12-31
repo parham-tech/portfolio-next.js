@@ -16,7 +16,7 @@ export const metadata = {
         alt: "Parham Portfolio Home",
       },
     ],
-    locale: "en_",
+    locale: "en_US",
     type: "website",
   },
   twitter: {

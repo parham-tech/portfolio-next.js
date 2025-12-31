@@ -9,8 +9,9 @@ import {
 } from "react";
 import { DEFAULT_THEME_CONFIG, ThemeConfig } from "@/config/themeConfig";
 
+// 🎨 نوع داده‌ی Context
 type ThemeContextType = {
-  activeSite: string;                // کلاس تم فعلی
+  activeSite: string;
   applySite: (siteClass: string) => void;
   isTransitioning: boolean;
   prevSite: string;
@@ -19,18 +20,20 @@ type ThemeContextType = {
   setConfig: (cfg: ThemeConfig) => void;
 };
 
+// 🧱 ایجاد Context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+// 🌈 ThemeProvider
+function ThemeProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<ThemeConfig>(DEFAULT_THEME_CONFIG);
-
   const [prevSite, setPrevSite] = useState("bg-day-gradient");
   const [nextSite, setNextSite] = useState("bg-day-gradient");
-
   const [isTransitioning, setIsTransitioning] = useState(false);
+
   const lockRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // زمان ترنزیشن CSS
   useEffect(() => {
     document.documentElement.style.setProperty(
       "--site-transition",
@@ -38,6 +41,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     );
   }, [config.siteTransitionMs]);
 
+  // قفل هنگام تغییر تم برای جلوگیری از کلیک سریع
   const startLock = (targetSite: string) => {
     if (lockRef.current) return;
     lockRef.current = true;
@@ -54,12 +58,14 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }, lockMs);
   };
 
+  // تغییر تم
   const applySite = (siteClass: string) => {
     if (lockRef.current) return;
     setNextSite(siteClass);
     startLock(siteClass);
   };
 
+  // پاکسازی
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -78,23 +84,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         setConfig,
       }}
     >
-      {/* 👇 کانتینر کل سایت */}
-      <div className="relative min-h-screen text-white overflow-x-hidden max-w-[1600px] mx-auto ">
-        {/* 👇 بک‌گراند فقط در محدوده container */}
-        <div className={`absolute inset-0 -z-10 ${prevSite}`} />
-        <div
-          className={`absolute inset-0 -z-10 ${nextSite} transition-bg-site`}
-          style={{ opacity: isTransitioning ? 1 : 0 }}
-        />
-        
-        {children}
-      </div>
+      {children}
     </ThemeContext.Provider>
   );
 }
 
-export function useThemeContext() {
+// 🧩 Hook دسترسی به Context
+function useThemeContext() {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error("useThemeContext must be used within ThemeProvider");
   return ctx;
 }
+
+export { ThemeProvider, useThemeContext };

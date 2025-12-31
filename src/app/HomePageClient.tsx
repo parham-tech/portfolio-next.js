@@ -2,35 +2,23 @@
 
 import { useRef } from "react";
 import { Hero } from "@/features/Hero";
-import HeroScrollytelling from "@/features/HeroScrollytelling/HeroScrollytelling";
 import { LandingSkills } from "@/features/LandingSkills";
-import { LandingSkillsStory } from "@/features/LandingSkillsStory/LandingSkillsStory"; // 👈 اینو اضافه کن
 import { ScrollPath } from "@/components/ScrollPath";
 import { LandingProjects } from "@/features/LandingProjects";
-import { useStoryMode } from "@/context/StoryModeContext";
-import { ScrollingGrassBand } from "@/features/ScrollingGrass/ScrollingGrassBand";
-import { StoryModeScene } from "@/app/StoryModeScene";
 
 export default function HomePageClient() {
   const monitorRef = useRef<HTMLDivElement>(null);
   const skillsRef = useRef<HTMLHeadingElement>(null);
-  const { isStoryMode } = useStoryMode();
 
   return (
     <>
-      {isStoryMode ? (
-                  <StoryModeScene />
-
-      ) : (
-        <>
-          {/* 🎯 حالت معمولی مانیتور + ScrollPath */}
-          <Hero monitorRef={monitorRef} />
-          <ScrollPath monitorRef={monitorRef} skillsRef={skillsRef} />
-
-          {/* 🧩 Skills معمولی */}
-          <LandingSkills skillsRef={skillsRef} />
-        </>
-      )}
+        <h1 className="sr-only">Parham Shirinkam – Frontend Developer Portfolio</h1>
+      <p className="sr-only">
+        Parham Shirinkam frontend developer specializing in React and Next.js. Explore projects, skills, and experience.
+      </p>
+      <Hero monitorRef={monitorRef} />
+      <ScrollPath monitorRef={monitorRef} skillsRef={skillsRef} />
+      <LandingSkills skillsRef={skillsRef} />
 
       {/* 📂 بخش پروژه‌ها در هر دو حالت یکیه */}
       <LandingProjects />

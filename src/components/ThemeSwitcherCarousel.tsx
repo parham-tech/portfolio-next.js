@@ -43,11 +43,10 @@ export default function ThemeSwitcherCarousel({
     <div className="flex flex-col items-center gap-1 min-w-[130px]">
       <div className="flex items-center gap-1">
         <button
-          aria-label="قبلی"
+          aria-label="Previous theme"
           className="p-1 rounded-full bg-white/60 hover:bg-white/80 shadow disabled:opacity-40"
           onClick={handlePrev}
           disabled={isTransitioning}
-          tabIndex={0}
         >
           <ChevronLeft className="text-gray-700" />
         </button>
@@ -70,19 +69,17 @@ export default function ThemeSwitcherCarousel({
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0, transition: { duration: 0.18 } }}
               exit={{ opacity: 0, x: -30 }}
-              aria-label={`انتخاب تم ${themes[selected].name}`}
-              tabIndex={0}
+              aria-label={`Select theme ${themes[selected].name}`}
             >
               {themes[selected].name}
             </motion.button>
           </AnimatePresence>
         </div>
         <button
-          aria-label="بعدی"
+          aria-label="Next theme"
           className="p-1 rounded-full bg-white/60 hover:bg-white/80 shadow disabled:opacity-40"
           onClick={handleNext}
           disabled={isTransitioning}
-          tabIndex={0}
         >
           <ChevronRight className="text-gray-700" />
         </button>
@@ -95,8 +92,7 @@ export default function ThemeSwitcherCarousel({
             className={`w-2.5 h-2.5 rounded-full border transition-all
               ${idx === selected ? "bg-blue-400 border-blue-600" : "bg-gray-300 border-gray-400"}
             `}
-            aria-label={`انتخاب ${t.name}`}
-            tabIndex={0}
+            aria-label={`Select theme ${t.name}`}
           />
         ))}
       </div>

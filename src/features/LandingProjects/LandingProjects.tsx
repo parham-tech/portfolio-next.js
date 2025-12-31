@@ -20,6 +20,7 @@ export default function LandingProjects() {
 
   // 🚫 قفل اسکرول وقتی modal باز است
   useEffect(() => {
+    console.log("Active Project Changed:", activeProject);
     if (activeProject) {
       document.body.style.overflow = "hidden";
     } else {
@@ -29,7 +30,7 @@ export default function LandingProjects() {
 
   return (
     <section className="pt-24  text-center relative z-10">
-      <h2 className="text-4xl font-bold  text-white">My Projects</h2>
+      <h2 className="text-3xl md:text-4xl font-bold  text-white">My Projects</h2>
 
       {/* 🎠 Carousel پروژه‌ها */}
       <ThreeDCarousel
@@ -57,6 +58,7 @@ export default function LandingProjects() {
               <button
                 className="absolute top-4 right-4 text-white text-2xl"
                 onClick={() => setActiveProject(null)}
+                aria-label="Close modal"
               >
                 ✕
               </button>

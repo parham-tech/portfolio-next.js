@@ -24,15 +24,15 @@ const Card = React.memo(
       }}
       onClick={onClick}
     >
-      <div className="w-full h-full rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg">
+      <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg">
       <Image
-        src={src}
-        alt={title}
-        fill
-        className="object-cover"
-        draggable={false}
-        sizes="(max-width: 640px) 120px, (max-width: 768px) 180px, 240px"
-      />
+  src={src}
+  alt={title}
+  fill
+  sizes={`${cardW}px`}
+  className="object-cover"
+  draggable={false}
+/>
         <div className="absolute bottom-0 w-full bg-black/50 text-white text-center py-2 text-sm font-medium">
           {title}
         </div>
@@ -57,6 +57,16 @@ export default function ThreeDCarousel({
   cardH = 240,
   onProjectClick,
 }: ThreeDCarouselProps) {
+  const [vw, setVw] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const effectiveCardW = vw < 480 ? 120 : vw < 768 ? 140 : vw < 1024 ? cardW : 220;
+  const effectiveCardH = vw < 480 ? 160 : vw < 768 ? 200 : vw < 1024 ? cardH : 300;
+  const effectiveRadius = vw < 480 ? 160 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
   const wheelRef = useRef<HTMLDivElement>(null);
   const rotationRef = useRef(0);
   const velocityRef = useRef(0);
@@ -64,7 +74,6 @@ export default function ThreeDCarousel({
   const dragStartRef = useRef(0);
   const initialRotationRef = useRef(0);
   const animationRef = useRef<number>();
-  const [vw, setVw] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
 
   useEffect(() => {
     const animate = () => {
@@ -76,13 +85,6 @@ export default function ThreeDCarousel({
     };
     animate();
     return () => cancelAnimationFrame(animationRef.current!);
-  }, []);
-
-  useEffect(() => {
-    const onResize = () => setVw(window.innerWidth);
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const handleDragStart = useCallback((clientX: number) => {
@@ -101,23 +103,16 @@ export default function ThreeDCarousel({
     isDraggingRef.current = false;
   }, []);
 
-  const isMobile = vw < 640;
-  const isTablet = vw >= 640 && vw < 768;
-  const dynamicCardW = isMobile ? 120 : 180;
-  const dynamicCardH = isMobile ? 170 : 240;
-  const dynamicRadius = isMobile ? 170 : radius;
-  const containerH = isMobile ? 340 : isTablet ? 400 : 500;
-
   const cards = useMemo(
     () =>
       projects.map((p, i) => {
         const angle = (i * 360) / projects.length;
         return {
           ...p,
-          transform: `rotateY(${angle}deg) translateZ(${dynamicRadius}px)`,
+          transform: `rotateY(${angle}deg) translateZ(${effectiveRadius}px)`,
         };
       }),
-    [projects, dynamicRadius]
+    [projects, effectiveRadius]
   );
 
   const handleCardClick = (id: string) => {
@@ -127,8 +122,7 @@ export default function ThreeDCarousel({
 
   return (
     <div
-      className="grid place-items-center w-full overflow-hidden select-none cursor-grab active:cursor-grabbing"
-      style={{ height: containerH }}
+   className="grid place-items-center w-full h-[360px] sm:h-[420px] md:h-[500px] lg:h-[560px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
       onMouseDown={(e) => handleDragStart(e.clientX)}
       onMouseMove={(e) => handleDragMove(e.clientX)}
       onMouseUp={handleDragEnd}
@@ -138,22 +132,22 @@ export default function ThreeDCarousel({
       onTouchEnd={handleDragEnd}
     >
       <div
-        className="relative w-full h-full max-w-6xl"
-        style={{ perspective: 1800 }}
-      >
-        <div
-          ref={wheelRef}
-          className="absolute inset-0 grid place-items-center"
-          style={{ transformStyle: "preserve-3d" }}
-        >
+    className="relative w-full h-full max-w-6xl"
+    style={{ perspective: 1800 }}
+  >
+    <div
+      ref={wheelRef}
+      className="absolute inset-0 grid place-items-center"
+      style={{ transformStyle: "preserve-3d" }}
+    >
           {cards.map((card) => (
             <Card
               key={card.id}
               src={card.image}
               title={card.title}
               transform={card.transform}
-              cardW={dynamicCardW}
-              cardH={dynamicCardH}
+              cardW={effectiveCardW}
+              cardH={effectiveCardH}
               onClick={() => handleCardClick(card.id)}
             />
           ))}

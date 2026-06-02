@@ -96,7 +96,7 @@ export default function Navbar() {
                   Theme
                 </button>
                 {themeOpen && (
-                  <div className="absolute theme-button:-left-12 -left-[2.2rem] md:-left-[2.9rem] mt-2 rounded-lg shadow-lg theme-button:p-3 p-2 z-50 min-w-0 theme-button:min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
+                  <div className="absolute theme-button:-left-12 -left-[2.2rem] mt-2 rounded-lg shadow-lg theme-button:p-3 p-2 z-50 min-w-0 theme-button:min-w-[170px] dark:bg-gray-900 backdrop-blur-md">
                     <ThemeSwitcherCarousel
                       activeSite={activeSite}
                       applySite={applySite}

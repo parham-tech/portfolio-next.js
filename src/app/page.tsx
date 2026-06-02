@@ -1,11 +1,15 @@
+import type { Metadata } from "next";
 import HomePageClient from "./HomePageClient";
 
-export const metadata = {
-  title: "Home | Parham Portfolio",
-  description: "Welcome to my portfolio website. Frontend developer. Explore my work and projects.",
+export const metadata: Metadata = {
+  metadataBase: new URL("https://portfolio-next-js-parham.vercel.app"),
+  title: "Parham Shirinkam | Frontend Developer Portfolio",
+  description:
+    "Parham Shirinkam frontend developer portfolio. Explore my projects, skills, and experience with React and Next.js.",
   openGraph: {
-    title: "Home | Parham Portfolio",
-    description: "Welcome to my portfolio website. Frontend developer. Explore my work and projects.",
+    title: "Parham Shirinkam | Frontend Developer Portfolio",
+    description:
+      "Parham Shirinkam frontend developer portfolio. Explore my projects, skills, and experience with React and Next.js.",
     url: "https://portfolio-next-js-parham.vercel.app/",
     siteName: "Parham Portfolio",
     images: [
@@ -13,7 +17,7 @@ export const metadata = {
         url: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
         width: 1200,
         height: 630,
-        alt: "Parham Portfolio Home",
+        alt: "Parham Shirinkam Portfolio",
       },
     ],
     locale: "en_US",
@@ -21,8 +25,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Home | Parham Portfolio",
-    description: "Welcome to my portfolio website. Frontend developer. Explore my work and projects.",
+    title: "Parham Shirinkam | Frontend Developer Portfolio",
+    description:
+      "Parham Shirinkam frontend developer portfolio. Explore my projects, skills, and experience with React and Next.js.",
     images: ["https://portfolio-next-js-parham.vercel.app/og-image-home.jpg"],
   },
   alternates: {

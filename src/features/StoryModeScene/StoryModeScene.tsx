@@ -1,7 +1,6 @@
-// src/features/StoryModeScene/StoryModeScene.tsx
-"use client";
+'use client';
 
-import {HeroScrollytelling} from "@/features/HeroScrollytelling/HeroScrollytelling";
+import { HeroScrollytelling } from "@/features/HeroScrollytelling/HeroScrollytelling";
 import { LowerSectionParallax } from "@/features/StoryModeScene/LowerSectionParallax";
 
 export function StoryModeScene() {

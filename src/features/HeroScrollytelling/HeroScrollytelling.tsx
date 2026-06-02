@@ -22,7 +22,9 @@ type LayerId =
   | "particles-blue"
   | "butterfly-gif"
   | "bird-gif"
-  | "spider-gif";
+  | "spider-gif"
+ | "scroll";
+
 
 type LayerKind = "image" | "video" | "particles";
 
@@ -55,6 +57,17 @@ const INITIAL_LAYERS: LayerConfig[] = [
     width: BG_WIDTH,
     height: BG_HEIGHT,
     zIndex: 0,
+    draggable: true,
+  },
+  {
+    id: "scroll",
+    kind: "image",
+    src: "/scroll.png",
+    top: BG_HEIGHT / 2,      // وسط BG
+    left: BG_WIDTH / 2,
+    width: BG_WIDTH,
+    height: BG_HEIGHT,
+    zIndex: 10,
     draggable: true,
   },
   {

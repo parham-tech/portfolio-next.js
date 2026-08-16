@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { StoryModeProvider } from "@/context/StoryModeContext";
 import { ThemeBackground } from "@/components/ThemeBackground";
 import { Navbar } from "@/features/Navbar";
-import { ScrollProgressProvider } from "@/context/ScrollProgressContext"; // 🆕 اینو اضافه کن
+import { ScrollProgressProvider } from "@/context/ScrollProgressContext";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

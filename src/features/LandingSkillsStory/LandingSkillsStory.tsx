@@ -6,6 +6,7 @@ import type React from "react";
 import Image from "next/image";
 
 import { FloatingParticles } from "@/features/FloatingParticles/FloatingParticles";
+import { ChromaKeyVideo } from "@/features/HeroScrollytelling/ChromaKeyVideo";
 
 // ابعاد منطقی صحنه‌ی Skills (بر اساس بک‌گراندت)
 const BG_WIDTH = 1523;
@@ -14,16 +15,11 @@ const BG_HEIGHT = 1041;
 // 👇 نوع لایه‌ها
 type LayerId =
   | "bg"
-  | "portal"
-  | "column-1"
-  | "column-2"
   | "moon"
   | "particles-gold"
-  | "stone-html"
-  | "stone-css"
-  | "stone-js";
+  | "wizard";
 
-type LayerKind = "image" | "particles";
+type LayerKind = "image" | "particles" | "video" | "chromakey";
 
 type LayerConfig = {
   id: LayerId;
@@ -46,8 +42,8 @@ type LayerConfig = {
 const INITIAL_LAYERS: LayerConfig[] = [
   {
     id: "bg",
-    kind: "image",
-    src: "/landingSkills-placeholder.png",
+    kind: "video",
+    src: "/videos/landingSkills-placeholder",
     top: BG_HEIGHT / 2, // وسط BG
     left: BG_WIDTH / 2,
     width: BG_WIDTH,
@@ -55,17 +51,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 0,
     draggable: true,
   },
-  // {
-  //   id: "portal",
-  //   kind: "image",
-  //   src: "/portal.png",
-  //   top: (52.2 / 100) * BG_HEIGHT,
-  //   left: (47. / 100) * BG_WIDTH,
-  //   width: 577,
-  //   height: 632,
-  //   zIndex: 2,
-  //   draggable: true,
-  // },
+
   {
     id: "moon",
     kind: "image",
@@ -77,28 +63,18 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 2,
     draggable: false,
   },
-  // {
-  //   id: "column-1",
-  //   kind: "image",
-  //   src: "/column-1.png",
-  //   top: (51.5 / 100) * BG_HEIGHT,
-  //   left: (81 / 100) * BG_WIDTH,
-  //   width: 380,
-  //   height: 440,
-  //   zIndex: 2,
-  //   draggable: true,
-  // },
-  // {
-  //   id: "column-2",
-  //   kind: "image",
-  //   src: "/column-2.png",
-  //   top: (54 / 100) * BG_HEIGHT,
-  //   left: (17.4 / 100) * BG_WIDTH,
-  //   width: 380,
-  //   height: 440,
-  //   zIndex: 2,
-  //   draggable: true,
-  // },
+
+  {
+    id: "wizard",
+    kind: "chromakey",
+    src: "/videos/wizard.mp4",
+    top: (69.6 / 100) * BG_HEIGHT,
+    left: (49.2 / 100) * BG_WIDTH,
+    width: 385,
+    height: 402,
+    zIndex: 10,
+    draggable: true,
+  },
 
   // 🌟 ناحیه‌ی ذرات طلایی، مثل Hero
   // {
@@ -112,42 +88,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
   //   draggable: true,
   // },
 
-  // {
-  //   id: "stone-html",
-  //   kind: "image",
-  //   src: "/skills/stone-empty.png",
-  //   top: (70 / 100) * BG_HEIGHT,
-  //   left: (30 / 100) * BG_WIDTH,
-  //   width: 260,
-  //   height: 300,
-  //   zIndex: 4,
-  //   draggable: true,
-  //   label: "HTML",
-  // },
-  // {
-  //   id: "stone-css",
-  //   kind: "image",
-  //   src: "/skills/stone-empty.png",
-  //   top: (72 / 100) * BG_HEIGHT,
-  //   left: (50 / 100) * BG_WIDTH,
-  //   width: 260,
-  //   height: 300,
-  //   zIndex: 4,
-  //   draggable: true,
-  //   label: "CSS",
-  // },
-  // {
-  //   id: "stone-js",
-  //   kind: "image",
-  //   src: "/skills/stone-empty.png",
-  //   top: (70 / 100) * BG_HEIGHT,
-  //   left: (70 / 100) * BG_WIDTH,
-  //   width: 260,
-  //   height: 300,
-  //   zIndex: 4,
-  //   draggable: true,
-  //   label: "JavaScript",
-  // },
+  //
 ];
 
 // 🔭 پیکربندی شهاب‌سنگ‌ها (مسیرهای قوسی روی صحنه)
@@ -403,6 +344,47 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
   const sectionRef = useRef<HTMLElement | null>(null);
   const [shootingProgress, setShootingProgress] = useState(0); // ۰ → ۱
 
+  const [isInView, setIsInView] = useState(false);
+  const videoSrc = "/videos/landingSkills-placeholder.mp4";
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // تشخیص قرارگیری سکشن در ویوپورت
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        } else {
+          setIsInView(false);
+        }
+      },
+      {
+        threshold: 0.2, // وقتی ۲۰ درصد سکشن دیده شد
+      }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.unobserve(el);
+    };
+  }, []);
+
+  // کنترل پخش و متوقف کردن ویدیو بر اساس حضور در ویوپورت
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isInView) {
+        videoRef.current.play().catch((err) => {
+          console.log("Video play failed/interrupted:", err);
+        });
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isInView, videoSrc]);
+
   // ───────────────── شهاب‌سنگ‌ها: progress بر اساس اسکرول ─────────────────
   useEffect(() => {
     const el = sectionRef.current;
@@ -581,7 +563,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
     {/* ✅ Stage (cover): مثل Hero */}
     <div
       ref={bgRef}
-      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+      className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden"
       style={{
         aspectRatio: `${BG_WIDTH} / ${BG_HEIGHT}`,
         minWidth: "100%",
@@ -687,6 +669,35 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
                   height={layer.height}
                   count={45}
                   colors={["#ffd66b", "#ffd66b"]}
+                />
+              ) : layer.kind === "chromakey" ? (
+                <ChromaKeyVideo
+                  src={layer.src!}
+                  autoPlay={true}
+                  loop={layer.id === "wizard" && layer.src === "/videos/wizardloop.mp4"}
+                  className="select-none pointer-events-none w-full h-full"
+                  onEnded={
+                    layer.id === "wizard"
+                      ? () => {
+                          setLayers((prev) =>
+                            prev.map((l) =>
+                              l.id === "wizard"
+                                ? { ...l, src: "/videos/wizardloop.mp4" }
+                                : l
+                            )
+                          );
+                        }
+                      : undefined
+                  }
+                />
+              ) : layer.kind === "video" ? (
+                <video
+                  ref={videoRef}
+                  src={videoSrc}
+                  muted
+                  playsInline
+                  loop={false}
+                  className="select-none object-cover pointer-events-none w-full h-full"
                 />
               ) : (
                 <Image

@@ -229,7 +229,7 @@ export function LowerSectionParallax() {
       ref={containerRef}
       className="relative z-[20] w-full overflow-visible"
     >
-      <div style={{ transform: `translate3d(0, ${translateY}px, 0)` }}>
+      <div style={{ transform: `translate3d(0, ${translateY}px, 0)`, marginBottom: `${translateY}px` }}>
         {/* Grass */}
         <div ref={grassWrapRef} style={{ marginTop: grassOverlapPx }}>
           <ScrollingGrassBand />

@@ -6,7 +6,7 @@ import { LowerSectionParallax } from "@/features/StoryModeScene/LowerSectionPara
 export function StoryModeScene() {
   return (
     <section className="relative w-full">
-      <div className="relative z-[10]">
+      <div className="relative z-[10] w-full">
         <HeroScrollytelling />
       </div>
 

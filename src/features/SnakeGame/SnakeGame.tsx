@@ -12,6 +12,7 @@ export default function SnakeGame() {
   const [direction, setDirection] = useState(INITIAL_DIRECTION);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
+  const [isFocused, setIsFocused] = useState(false);
 
   // 🔊 صداها (اختیاری) - استفاده از ref برای جلوگیری از بازسازی در هر رندر
   const eatSoundRef = useRef<HTMLAudioElement | null>(null);
@@ -24,11 +25,22 @@ export default function SnakeGame() {
     }
   }, []);
 
+  // Restore scroll on unmount just in case
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
+
   // 🎮 کنترل جهت
   useEffect(() => {
-    document.body.style.overflow = "hidden"; // ❌ قفل اسکرول
-
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isFocused) return;
+
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+        e.preventDefault(); // Prevent scrolling when playing the game
+      }
+
       switch (e.key) {
         case "ArrowUp":
           if (direction.y === 1) return;
@@ -50,7 +62,7 @@ export default function SnakeGame() {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction]);
+  }, [direction, isFocused]);
 
   // 🐍 حرکت مار
   useEffect(() => {
@@ -103,7 +115,18 @@ export default function SnakeGame() {
     <div className="flex flex-col items-center justify-center gap-6 py-10 bg-black text-white rounded-2xl shadow-[0_0_40px_#00ffff30] border border-cyan-500/20">
       {/* 🧊 صفحه بازی */}
       <div
-        className="grid border-4 border-cyan-400 bg-black rounded-md shadow-[0_0_25px_#00ffff80]"
+        tabIndex={0}
+        role="application"
+        aria-label="Snake Game Board. Focus to play. Use Arrow keys to move snake."
+        onFocus={() => {
+          setIsFocused(true);
+          document.body.style.overflow = "hidden";
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+          document.body.style.overflow = "auto";
+        }}
+        className="grid border-4 border-cyan-400 bg-black rounded-md shadow-[0_0_25px_#00ffff80] outline-none focus-visible:ring-4 focus-visible:ring-cyan-400 focus-visible:border-cyan-300"
         style={{
           gridTemplateColumns: `repeat(${GRID_SIZE}, 20px)`,
           gridTemplateRows: `repeat(${GRID_SIZE}, 20px)`,
@@ -155,7 +178,7 @@ export default function SnakeGame() {
           </div>
         )}
         <p className="text-xs text-gray-400 mt-2">
-          Use Arrow Keys to Move
+          {isFocused ? "🟢 Game Active - Use Arrow Keys to Move" : "⌨️ Click or Tab here to Focus & Play"}
         </p>
       </div>
     </div>

@@ -12,6 +12,15 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
+  // Close modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   // Get user's location
   useEffect(() => {
     const fetchInitialWeather = async () => {
@@ -73,12 +82,18 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+    <div 
+      className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="weather-title"
+    >
       <div className="backdrop-blur-xl text-white p-6 rounded-2xl w-96 shadow-lg relative border border-white/20">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-3 text-gray-300 hover:text-white"
+          aria-label="Close weather details"
+          className="absolute top-2 right-3 text-gray-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-yellow-400"
         >
           ✕
         </button>
@@ -106,8 +121,9 @@ export default function WeatherModal({ onClose }: { onClose: () => void }) {
             type="text"
             placeholder="Search city..."
             value={city}
+            aria-label="Search city name"
             onChange={(e) => setCity(e.target.value)}
-            className="w-full p-2 rounded bg-gray-800 text-white outline-none"
+            className="w-full p-2 rounded bg-gray-800 text-white outline-none focus:ring-2 focus:ring-yellow-400"
           />
 
           <div className="flex gap-2 justify-center">

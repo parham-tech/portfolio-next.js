@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type GameOverModalProps = {
@@ -11,6 +11,15 @@ type GameOverModalProps = {
 export default function GameOverModal({ score, onClose, onRestart }: GameOverModalProps) {
   const [showLoop, setShowLoop] = useState(false);
 
+  // Close modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -18,6 +27,9 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="gameover-title"
       >
         {/* 🎬 ویدیو Game Over */}
         <motion.div
@@ -76,7 +88,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
         </motion.div>
 
         {/* امتیاز */}
-        <p className="mt-6 text-white text-lg">Your Score: {score}</p>
+        <p id="gameover-title" className="mt-6 text-white text-lg">Game Over! Your Score: {score}</p>
       </motion.div>
     </AnimatePresence>
   );

@@ -16,8 +16,7 @@ export default function HomePageClient() {
   return (
     <>
       {isStoryMode ? (
-                  <StoryModeScene />
-
+        <StoryModeScene />
       ) : (
         <>
           {/* 🎯 حالت معمولی مانیتور + ScrollPath */}
@@ -26,11 +25,11 @@ export default function HomePageClient() {
 
           {/* 🧩 Skills معمولی */}
           <LandingSkills skillsRef={skillsRef} />
+
+          {/* 📂 بخش پروژه‌ها فقط در حالت معمولی رندر می‌شود */}
+          <LandingProjects />
         </>
       )}
-
-      {/* 📂 بخش پروژه‌ها در هر دو حالت یکیه */}
-      <LandingProjects />
     </>
   );
 }

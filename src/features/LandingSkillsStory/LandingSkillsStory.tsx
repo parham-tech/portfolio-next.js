@@ -673,7 +673,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
               ) : layer.kind === "chromakey" ? (
                 <ChromaKeyVideo
                   src={layer.src!}
-                  autoPlay={true}
+                  isPlaying={isInView}
                   loop={layer.id === "wizard" && layer.src === "/videos/wizardloop.mp4"}
                   className="select-none pointer-events-none w-full h-full"
                   onEnded={
@@ -697,7 +697,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
                   muted
                   playsInline
                   loop={false}
-                  className="select-none object-cover pointer-events-none w-full h-full"
+                  className="select-none object-cover pointer-events-none w-full h-full  -translate-y-[40px]"
                 />
               ) : (
                 <Image

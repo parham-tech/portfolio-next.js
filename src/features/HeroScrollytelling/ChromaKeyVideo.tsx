@@ -9,6 +9,7 @@ interface ChromaKeyVideoProps {
   playbackRate?: number;
   className?: string;
   onEnded?: () => void;
+  isPlaying?: boolean;
 }
 
 export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
@@ -18,6 +19,7 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
   playbackRate = 1.0,
   className = '',
   onEnded,
+  isPlaying,
 }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -134,11 +136,14 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
     };
   }, [src, onEnded]);
 
-  // Explicitly call play if autoPlay is enabled
+  // Handle play/pause based on isPlaying prop (if provided) or autoPlay
+  const isCurrentlyPlaying = isPlaying !== undefined ? isPlaying : autoPlay;
+
   useEffect(() => {
     const video = videoRef.current;
-    if (video && autoPlay) {
-      // Force play after loaded metadata or immediately
+    if (!video) return;
+
+    if (isCurrentlyPlaying) {
       const startPlay = () => {
         video.play().catch((err) => {
           console.warn("ChromaKeyVideo explicit play failed/prevented:", err);
@@ -150,8 +155,10 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
       } else {
         video.addEventListener('loadedmetadata', startPlay, { once: true });
       }
+    } else {
+      video.pause();
     }
-  }, [src, autoPlay]);
+  }, [src, isCurrentlyPlaying]);
 
   // Handle playback rate dynamic changes
   useEffect(() => {

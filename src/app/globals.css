@@ -7,9 +7,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-html, body {
-  width: 100%;
+html {
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
   margin: 0;
   padding: 0;
 }
@@ -176,5 +181,46 @@ html, body {
 }
 
 
+
+}
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+@keyframes scroll-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+
+.animate-scroll-reverse {
+  animation: scroll-reverse 20s linear infinite;
+}
+
+
+/* کاهش حرکت برای کاربران حساس به animation */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-scroll,
+  .animate-scroll-reverse {
+    animation: none;
+  }
 
 }

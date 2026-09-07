@@ -9,7 +9,7 @@ import { ScrollProgressProvider } from "@/context/ScrollProgressContext";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="text-white overflow-x-hidden">
+      <body className="text-white">
   <ThemeProvider>
     <StoryModeProvider>
       <ScrollProgressProvider>

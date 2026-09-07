@@ -10,6 +10,7 @@ const BG_WIDTH = 1523;
 const BG_HEIGHT = 1041;
 const SHOW_DEBUG_UI = process.env.NODE_ENV !== 'production';
 
+
 // نوع لایه‌ها
 type LayerId =
   | 'bg'
@@ -207,14 +208,15 @@ const INITIAL_LAYERS: LayerConfig[] = [
     kind: 'video',
     src: '/videos/Vertical_scroll_opening_animation.mp4',
     top: (50 / 100) * BG_HEIGHT,
-    left: (21 / 100) * BG_WIDTH,
-    width: 300,
-    height: 300,
+    left: (21.9 / 100) * BG_WIDTH,
+    width: 498,
+    height: 494,
     zIndex: 15,
     draggable: true,
     playbackRate: 1.0, // می‌توانید این مقدار را تغییر دهید (مثلاً 0.5 برای نصف سرعت، یا 2.0 برای دو برابر)
-    autoPlay: true,
+    autoPlay: false,
     loop: false,
+    
   },
 ];
 
@@ -224,7 +226,7 @@ export function HeroScrollytelling() {
   const [debug, setDebug] = useState(SHOW_DEBUG_UI);
 
   const [activeId, setActiveId] = useState<LayerId | null>(null);
-
+const [scrollOpened, setScrollOpened] = useState(false);
   // رفرنس کانتینری که BG و همه‌ی لایه‌ها داخلش هستن
   const bgRef = useRef<HTMLDivElement | null>(null);
 
@@ -370,7 +372,7 @@ export function HeroScrollytelling() {
       {/* ✅ Viewport: عرض 100%، ارتفاع ثابت، crop کننده */}
       <div
         className="
-    relative w-full overflow-hidden
+    relative w-full 
     h-[1041px]
         max-[1200px]:h-[930px]
 
@@ -448,21 +450,23 @@ export function HeroScrollytelling() {
                       }
                     : undefined
                 }
-                onClick={
-                  layer.id === 'vertical-scroll-opening'
-                    ? (e) => {
-                        if (debug && activeId) return; // در حال درگ یا ریسایز کاری نکنیم
-                        const videoEl = e.currentTarget.querySelector('video');
-                        if (videoEl) {
-                          if (videoEl.paused) {
-                            videoEl.play().catch(err => console.log('Video play failed:', err));
-                          } else {
-                            videoEl.pause();
-                          }
-                        }
-                      }
-                    : undefined
-                }
+            onClick={
+  layer.id === 'vertical-scroll-opening'
+    ? (e) => {
+        if (scrollOpened) return; // قبلاً کلیک شده، هیچ کاری نکن
+
+        const videoEl = e.currentTarget.querySelector('video');
+
+        if (videoEl) {
+          setScrollOpened(true);
+          videoEl.currentTime = 0;
+          videoEl.play().catch(err =>
+            console.log('Video play failed:', err)
+          );
+        }
+      }
+    : undefined
+}
               >
                 <div
                   className={`relative h-full w-full ${animationClass ?? ''}`}

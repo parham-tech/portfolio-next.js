@@ -51,12 +51,6 @@ export function LowerSectionParallax() {
   // مقدار هدف که از اسکرول میاد
   const targetProgressRef = useRef(0);
 
-  // ✅ snapping refs
-  const lastRawProgressRef = useRef(0);
-  const snapTargetRef = useRef<0 | 1 | null>(null);
-  const isScrollingRef = useRef(false);
-  const scrollStopTimeoutRef = useRef<number | null>(null);
-
   // تشخیص layout + ثبت vw
   useEffect(() => {
     const update = () => {
@@ -99,43 +93,34 @@ export function LowerSectionParallax() {
    * - tablet/desktop: baseOverlap از grassH + کنترل دستی با vw
    */
   const { grassOverlapPx, skillsOverlapPx } = useMemo(() => {
-  const manualGrass = getManualGrassOffsetPx(vw);
+    const manualGrass = getManualGrassOffsetPx(vw);
 
-  // 1) ✅ فقط بالا بردن Grass نسبت به Hero
-  const factor =
-    layout === "desktop" ? 0.55 : layout === "tablet" ? 0.45 : 0;
+    // 1) ✅ فقط بالا بردن Grass نسبت به Hero
+    const factor =
+      layout === "desktop" ? 0.55 : layout === "tablet" ? 0.45 : 0;
 
-  const grassOverlap = -Math.round(grassH * factor) + manualGrass;
+    const grassOverlap = -Math.round(grassH * factor) + manualGrass;
 
-  // 2) ✅ فقط چسباندن Skills به Grass (تماس ثابت/نسبتی)
-  // هرچی این عدد بزرگ‌تر (مثلاً 0.35)، Skills بیشتر میاد روی Grass و فاصله از بین میره
- const contactFactor =
-  layout === "desktop" ? 0.32 : layout === "tablet" ? 0.38 : 0.38;
+    // 2) ✅ فقط چسباندن Skills به Grass (تماس ثابت/نسبتی)
+    // هرچی این عدد بزرگ‌تر (مثلاً 0.35)، Skills بیشتر میاد روی Grass و فاصله از بین میره
+    const contactFactor =
+      layout === "desktop" ? 0.32 : layout === "tablet" ? 0.38 : 0.38;
+
+    const skillsOverlap = -Math.round(grassH * contactFactor);
+
+    return {
+      grassOverlapPx: grassOverlap,
+      skillsOverlapPx: skillsOverlap,
+    };
+  }, [grassH, layout, vw]);
 
 
-  const skillsOverlap = -Math.round(grassH * contactFactor);
-
-  return {
-    grassOverlapPx: grassOverlap,
-    skillsOverlapPx: skillsOverlap,
-  };
-}, [grassH, layout, vw]);
-
-
-  // اسکرول → raw progress + snap decision
+  // اسکرول → raw progress بدون لرزش و پرش Snapping ناگهانی
   useEffect(() => {
-    // موبایل: پارالاکس/اسنپ خاموش
+    // موبایل: پارالاکس خاموش
     if (!enableParallax) {
       targetProgressRef.current = 0;
-      lastRawProgressRef.current = 0;
-      snapTargetRef.current = null;
-      isScrollingRef.current = false;
       setDisplayProgress(0);
-
-      if (scrollStopTimeoutRef.current !== null) {
-        window.clearTimeout(scrollStopTimeoutRef.current);
-        scrollStopTimeoutRef.current = null;
-      }
       return;
     }
 
@@ -155,21 +140,7 @@ export function LowerSectionParallax() {
         raw = (vh - clampedTop) / SCROLL_RANGE; // 0 → 1
       }
 
-      lastRawProgressRef.current = raw;
       targetProgressRef.current = raw;
-
-      isScrollingRef.current = true;
-      snapTargetRef.current = null;
-
-      if (scrollStopTimeoutRef.current !== null) {
-        window.clearTimeout(scrollStopTimeoutRef.current);
-      }
-
-      scrollStopTimeoutRef.current = window.setTimeout(() => {
-        isScrollingRef.current = false;
-        const currentRaw = lastRawProgressRef.current;
-        snapTargetRef.current = currentRaw < SNAP_THRESHOLD ? 0 : 1;
-      }, 170);
     };
 
     handleScroll();
@@ -179,40 +150,21 @@ export function LowerSectionParallax() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
-      if (scrollStopTimeoutRef.current !== null) {
-        window.clearTimeout(scrollStopTimeoutRef.current);
-        scrollStopTimeoutRef.current = null;
-      }
     };
   }, [enableParallax]);
 
-  // rAF smoothing + snap lock
+  // rAF smoothing - انیمیشن نرم و بدون لرزش
   useEffect(() => {
     let frameId: number;
 
     const animate = () => {
-      let target = enableParallax ? targetProgressRef.current : 0;
-
-      if (
-        enableParallax &&
-        !isScrollingRef.current &&
-        snapTargetRef.current !== null
-      ) {
-        target = snapTargetRef.current;
-      }
+      const target = enableParallax ? targetProgressRef.current : 0;
 
       setDisplayProgress((current) => {
         const diff = target - current;
         if (Math.abs(diff) < 0.001) return target;
-
-        const factor =
-          enableParallax &&
-          !isScrollingRef.current &&
-          snapTargetRef.current !== null
-            ? 0.2
-            : 0.12;
-
-        return current + diff * factor;
+        // با ضریب 0.08 اسکرول و پارالاکس فوق‌العاده نرم و چشم‌نواز می‌شود
+        return current + diff * 0.08;
       });
 
       frameId = requestAnimationFrame(animate);
@@ -232,7 +184,7 @@ export function LowerSectionParallax() {
       <div style={{ transform: `translate3d(0, ${translateY}px, 0)`, marginBottom: `${translateY}px` }}>
         {/* Grass */}
         <div ref={grassWrapRef} style={{ marginTop: grassOverlapPx }}>
-          <ScrollingGrassBand />
+          <ScrollingGrassBand progress={displayProgress} />
         </div>
 
         {/* Skills */}

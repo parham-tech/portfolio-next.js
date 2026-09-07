@@ -8,13 +8,21 @@ import Image from "next/image";
 const SCROLL_RANGE = 600;
 const MAX_SHIFT_PERCENT = 30;
 
-export function ScrollingGrassBand() {
+interface ScrollingGrassBandProps {
+  progress?: number;
+}
+
+export function ScrollingGrassBand({ progress }: ScrollingGrassBandProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [displayProgress, setDisplayProgress] = useState(0);
   const targetProgressRef = useRef(0);
 
+  const hasExternalProgress = progress !== undefined;
+
   useEffect(() => {
+    if (hasExternalProgress) return;
+
     const el = containerRef.current;
     if (!el) return;
 
@@ -49,9 +57,11 @@ export function ScrollingGrassBand() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, []);
+  }, [hasExternalProgress]);
 
   useEffect(() => {
+    if (hasExternalProgress) return;
+
     let frameId: number;
 
     const animate = () => {
@@ -68,9 +78,10 @@ export function ScrollingGrassBand() {
 
     frameId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frameId);
-  }, []);
+  }, [hasExternalProgress]);
 
-  const translateX = -displayProgress * MAX_SHIFT_PERCENT;
+  const activeProgress = hasExternalProgress ? progress : displayProgress;
+  const translateX = -activeProgress * MAX_SHIFT_PERCENT;
 
   return (
     <section ref={containerRef} className="relative w-full overflow-hidden">

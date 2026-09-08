@@ -115,7 +115,7 @@ export function LowerSectionParallax() {
   }, [grassH, layout, vw]);
 
 
-  // اسکرول → raw progress بدون لرزش و پرش Snapping ناگهانی
+  // اسکرول → هماهنگی ۱۰۰٪ آنی و بدون تأخیر با اسکرول بومی مرورگر (بدون حرکت اضافه پس از ایست اسکرول)
   useEffect(() => {
     // موبایل: پارالاکس خاموش
     if (!enableParallax) {
@@ -141,6 +141,7 @@ export function LowerSectionParallax() {
       }
 
       targetProgressRef.current = raw;
+      setDisplayProgress(raw); // بروزرسانی آنی پوزیشن بدون گلاید و لغزش اضافی
     };
 
     handleScroll();
@@ -151,27 +152,6 @@ export function LowerSectionParallax() {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleScroll);
     };
-  }, [enableParallax]);
-
-  // rAF smoothing - انیمیشن نرم و بدون لرزش
-  useEffect(() => {
-    let frameId: number;
-
-    const animate = () => {
-      const target = enableParallax ? targetProgressRef.current : 0;
-
-      setDisplayProgress((current) => {
-        const diff = target - current;
-        if (Math.abs(diff) < 0.001) return target;
-        // با ضریب 0.08 اسکرول و پارالاکس فوق‌العاده نرم و چشم‌نواز می‌شود
-        return current + diff * 0.08;
-      });
-
-      frameId = requestAnimationFrame(animate);
-    };
-
-    frameId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frameId);
   }, [enableParallax]);
 
   const translateY = -(displayProgress * MAX_VERTICAL_LIFT);

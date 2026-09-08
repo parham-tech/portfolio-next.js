@@ -15,10 +15,12 @@ export const projectsData = [
 
   {
     id: "portfolio",
-    title: "Portfolio Website",
+    title: "Mahan Balaei Portfolio",
     image:
       "https://i.pinimg.com/1200x/6e/4c/39/6e4c394783c731f261f295e7ffd1deed.jpg",
-    description: "My personal portfolio with interactive animations.",
+    description: "Mahan Balaei's official website and personal space.",
+    liveUrl: "https://mahanbalaei.ir/",
+    tech: ["Tailwind", "Next.js"],
   },
   {
     id: "todo",

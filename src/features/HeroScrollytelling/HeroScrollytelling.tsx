@@ -48,6 +48,9 @@ type LayerConfig = {
   playbackRate?: number; // سرعت پخش ویدیو
   autoPlay?: boolean;
   loop?: boolean;
+  priority?: boolean;
+  sizes?: string;
+  quality?: number;
 };
 
 // ───── مقدار اولیه لایه‌ها در سیستم مختصات BG (همون مقادیری که داشتی) ─────
@@ -85,6 +88,9 @@ const INITIAL_LAYERS: LayerConfig[] = [
     height: 519,
     zIndex: 3,
     draggable: true,
+    priority: true,
+    sizes: '(max-width: 768px) 30vw, 25vw',
+    quality: 60,
   },
   {
     id: 'person',
@@ -96,6 +102,9 @@ const INITIAL_LAYERS: LayerConfig[] = [
     height: 782,
     zIndex: 4,
     draggable: true,
+    priority: true,
+    sizes: '(max-width: 768px) 80vw, 60vw',
+    quality: 60,
   },
   {
     id: 'front-mountain',
@@ -107,6 +116,9 @@ const INITIAL_LAYERS: LayerConfig[] = [
     height: 531,
     zIndex: 4,
     draggable: true,
+    priority: true,
+    sizes: '(max-width: 768px) 70vw, 50vw',
+    quality: 60,
   },
   {
     id: 'cloud-1',
@@ -119,6 +131,8 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 2,
     draggable: true,
     animationClass: 'cloud-1',
+    sizes: '(max-width: 768px) 30vw, 20vw',
+    quality: 50,
   },
   {
     id: 'cloud-2',
@@ -131,6 +145,8 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 2,
     draggable: true,
     animationClass: 'cloud-2',
+    sizes: '(max-width: 768px) 35vw, 25vw',
+    quality: 50,
   },
   {
     id: 'cloud-3',
@@ -143,6 +159,8 @@ const INITIAL_LAYERS: LayerConfig[] = [
     zIndex: 2,
     draggable: true,
     animationClass: 'cloud-3',
+    sizes: '(max-width: 768px) 80vw, 50vw',
+    quality: 50,
   },
   // 🔥 ناحیه‌ی ذرات طلایی
   {
@@ -520,6 +538,9 @@ export function HeroScrollytelling() {
                       src={layer.src}
                       alt={layer.id}
                       fill
+                      priority={layer.priority}
+                      sizes={layer.sizes || '(max-width: 768px) 50vw, 30vw'}
+                      quality={layer.quality || 60}
                       className="select-none object-contain pointer-events-none"
                     />
                   )}

@@ -91,6 +91,14 @@ export default function StoryPage() {
 
   return (
     <>
+      {/* Preloading critical grass images to bypass dynamic component JS chunk rendering delay */}
+      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-left.png&w=1200&q=75" as="image" />
+      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-center.png&w=1200&q=75" as="image" />
+      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-right.png&w=1200&q=75" as="image" />
+      
+      {/* Preloading main background video */}
+      <link rel="preload" href="/videos/bg-loop.mp4" as="video" type="video/mp4" />
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -111,6 +111,8 @@ export function ScrollingGrassBand({ progress }: ScrollingGrassBandProps) {
               alt="grass-left"
               fill
               priority
+              sizes="(max-width: 768px) 50vw, 33vw"
+              quality={50}
               className="select-none object-cover object-bottom"
               draggable={false}
             />
@@ -123,6 +125,8 @@ export function ScrollingGrassBand({ progress }: ScrollingGrassBandProps) {
               alt="grass-center"
               fill
               priority
+              sizes="(max-width: 768px) 50vw, 33vw"
+              quality={50}
               className="select-none object-cover object-bottom"
               draggable={false}
             />
@@ -135,6 +139,8 @@ export function ScrollingGrassBand({ progress }: ScrollingGrassBandProps) {
               alt="grass-right"
               fill
               priority
+              sizes="(max-width: 768px) 50vw, 33vw"
+              quality={50}
               className="select-none object-cover object-bottom"
               draggable={false}
             />

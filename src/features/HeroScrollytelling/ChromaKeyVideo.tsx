@@ -175,6 +175,7 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
         src={src}
         autoPlay={autoPlay}
         loop={loop}
+        preload={autoPlay ? "auto" : "metadata"}
         muted
         playsInline
         style={{

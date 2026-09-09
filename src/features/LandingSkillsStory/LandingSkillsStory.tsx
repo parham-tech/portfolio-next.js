@@ -362,7 +362,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
         }
       },
       {
-        threshold: 0.6, // وقتی ۸۰ درصد سکشن دیده شد
+        threshold: 0.6, // وقتی 60 درصد سکشن دیده شد
       }
     );
 
@@ -694,6 +694,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
                 <video
                   ref={videoRef}
                   src={videoSrc}
+                  preload="metadata"
                   muted
                   playsInline
                   loop={false}

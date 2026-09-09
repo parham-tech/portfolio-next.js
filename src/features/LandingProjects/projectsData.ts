@@ -14,8 +14,8 @@ export const projectsData = [
 
 
   {
-    id: "portfolio",
-    title: "Mahan Balaei Portfolio",
+    id: "Fitness Coach",
+    title: "Mahan Balaei website",
     image:
       "https://i.pinimg.com/1200x/6e/4c/39/6e4c394783c731f261f295e7ffd1deed.jpg",
     description: "Mahan Balaei's official website and personal space.",
@@ -23,11 +23,13 @@ export const projectsData = [
     tech: ["Tailwind", "Next.js"],
   },
   {
-    id: "todo",
-    title: "Todo App",
+    id: "crypto",
+    title: "Crypto Dashboard",
     image:
       "https://i.pinimg.com/736x/07/cf/4a/07cf4a3a6f4144b4c7ac8e2ec5978dc1.jpg",
-    description: "A simple and elegant todo list app.",
+    description: "A real-time Cryptocurrency tracker and market analysis platform.",
+    liveUrl: "https://crypto-project-for-portfolio.vercel.app/",
+    tech: ["React", "Tailwind", "Chart.js", "CoinGecko API"],
   },
   {
   id: "colorflow",

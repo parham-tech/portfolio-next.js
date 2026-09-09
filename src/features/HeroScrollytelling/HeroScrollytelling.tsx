@@ -10,7 +10,6 @@ const BG_WIDTH = 1523;
 const BG_HEIGHT = 1041;
 const SHOW_DEBUG_UI = process.env.NODE_ENV !== 'production';
 
-
 // نوع لایه‌ها
 type LayerId =
   | 'bg'
@@ -216,7 +215,6 @@ const INITIAL_LAYERS: LayerConfig[] = [
     playbackRate: 1.0, // می‌توانید این مقدار را تغییر دهید (مثلاً 0.5 برای نصف سرعت، یا 2.0 برای دو برابر)
     autoPlay: false,
     loop: false,
-    
   },
 ];
 
@@ -226,7 +224,7 @@ export function HeroScrollytelling() {
   const [debug, setDebug] = useState(SHOW_DEBUG_UI);
 
   const [activeId, setActiveId] = useState<LayerId | null>(null);
-const [scrollOpened, setScrollOpened] = useState(false);
+  const [scrollOpened, setScrollOpened] = useState(false);
   // رفرنس کانتینری که BG و همه‌ی لایه‌ها داخلش هستن
   const bgRef = useRef<HTMLDivElement | null>(null);
 
@@ -433,14 +431,22 @@ const [scrollOpened, setScrollOpened] = useState(false);
                   width: `${widthPercent}%`,
                   height: `${heightPercent}%`,
                   zIndex: layer.zIndex,
-                  cursor: debug && layer.draggable ? 'move' : (layer.id === 'vertical-scroll-opening' ? 'pointer' : 'default'),
+                  cursor:
+                    debug && layer.draggable
+                      ? 'move'
+                      : layer.id === 'vertical-scroll-opening'
+                        ? 'pointer'
+                        : 'default',
                   outline:
                     debug && layer.draggable
                       ? isActive
                         ? '2px solid #00e6b8'
                         : '1px dashed #00e6b8'
                       : 'none',
-                  pointerEvents: debug || layer.id === 'vertical-scroll-opening' ? 'auto' : 'none',
+                  pointerEvents:
+                    debug || layer.id === 'vertical-scroll-opening'
+                      ? 'auto'
+                      : 'none',
                 }}
                 onMouseDown={
                   debug && layer.draggable
@@ -450,23 +456,25 @@ const [scrollOpened, setScrollOpened] = useState(false);
                       }
                     : undefined
                 }
-            onClick={
-  layer.id === 'vertical-scroll-opening'
-    ? (e) => {
-        if (scrollOpened) return; // قبلاً کلیک شده، هیچ کاری نکن
+                onClick={
+                  layer.id === 'vertical-scroll-opening'
+                    ? (e) => {
+                        if (scrollOpened) return; // قبلاً کلیک شده، هیچ کاری نکن
 
-        const videoEl = e.currentTarget.querySelector('video');
+                        const videoEl = e.currentTarget.querySelector('video');
 
-        if (videoEl) {
-          setScrollOpened(true);
-          videoEl.currentTime = 0;
-          videoEl.play().catch(err =>
-            console.log('Video play failed:', err)
-          );
-        }
-      }
-    : undefined
-}
+                        if (videoEl) {
+                          setScrollOpened(true);
+                          videoEl.currentTime = 0;
+                          videoEl
+                            .play()
+                            .catch((err) =>
+                              console.log('Video play failed:', err)
+                            );
+                        }
+                      }
+                    : undefined
+                }
               >
                 <div
                   className={`relative h-full w-full ${animationClass ?? ''}`}
@@ -496,6 +504,7 @@ const [scrollOpened, setScrollOpened] = useState(false);
                         src={layer.src}
                         autoPlay={layer.autoPlay ?? true}
                         loop={layer.loop ?? true}
+                        preload={layer.id === 'bg' ? 'auto' : 'metadata'}
                         muted
                         playsInline
                         ref={(el) => {

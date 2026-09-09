@@ -1,6 +1,23 @@
 // src/app/story/page.tsx
-import { StoryModeScene } from "../../features/StoryModeScene/StoryModeScene";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const StoryModeScene = dynamic(
+  () =>
+    import("../../features/StoryModeScene/StoryModeScene").then(
+      (m) => m.StoryModeScene
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white font-sans gap-4" dir="rtl">
+        <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-lg font-semibold animate-pulse text-yellow-400">در حال بارگذاری داستان تعاملی...</p>
+        <p className="text-sm text-gray-400">لطفاً شکیبا باشید، جلوه‌های بصری در حال آماده‌سازی هستند.</p>
+      </div>
+    ),
+  }
+);
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-next-js-parham.vercel.app"),

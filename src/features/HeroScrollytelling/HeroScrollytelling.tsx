@@ -81,7 +81,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
   {
     id: 'castle',
     kind: 'image',
-    src: '/castle.png',
+    src: '/castle.avif',
     top: (30 / 100) * BG_HEIGHT,
     left: (64.7 / 100) * BG_WIDTH,
     width: 498,
@@ -109,7 +109,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
   {
     id: 'front-mountain',
     kind: 'image',
-    src: '/mountain-front.png',
+    src: '/mountain-front.avif',
     top: (25.2 / 100) * BG_HEIGHT,
     left: (13.9 / 100) * BG_WIDTH,
     width: 1110,
@@ -123,7 +123,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
   {
     id: 'cloud-1',
     kind: 'image',
-    src: '/cloud1.png',
+    src: '/cloud1.avif',
     top: (30.3 / 100) * BG_HEIGHT,
     left: (39.2 / 100) * BG_WIDTH,
     width: 400,

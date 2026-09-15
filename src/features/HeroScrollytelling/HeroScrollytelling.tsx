@@ -123,7 +123,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
   {
     id: 'cloud-1',
     kind: 'image',
-    src: '/cloud1.avif',
+    src: '/cloud1.png',
     top: (30.3 / 100) * BG_HEIGHT,
     left: (39.2 / 100) * BG_WIDTH,
     width: 400,

@@ -133,6 +133,7 @@ const INITIAL_LAYERS: LayerConfig[] = [
     animationClass: 'cloud-1',
     sizes: '(max-width: 768px) 30vw, 20vw',
     quality: 50,
+    
   },
   {
     id: 'cloud-2',

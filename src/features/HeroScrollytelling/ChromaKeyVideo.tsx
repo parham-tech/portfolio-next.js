@@ -32,8 +32,10 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    let animationId: number;
+    let animationId: number | null = null;
+    let rvfcId: number | null = null;
     let lastTime = -1;
+    let isLoopRunning = false;
 
     const handleVideoEnded = () => {
       if (onEnded) {
@@ -100,38 +102,85 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
       ctx.putImageData(frame, 0, 0);
     };
 
-    const renderLoop = () => {
+    // Highly optimized frame update mechanism that supports requestVideoFrameCallback
+    const updateVideoFrame = () => {
       drawSingleFrame();
-      animationId = requestAnimationFrame(renderLoop);
+      if (isLoopRunning && video && 'requestVideoFrameCallback' in video) {
+        rvfcId = (video as any).requestVideoFrameCallback(updateVideoFrame);
+      }
     };
 
-    // Listeners to force canvas update on critical events
-    video.addEventListener('play', drawSingleFrame);
-    video.addEventListener('playing', drawSingleFrame);
-    video.addEventListener('seeked', drawSingleFrame);
-    video.addEventListener('timeupdate', drawSingleFrame);
-    video.addEventListener('loadeddata', drawSingleFrame);
-    video.addEventListener('loadedmetadata', drawSingleFrame);
-    video.addEventListener('canplay', drawSingleFrame);
-    video.addEventListener('ended', drawSingleFrame);
+    const startLoop = () => {
+      if (isLoopRunning) return;
+      isLoopRunning = true;
+
+      if (video && 'requestVideoFrameCallback' in video) {
+        rvfcId = (video as any).requestVideoFrameCallback(updateVideoFrame);
+      } else {
+        const renderLoop = () => {
+          if (!isLoopRunning) return;
+          drawSingleFrame();
+          animationId = requestAnimationFrame(renderLoop);
+        };
+        animationId = requestAnimationFrame(renderLoop);
+      }
+    };
+
+    const stopLoop = () => {
+      isLoopRunning = false;
+      if (animationId !== null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      if (video && rvfcId !== null && 'cancelVideoFrameCallback' in video) {
+        (video as any).cancelVideoFrameCallback(rvfcId);
+        rvfcId = null;
+      }
+    };
+
+    // Event handlers for play/pause/stop
+    const handlePlay = () => startLoop();
+    const handlePause = () => stopLoop();
+    const handleSingleFrame = () => drawSingleFrame();
+
+    // Listeners to start and stop the canvas update loops automatically
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('playing', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handlePause);
+    video.addEventListener('suspend', handlePause);
+
+    // Forces immediate single frame update on critical seek/metadata events without initiating continuous looping
+    video.addEventListener('seeked', handleSingleFrame);
+    video.addEventListener('timeupdate', handleSingleFrame);
+    video.addEventListener('loadeddata', handleSingleFrame);
+    video.addEventListener('loadedmetadata', handleSingleFrame);
+    video.addEventListener('canplay', handleSingleFrame);
+    video.addEventListener('ended', handleSingleFrame);
     video.addEventListener('ended', handleVideoEnded);
 
-    // Initial render
+    // Initial frame draw
     drawSingleFrame();
 
-    // Start rendering loop
-    renderLoop();
+    // Start loop if video is already playing
+    if (!video.paused && !video.ended) {
+      startLoop();
+    }
 
     return () => {
-      cancelAnimationFrame(animationId);
-      video.removeEventListener('play', drawSingleFrame);
-      video.removeEventListener('playing', drawSingleFrame);
-      video.removeEventListener('seeked', drawSingleFrame);
-      video.removeEventListener('timeupdate', drawSingleFrame);
-      video.removeEventListener('loadeddata', drawSingleFrame);
-      video.removeEventListener('loadedmetadata', drawSingleFrame);
-      video.removeEventListener('canplay', drawSingleFrame);
-      video.removeEventListener('ended', drawSingleFrame);
+      stopLoop();
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('playing', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handlePause);
+      video.removeEventListener('suspend', handlePause);
+
+      video.removeEventListener('seeked', handleSingleFrame);
+      video.removeEventListener('timeupdate', handleSingleFrame);
+      video.removeEventListener('loadeddata', handleSingleFrame);
+      video.removeEventListener('loadedmetadata', handleSingleFrame);
+      video.removeEventListener('canplay', handleSingleFrame);
+      video.removeEventListener('ended', handleSingleFrame);
       video.removeEventListener('ended', handleVideoEnded);
     };
   }, [src, onEnded]);

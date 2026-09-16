@@ -124,19 +124,25 @@ export function LowerSectionParallax() {
       return;
     }
 
-    const handleScroll = () => {
+    let docTop = 0;
+
+    const updateDimensions = () => {
       const el = containerRef.current;
       if (!el) return;
-
       const rect = el.getBoundingClientRect();
+      docTop = rect.top + window.scrollY;
+    };
+
+    const handleScroll = () => {
       const vh = window.innerHeight;
+      const rectTop = docTop - window.scrollY;
 
       let raw = 0;
 
-      if (rect.top >= vh) raw = 0;
-      else if (rect.top <= vh - SCROLL_RANGE) raw = 1;
+      if (rectTop >= vh) raw = 0;
+      else if (rectTop <= vh - SCROLL_RANGE) raw = 1;
       else {
-        const clampedTop = Math.min(Math.max(rect.top, vh - SCROLL_RANGE), vh);
+        const clampedTop = Math.min(Math.max(rectTop, vh - SCROLL_RANGE), vh);
         raw = (vh - clampedTop) / SCROLL_RANGE; // 0 → 1
       }
 
@@ -144,13 +150,19 @@ export function LowerSectionParallax() {
       setDisplayProgress(raw); // بروزرسانی آنی پوزیشن بدون گلاید و لغزش اضافی
     };
 
+    updateDimensions();
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
+    
+    const handleResize = () => {
+      updateDimensions();
+      handleScroll();
+    };
+    window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, [enableParallax]);
 

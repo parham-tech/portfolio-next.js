@@ -390,34 +390,48 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
     const el = sectionRef.current;
     if (!el) return;
 
-    const handleScroll = () => {
+    let docTop = 0;
+
+    const updateDimensions = () => {
       const rect = el.getBoundingClientRect();
+      docTop = rect.top + window.scrollY;
+    };
+
+    const handleScroll = () => {
+      const rectTop = docTop - window.scrollY;
       const vh = window.innerHeight;
 
       // کاملاً زیر ویوپورت → هنوز نرسیدیم
-      if (rect.top >= vh) {
+      if (rectTop >= vh) {
         setShootingProgress(0);
         return;
       }
 
       // وقتی top سکشن به 0 برسد (لبه بالای صفحه) → progress = 1
-      if (rect.top <= 0) {
+      if (rectTop <= 0) {
         setShootingProgress(1);
         return;
       }
 
-      // از لحظه‌ای که top سکشن از پایین ویوپورت وارد می‌شود (rect.top از vh تا 0)
-      const raw = 1 - rect.top / vh; // top: vh → 0  ⇒  0 → 1
+      // از لحظه‌ای که top سکشن از پایین ویوپورت وارد می‌شود (rectTop از vh تا 0)
+      const raw = 1 - rectTop / vh; // top: vh → 0  ⇒  0 → 1
       const clamped = Math.min(Math.max(raw, 0), 1);
       setShootingProgress(clamped);
     };
 
+    updateDimensions();
     handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    const handleResize = () => {
+      updateDimensions();
+      handleScroll();
+    };
+    window.addEventListener("resize", handleResize);
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 

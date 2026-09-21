@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -35,27 +36,38 @@ function getThemeGradient(theme: string) {
 
 function buildSmoothPath(points: Point[], tension = 1) {
   if (points.length < 2) return "";
+
   let d = `M ${points[0].x},${points[0].y}`;
+
   for (let i = 0; i < points.length - 1; i++) {
     const p0 = points[i - 1] ?? points[i];
     const p1 = points[i];
     const p2 = points[i + 1];
     const p3 = points[i + 2] ?? p2;
+
     const c1x = p1.x + ((p2.x - p0.x) / 6) * tension;
     const c1y = p1.y + ((p2.y - p0.y) / 6) * tension;
+
     const c2x = p2.x - ((p3.x - p1.x) / 6) * tension;
     const c2y = p2.y - ((p3.y - p1.y) / 6) * tension;
+
     d += ` C ${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`;
   }
+
   return d;
 }
 
-export default function ScrollPath({ monitorRef, skillsRef, debug = false }: ScrollPathProps) {
+export default function ScrollPath({
+  monitorRef,
+  skillsRef,
+  debug = false,
+}: ScrollPathProps) {
   const { activeSite } = useThemeContext();
   const { start, end, glow } = getThemeGradient(activeSite);
 
   const [docH, setDocH] = useState<number>(0);
   const [points, setPoints] = useState<Point[]>([]);
+
   const pathRef = useRef<SVGPathElement>(null);
   const trailRef = useRef<SVGPathElement>(null);
   const ballRef = useRef<SVGCircleElement>(null);
@@ -63,132 +75,212 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
 
   // 🧮 محاسبه نقاط مسیر
   useLayoutEffect(() => {
-    if (!monitorRef.current) return;
+    if (!monitorRef.current || !skillsRef.current) return;
+
     const compute = () => {
-  const container = document.getElementById("site-container");
-  const rect = container?.getBoundingClientRect();
-  const containerLeft = rect ? rect.left + window.scrollX : 0;
-  const containerWidth = rect?.width || 1600;
+      const container = document.getElementById("site-container");
 
-  
-  const m = monitorRef.current!.getBoundingClientRect();
-  const h =
-    Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight
-    ) || window.innerHeight;
-  setDocH(h);
+      if (!container) return;
 
-  const isMobile = window.innerWidth < 768;
-  const isSmallMobile = window.innerWidth < 640;
+      const containerRect = container.getBoundingClientRect();
+      const containerTop = containerRect.top + window.scrollY;
+      const containerWidth = containerRect.width || 1600;
 
-  // 📍 نقطه شروع بر اساس مانیتور
-  let startPoint: Point;
-  // اصلاح: مختصات باید نسبت به کانتینر (site-container) باشد، نه کل صفحه
-  // چون SVG داخل site-container است (که position: relative دارد).
-  const monitorLeft = (m.left + window.scrollX) - containerLeft;
-  const monitorTop = (m.top + window.scrollY); // Y همون global باشه چون SVG ارتفاعش docH هست و top=0
+      const monitor = monitorRef.current;
+      const skills = skillsRef.current;
 
-  if (!isMobile) {
-    startPoint = {
-      x: monitorLeft + m.width * 0.5 - 80,
-      y: monitorTop + m.height * 0.7 + 80,
+      if (!monitor || !skills) return;
+
+      const m = monitor.getBoundingClientRect();
+      const skillsRect = skills.getBoundingClientRect();
+
+      const isMobile = window.innerWidth < 768;
+      const isSmallMobile = window.innerWidth < 640;
+
+      // 📍 مختصات مانیتور نسبت به site-container
+      const monitorLeft =
+        m.left + window.scrollX - containerRect.left - window.scrollX;
+
+      const monitorTop =
+        m.top + window.scrollY - containerTop;
+
+      // 📍 نقطه شروع
+      let startPoint: Point;
+
+      if (!isMobile) {
+        startPoint = {
+          x: monitorLeft + m.width * 0.5 - 80,
+          y: monitorTop + m.height * 0.7 + 80,
+        };
+      } else {
+        startPoint = {
+          x: monitorLeft + m.width * 0.22,
+          y: monitorTop + m.height * 0.95,
+        };
+      }
+
+      // 📍 نقاط میانی
+      const getX = (percent: number) => containerWidth * percent;
+
+      let mids: Point[];
+      let endPoint: Point;
+
+      if (!isMobile) {
+        mids = [
+          {
+            x: getX(0.6),
+            y: startPoint.y + m.height * 0.18,
+          },
+          {
+            x: getX(0.85),
+            y: startPoint.y + m.height * 0.38,
+          },
+          {
+            x: getX(0.15),
+            y: startPoint.y + m.height * 0.55,
+          },
+        ];
+
+        endPoint = {
+          x: getX(0.5),
+          y: startPoint.y + m.height * 0.85,
+        };
+      } else if (isSmallMobile) {
+        mids = [
+          {
+            x: getX(0.2),
+            y: startPoint.y + m.height * 0.35,
+          },
+          {
+            x: getX(0.86),
+            y: startPoint.y + m.height * 0.6,
+          },
+        ];
+
+        endPoint = {
+          x: getX(0.5),
+          y: startPoint.y + m.height * 0.85,
+        };
+      } else {
+        mids = [
+          {
+            x: getX(0.2),
+            y: startPoint.y + m.height * 0.35,
+          },
+          {
+            x: getX(0.8),
+            y: startPoint.y + m.height * 0.55,
+          },
+          {
+            x: getX(0.68),
+            y: startPoint.y + m.height * 0.78,
+          },
+        ];
+
+        endPoint = {
+          x: getX(0.5),
+          y: startPoint.y + m.height * 0.92,
+        };
+      }
+
+      const nextPoints = [startPoint, ...mids, endPoint];
+
+      setPoints(nextPoints);
+
+      // 📏 ارتفاع SVG فقط تا محدوده Skills
+      const skillsBottom =
+        skillsRect.bottom + window.scrollY - containerTop;
+
+      const pathBottom =
+        endPoint.y + 50;
+
+      const localHeight = Math.max(
+        skillsBottom,
+        pathBottom,
+        window.innerHeight
+      );
+
+      setDocH(localHeight);
     };
-  } else if (isSmallMobile) {
-    startPoint = {
-      x: monitorLeft + m.width * 0.22,
-      y: monitorTop + m.height * 0.95,
-    };
-  } else {
-    startPoint = {
-      x: monitorLeft + m.width * 0.22,
-      y: monitorTop + m.height * 0.95,
-    };
-  }
-
-  // 📍 نقاط میانی و پایانی همیشه در محدوده container محاسبه می‌شن
-  // اصلاح: getX باید مختصات نسبی به کانتینر برگرداند
-  const getX = (percent: number) =>
-    containerWidth * percent;
-
-  let mids: Point[];
-  let end: Point;
-
-  if (!isMobile) {
-    mids = [
-      { x: getX(0.6), y: startPoint.y + m.height * 0.18 },
-      { x: getX(0.85), y: startPoint.y + m.height * 0.38 },
-      { x: getX(0.15), y: startPoint.y + m.height * 0.55 },
-    ];
-    end = { x: getX(0.5), y: startPoint.y + m.height * 0.85 };
-  } else if (isSmallMobile) {
-    mids = [
-      { x: getX(0.2), y: startPoint.y + m.height * 0.35 },
-      { x: getX(0.86), y: startPoint.y + m.height * 0.6 },
-    ];
-    end = { x: getX(0.5), y: startPoint.y + m.height * 0.85 };
-  } else {
-    mids = [
-      { x: getX(0.2), y: startPoint.y + m.height * 0.35 },
-      { x: getX(0.8), y: startPoint.y + m.height * 0.55 },
-      { x: getX(0.68), y: startPoint.y + m.height * 0.78 },
-    ];
-    end = { x: getX(0.5), y: startPoint.y + m.height * 0.92 };
-  }
-
-  setPoints([startPoint, ...mids, end]);
-};
 
     compute();
+
     window.addEventListener("resize", compute);
+
     const ro = new ResizeObserver(compute);
     ro.observe(document.body);
+
     return () => {
       window.removeEventListener("resize", compute);
       ro.disconnect();
     };
   }, [monitorRef, skillsRef]);
 
-  const pathD = useMemo(() => buildSmoothPath(points, 1), [points]);
+  const pathD = useMemo(
+    () => buildSmoothPath(points, 1),
+    [points]
+  );
 
   // ⚙️ انیمیشن GSAP
   useEffect(() => {
     if (!pathRef.current || !ballRef.current || !pathD) return;
-    const len = pathRef.current.getTotalLength();
-    gsap.set(trailRef.current, { strokeDasharray: len, strokeDashoffset: len });
 
-      gsap.set(ballRef.current, { opacity: 0 });
+    const len = pathRef.current.getTotalLength();
+
+    gsap.set(trailRef.current, {
+      strokeDasharray: len,
+      strokeDashoffset: len,
+    });
+
+    gsap.set(ballRef.current, {
+      opacity: 0,
+    });
 
     const tl = gsap.timeline({
-      defaults: { ease: "none" },
-     scrollTrigger: {
-  trigger: document.documentElement,
-  start: "top top",
-  endTrigger: skillsRef.current,
-  end: "top center",
-  scrub: true,
-  onUpdate: (self) => {
-    gsap.set(trailRef.current, {
-      strokeDashoffset: len * (1 - (self.progress || 0)),
-    });
-    if (self.progress > 0.01) {
-      gsap.to(ballRef.current, { opacity: 1, duration: 0.3 });
-    }
-  },
-},
+      defaults: {
+        ease: "none",
+      },
 
-  });
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: "top top",
+        endTrigger: skillsRef.current,
+        end: "top center",
+        scrub: true,
+
+        onUpdate: (self) => {
+          gsap.set(trailRef.current, {
+            strokeDashoffset:
+              len * (1 - (self.progress || 0)),
+          });
+
+          if (self.progress > 0.01) {
+            gsap.to(ballRef.current, {
+              opacity: 1,
+              duration: 0.3,
+            });
+          }
+        },
+      },
+    });
 
     tl.to(ballRef.current, {
       // @ts-ignore
-      motionPath: { path: pathRef.current, align: pathRef.current, alignOrigin: [0.5, 0.5] },
+      motionPath: {
+        path: pathRef.current,
+        align: pathRef.current,
+        alignOrigin: [0.5, 0.5],
+      },
     });
 
     // 🌌 ذرات
     particleRefs.current.forEach((p, i) => {
       gsap.to(p, {
         // @ts-ignore
-        motionPath: { path: pathRef.current, align: pathRef.current },
+        motionPath: {
+          path: pathRef.current,
+          align: pathRef.current,
+        },
         duration: 6 + i * 0.5,
         repeat: -1,
         ease: "none",
@@ -199,28 +291,62 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
 
     // ✨ نمایش My Skills
     const skillsTitle = skillsRef.current;
-    const listContainer = document.querySelector("[data-skills-list]");
-    const skillCards = document.querySelectorAll(".skill-card");
+    const listContainer =
+      document.querySelector("[data-skills-list]");
+    const skillCards =
+      document.querySelectorAll(".skill-card");
 
-    if (skillsTitle && listContainer && skillCards.length > 0) {
-   ScrollTrigger.create({
-   trigger: skillsRef.current,      // خودِ سکشن مهارت‌ها
-   start: "top 80%",                // وقتی بالای سکشن به 80% ویوپورت رسید
-   end: "bottom 60%",               // تا وقتی هنوز 60% داخل ویوپورت است
-    onEnter: () => {
-      gsap.to(skillsTitle, { opacity: 1, y: 0, duration: 0.8 });
-      gsap.to(listContainer, { opacity: 1, y: 0, duration: 1, delay: 0.2 });
-      gsap.to(skillCards, { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, delay: 0.4 });
-    },
-    onLeaveBack: () => {
-      gsap.to([skillsTitle, listContainer, skillCards], { opacity: 0, y: 40, duration: 0.5, stagger: 0.05 });
-    },
- });
+    if (
+      skillsTitle &&
+      listContainer &&
+      skillCards.length > 0
+    ) {
+      ScrollTrigger.create({
+        trigger: skillsRef.current,
+        start: "top 80%",
+        end: "bottom 60%",
+
+        onEnter: () => {
+          gsap.to(skillsTitle, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+          });
+
+          gsap.to(listContainer, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.2,
+          });
+
+          gsap.to(skillCards, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.1,
+            delay: 0.4,
+          });
+        },
+
+        onLeaveBack: () => {
+          gsap.to(
+            [skillsTitle, listContainer, skillCards],
+            {
+              opacity: 0,
+              y: 40,
+              duration: 0.5,
+              stagger: 0.05,
+            }
+          );
+        },
+      });
     }
 
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
+
       ScrollTrigger.getAll().forEach((st) => st.kill());
     };
   }, [pathD, skillsRef, start, end, glow]);
@@ -228,38 +354,73 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
   if (!docH) return null;
 
   return (
-    <svg className="absolute left-0 top-0 w-full pointer-events-none z-[1000]" style={{ height: docH }}>
+    <svg
+      className="absolute left-0 top-0 w-full pointer-events-none z-[1000]"
+      style={{ height: docH }}
+    >
       <defs>
-        <linearGradient id="pathGradient" gradientUnits="userSpaceOnUse">
+        <linearGradient
+          id="pathGradient"
+          gradientUnits="userSpaceOnUse"
+        >
           <stop offset="0%" stopColor={start} />
           <stop offset="100%" stopColor={end} />
         </linearGradient>
+
         <filter id="glow">
-          <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+          <feGaussianBlur
+            stdDeviation="3.5"
+            result="coloredBlur"
+          />
+
           <feMerge>
             <feMergeNode in="coloredBlur" />
             <feMergeNode in="SourceGraphic" />
           </feMerge>
         </filter>
       </defs>
-{/* 🟡 نقاط دیباگ (فقط نمایش، بدون Drag) */}
-{debug &&
-  points.map((p, i) => (
-    <circle
-      key={i}
-      cx={p.x}
-      cy={p.y}
-      r={10}
-      fill={i === 0 ? "limegreen" : i === points.length - 1 ? "red" : "orange"}
-      stroke="white"
-      strokeWidth={2}
-    />
-  ))
-}
 
-      <path ref={pathRef} d={pathD} fill="none" stroke="transparent" />
-      <path ref={trailRef} d={pathD} stroke="url(#pathGradient)" strokeWidth="4" fill="none" filter="url(#glow)" />
-      <circle ref={ballRef} r={8} fill={glow} />
+      {/* 🟡 نقاط دیباگ */}
+      {debug &&
+        points.map((p, i) => (
+          <circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r={10}
+            fill={
+              i === 0
+                ? "limegreen"
+                : i === points.length - 1
+                  ? "red"
+                  : "orange"
+            }
+            stroke="white"
+            strokeWidth={2}
+          />
+        ))}
+
+      <path
+        ref={pathRef}
+        d={pathD}
+        fill="none"
+        stroke="transparent"
+      />
+
+      <path
+        ref={trailRef}
+        d={pathD}
+        stroke="url(#pathGradient)"
+        strokeWidth="4"
+        fill="none"
+        filter="url(#glow)"
+      />
+
+      <circle
+        ref={ballRef}
+        r={8}
+        fill={glow}
+      />
 
       {[...Array(15)].map((_, i) => (
         <circle
@@ -273,7 +434,5 @@ export default function ScrollPath({ monitorRef, skillsRef, debug = false }: Scr
         />
       ))}
     </svg>
-    
   );
-  
 }

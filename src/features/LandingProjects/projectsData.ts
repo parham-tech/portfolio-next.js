@@ -29,7 +29,7 @@ export const projectsData = [
       "https://i.pinimg.com/736x/07/cf/4a/07cf4a3a6f4144b4c7ac8e2ec5978dc1.jpg",
     description: "A real-time Cryptocurrency tracker and market analysis platform.",
     liveUrl: "https://crypto-project-for-portfolio.vercel.app/",
-    tech: ["React", "Tailwind", "Chart.js", "CoinGecko API"],
+    tech: ["Tailwind", "Next.js", "Chart.js", "CoinGecko API"],
   },
   {
   id: "colorflow",

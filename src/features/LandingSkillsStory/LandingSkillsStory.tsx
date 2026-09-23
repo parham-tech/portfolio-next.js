@@ -381,9 +381,23 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
         });
       } else {
         videoRef.current.pause();
+        videoRef.current.currentTime = 0;
       }
     }
   }, [isInView, videoSrc]);
+
+  // ریست کردن ویزارد به ویدیوی اول وقتی از دید خارج می‌شود
+  useEffect(() => {
+    if (!isInView) {
+      setLayers((prev) =>
+        prev.map((l) =>
+          l.id === "wizard"
+            ? { ...l, src: "/videos/wizard.mp4" }
+            : l
+        )
+      );
+    }
+  }, [isInView]);
 
   // ───────────────── شهاب‌سنگ‌ها: progress بر اساس اسکرول ─────────────────
   useEffect(() => {
@@ -565,8 +579,8 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
   <div
    className="
     relative w-full overflow-hidden
-    h-[1041px]
-    max-[1024px]:h-[730px]
+    h-[850px]
+    max-[1024px]:h-[530px]
     max-[768px]:h-[600px]
         max-[600px]:h-[650px]
                 max-[480px]:h-[550px]

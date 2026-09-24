@@ -381,23 +381,9 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
         });
       } else {
         videoRef.current.pause();
-        videoRef.current.currentTime = 0;
       }
     }
   }, [isInView, videoSrc]);
-
-  // ریست کردن ویزارد به ویدیوی اول وقتی از دید خارج می‌شود
-  useEffect(() => {
-    if (!isInView) {
-      setLayers((prev) =>
-        prev.map((l) =>
-          l.id === "wizard"
-            ? { ...l, src: "/videos/wizard.mp4" }
-            : l
-        )
-      );
-    }
-  }, [isInView]);
 
   // ───────────────── شهاب‌سنگ‌ها: progress بر اساس اسکرول ─────────────────
   useEffect(() => {
@@ -588,6 +574,14 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
 
   "
 >
+    {/* 🔘 دکمه‌ی دیباگ روی خود صحنه */}
+    <button
+      onClick={() => setDebug((d) => !d)}
+      className="absolute left-4 top-4 z-[9999] rounded-md bg-black/40 px-3 py-1 text-xs font-semibold text-sky-100 backdrop-blur hover:bg-black/60"
+    >
+      Debug: {debug ? "ON" : "OFF"}
+    </button>
+
     {/* ✅ Stage (cover): مثل Hero */}
     <div
       ref={bgRef}
@@ -598,13 +592,6 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
         minHeight: "100%",
       }}
     >
-      {/* 🔘 دکمه‌ی دیباگ روی خود صحنه */}
-      <button
-        onClick={() => setDebug((d) => !d)}
-        className="absolute right-4 top-4 z-50 rounded-md px-3 py-1 text-xs font-semibold text-sky-100 backdrop-blur hover:bg-black/80"
-      >
-        Debug: {debug ? "ON" : "OFF"}
-      </button>
 
       {/* ⭐ شهاب‌سنگ‌ها */}
       {shootingProgress > 0 && (

@@ -326,8 +326,9 @@ const METEORS: MeteorConfig[] = [
 
 export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: number }) {
   const [layers, setLayers] = useState<LayerConfig[]>(INITIAL_LAYERS);
-  const [debug, setDebug] = useState(true); 
+  const [debug, setDebug] = useState(false); 
   // const debug = true;
+  const [hasStarted, setHasStarted] = useState(false);
 
   const [activeId, setActiveId] = useState<LayerId | null>(null);
 
@@ -357,12 +358,13 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
+          setHasStarted(true); // فعال کردن وضعیت شروع برای اولین بار
         } else {
           setIsInView(false);
         }
       },
       {
-        threshold: 0.6, // وقتی 60 درصد سکشن دیده شد
+        threshold: 0.4, // وقتی ۴۰ درصد سکشن دیده شد شروع شود
       }
     );
 
@@ -372,10 +374,10 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
     };
   }, []);
 
-  // کنترل پخش و متوقف کردن ویدیو بر اساس حضور در ویوپورت
+  // کنترل پخش ویدیو بر اساس شروع شدن
   useEffect(() => {
     if (videoRef.current) {
-      if (isInView) {
+      if (hasStarted) {
         videoRef.current.play().catch((err) => {
           console.log("Video play failed/interrupted:", err);
         });
@@ -383,7 +385,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
         videoRef.current.pause();
       }
     }
-  }, [isInView, videoSrc]);
+  }, [hasStarted, videoSrc]);
 
   // ───────────────── شهاب‌سنگ‌ها: progress بر اساس اسکرول ─────────────────
   useEffect(() => {
@@ -574,13 +576,15 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
 
   "
 >
-    {/* 🔘 دکمه‌ی دیباگ روی خود صحنه */}
-    <button
-      onClick={() => setDebug((d) => !d)}
-      className="absolute left-4 top-4 z-[9999] rounded-md bg-black/40 px-3 py-1 text-xs font-semibold text-sky-100 backdrop-blur hover:bg-black/60"
-    >
-      Debug: {debug ? "ON" : "OFF"}
-    </button>
+    {/* 🔘 دکمه‌ی دیباگ فقط در حالت توسعه */}
+    {process.env.NODE_ENV === "development" && (
+      <button
+        onClick={() => setDebug((d) => !d)}
+        className="absolute left-4 top-4 z-[9999] rounded-md bg-black/40 px-3 py-1 text-xs font-semibold text-sky-100 backdrop-blur hover:bg-black/60"
+      >
+        Debug: {debug ? "ON" : "OFF"}
+      </button>
+    )}
 
     {/* ✅ Stage (cover): مثل Hero */}
     <div
@@ -688,7 +692,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
               ) : layer.kind === "chromakey" ? (
                 <ChromaKeyVideo
                   src={layer.src!}
-                  isPlaying={isInView}
+                  isPlaying={hasStarted}
                   loop={layer.id === "wizard" && layer.src === "/videos/wizardloop.mp4"}
                   className="select-none pointer-events-none w-full h-full"
                   onEnded={

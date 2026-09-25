@@ -206,9 +206,6 @@ export const ChromaKeyVideo: React.FC<ChromaKeyVideoProps> = ({
       }
     } else {
       video.pause();
-      if (isPlaying !== undefined) {
-        video.currentTime = 0;
-      }
     }
   }, [src, isCurrentlyPlaying, isPlaying]);
 

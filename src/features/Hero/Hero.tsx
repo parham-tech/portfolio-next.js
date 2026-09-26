@@ -179,7 +179,7 @@ export default function Hero({ monitorRef }: HeroProps) {
         <motion.div custom={0} variants={fadeInImage}>
           <Image
             src="/hero-monitor.png"
-            alt="Hero"
+            alt="Desktop monitor showing code and design elements"
             width={300}
             height={300}
             className="z-10 w-48 sm:w-56 md:w-72 h-auto"

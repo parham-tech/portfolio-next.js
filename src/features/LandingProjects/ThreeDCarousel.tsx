@@ -13,17 +13,19 @@ type CardProps = {
 
 const Card = React.memo(
   ({ src, title, transform, cardW, cardH, onClick }: CardProps) => (
-    <div
-      className="absolute transition-transform duration-300 hover:scale-105 cursor-pointer"
-      style={{
-        width: cardW,
-        height: cardH,
-        transform,
-        transformStyle: "preserve-3d",
-        willChange: "transform",
-      }}
-      onClick={onClick}
-    >
+   <button
+  type="button"
+  aria-label={`Open ${title} project`}
+  className="absolute transition-transform duration-300 hover:scale-105 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-400 rounded-2xl"
+  style={{
+    width: cardW,
+    height: cardH,
+    transform,
+    transformStyle: "preserve-3d",
+    willChange: "transform",
+  }}
+  onClick={onClick}
+>
       <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg">
       <Image
   src={src}
@@ -37,7 +39,7 @@ const Card = React.memo(
           {title}
         </div>
       </div>
-    </div>
+    </button>
   )
 );
 Card.displayName = "Card";

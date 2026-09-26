@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { projectsData } from "./projectsData";
@@ -17,24 +17,90 @@ const ColorFlowPalette = dynamic(
 export default function LandingProjects() {
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [restartKey, setRestartKey] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
 
   const selectedProject = projectsData.find((p) => p.id === activeProject);
+// 🚫 قفل اسکرول و مدیریت فوکوس وقتی modal باز است
+useEffect(() => {
+  if (activeProject) {
+    triggerRef.current = document.activeElement as HTMLElement;
 
-  // 🚫 قفل اسکرول وقتی modal باز است
-  useEffect(() => {
-    if (activeProject) {
-      document.documentElement.style.overflow = "hidden";
-      document.body.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+  } else {
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+
+    if (triggerRef.current) {
+      triggerRef.current.focus();
+    }
+  }
+
+  return () => {
+    document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+  };
+}, [activeProject]);
+
+
+
+// 🎯 انتقال فوکوس به اولین عنصر قابل تعامل مودال
+useEffect(() => {
+  if (activeProject && modalRef.current) {
+    setTimeout(() => {
+      const firstFocusable = modalRef.current?.querySelector(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
+      ) as HTMLElement;
+
+      firstFocusable?.focus();
+    }, 0);
+  }
+}, [activeProject]);
+
+
+// ⌨️ مدیریت Escape و Tab داخل مودال
+useEffect(() => {
+  if (!activeProject) return;
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setActiveProject(null);
+      return;
     }
 
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
-    };
-  }, [activeProject]);
+    if (e.key === "Tab") {
+      if (!modalRef.current) return;
+
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
+      );
+
+      const firstElement = focusableElements[0] as HTMLElement;
+      const lastElement = focusableElements[
+        focusableElements.length - 1
+      ] as HTMLElement;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          lastElement.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          firstElement.focus();
+          e.preventDefault();
+        }
+      }
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, [activeProject]);
 
   return (
     <section className="pt-24  text-center relative z-10">
@@ -57,12 +123,16 @@ export default function LandingProjects() {
             onClick={() => setActiveProject(null)}
           >
             <motion.div
+              ref={modalRef}
               className={`bg-white/10 h-[75%] md:h-[90%] md:mt-[3%] backdrop-blur-md border border-white/10 p-4 md:p-8 rounded-xl w-[95%] ${
                 selectedProject?.liveUrl ? "md:w-[1000px]" : "md:w-[800px]"
               } max-h-[calc(100vh-2.5rem)] flex justify-center`}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="modal-title"
             >
               {/* ❌ دکمه بستن */}
               <button
@@ -91,7 +161,10 @@ export default function LandingProjects() {
                 <div className="w-full h-full flex flex-col gap-4 text-white">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-white/10 pb-3">
                     <div>
-                      <h3 className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500">
+                      <h3
+                        id="modal-title"
+                        className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-500"
+                      >
                         {selectedProject.title}
                       </h3>
                       <p className="text-xs md:text-sm text-gray-300 mt-1">

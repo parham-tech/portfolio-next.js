@@ -2,13 +2,13 @@ export const projectsData = [
   {
     id: "snake",
     title: "Snake Game",
-    image: "https://i.pinimg.com/736x/9f/09/45/9f0945103fc6158cb16e1828a2665b5c.jpg",
+    image: "/snake.avif",
     description: "A classic Snake game built with React and TailwindCSS.",
   },
   {
     id: "neon",
     title: "Neon Reflex",
-    image: "https://i.pinimg.com/736x/5d/bf/f2/5dbff2b4c0fdcb9815e989f0db386f95.jpg",
+    image: "/neon reflex.avif",
     description: "A fast-paced cyberpunk reflex game with glowing neon UI.",
   },
 
@@ -32,7 +32,7 @@ export const projectsData = [
   {
   id: "colorflow",
   title: "Color Flow Palette",
-  image: "https://i.pinimg.com/originals/fe/your_image_path_here.jpg",
+  image: "",
   description: "An abstract color motion project with dynamic golden flow.",
 }
 

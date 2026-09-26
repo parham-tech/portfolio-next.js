@@ -23,7 +23,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[10000] backdrop-blur-sm"
+        className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[10000] backdrop-blur-sm overflow"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -45,7 +45,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
               autoPlay
               playsInline
               controls={false}
-              className="max-w-[400px] rounded-lg shadow-2xl h-[70%] mt-[2rem]"
+              className="max-w-[400px] rounded-lg shadow-2xl md:h-[70%] h-[60%] mt-[2rem]"
               onEnded={() => setShowLoop(true)}
             />
           ) : (
@@ -53,6 +53,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
               key="loop"
               src="/videos/gameover-loop.mp4"
               autoPlay
+              muted
               loop
               playsInline
               controls={false}
@@ -69,22 +70,46 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
           transition={{ delay: 0.5 }}
         >
           <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={onRestart}
-            className="w-40 px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-black font-bold rounded-lg shadow-lg transition-all"
-          >
-            🔁 Try Again
-          </motion.button>
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  onClick={onRestart}
+  className="
+    w-40 px-6 py-2
+    rounded-lg
+    border border-cyan-400
+    bg-[#061923]
+    text-cyan-300
+    font-bold tracking-wide
+    shadow-[0_0_8px_rgba(0,234,255,0.5),inset_0_0_12px_rgba(0,234,255,0.08)]
+    transition-all duration-200
+    hover:bg-cyan-400/10
+    hover:text-cyan-200
+    hover:shadow-[0_0_15px_rgba(0,234,255,0.8),0_0_35px_rgba(0,234,255,0.35),inset_0_0_20px_rgba(0,234,255,0.12)]
+  "
+>
+  ↻ TRY AGAIN
+</motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            onClick={onClose}
-            className="w-40 px-6 py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg shadow-lg transition-all"
-          >
-            ✖ Close
-          </motion.button>
+<motion.button
+  whileHover={{ scale: 1.05 }}
+  whileTap={{ scale: 0.95 }}
+  onClick={onClose}
+  className="
+    w-40 px-6 py-2
+    rounded-lg
+    border border-pink-500
+    bg-[#210817]
+    text-pink-400
+    font-bold tracking-wide
+    shadow-[0_0_8px_rgba(255,44,168,0.5),inset_0_0_12px_rgba(255,44,168,0.08)]
+    transition-all duration-200
+    hover:bg-pink-500/10
+    hover:text-pink-300
+    hover:shadow-[0_0_15px_rgba(255,44,168,0.8),0_0_35px_rgba(255,44,168,0.35),inset_0_0_20px_rgba(255,44,168,0.12)]
+  "
+>
+  × CLOSE
+</motion.button>
         </motion.div>
 
         {/* امتیاز */}

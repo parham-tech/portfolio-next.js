@@ -29,11 +29,6 @@ export const projectsData = [
     liveUrl: "https://crypto-project-for-portfolio.vercel.app/",
     tech: ["Tailwind", "Next.js", "Chart.js", "CoinGecko API"],
   },
-  {
-  id: "colorflow",
-  title: "Color Flow Palette",
-  image: "",
-  description: "An abstract color motion project with dynamic golden flow.",
-}
+
 
 ];

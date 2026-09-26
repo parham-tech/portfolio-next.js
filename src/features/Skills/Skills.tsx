@@ -21,7 +21,7 @@ export default function SkillsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2, duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-gray-300 dark:bg-gray-800 shadow-md rounded-xl p-6"
+              className="bg-gray-300 shadow-md rounded-xl p-6"
             >
               <h3 className="text-xl font-semibold mb-4 text-gray-800">
                 {group.category}

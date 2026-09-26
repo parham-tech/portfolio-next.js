@@ -77,7 +77,7 @@ useEffect(() => {
 
   const effectiveCardW = vw < 480 ? 140 : vw < 768 ? 160 : vw < 1024 ? cardW : 220;
   const effectiveCardH = vw < 480 ? 190 : vw < 768 ? 220 : vw < 1024 ? cardH : 300;
-  const effectiveRadius = vw < 480 ? 160 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
+  const effectiveRadius = vw < 480 ? 130 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
   const wheelRef = useRef<HTMLDivElement>(null);
   const rotationRef = useRef(0);
   const velocityRef = useRef(0);

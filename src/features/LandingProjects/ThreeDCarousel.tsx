@@ -1,10 +1,17 @@
-"use client";
-import React, { useMemo, useRef, useEffect, useCallback, useState } from "react";
-import Image from "next/image";
+'use client';
+import React, {
+  useMemo,
+  useRef,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
+import Image from 'next/image';
 
 type CardProps = {
   src: string;
   title: string;
+  category?: string;
   transform: string;
   cardW: number;
   cardH: number;
@@ -12,40 +19,50 @@ type CardProps = {
 };
 
 const Card = React.memo(
-  ({ src, title, transform, cardW, cardH, onClick }: CardProps) => (
-   <button
-  type="button"
-  aria-label={`Open ${title} project`}
-  className="absolute transition-transform duration-300 hover:scale-105 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-400 rounded-2xl"
-  style={{
-    width: cardW,
-    height: cardH,
-    transform,
-    transformStyle: "preserve-3d",
-    willChange: "transform",
-  }}
-  onClick={onClick}
->
+  ({ src, title, category, transform, cardW, cardH, onClick }: CardProps) => (
+    <button
+      type="button"
+      aria-label={`Open ${title} project`}
+      className="absolute transition-transform duration-300 hover:scale-105 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-400 rounded-2xl"
+      style={{
+        width: cardW,
+        height: cardH,
+        transform,
+        transformStyle: 'preserve-3d',
+        willChange: 'transform',
+      }}
+      onClick={onClick}
+    >
       <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white/10 backdrop-blur-md border border-white/10 shadow-lg">
-      <Image
-  src={src}
-  alt={title}
-  fill
-  sizes={`${cardW}px`}
-  className="object-cover"
-  draggable={false}
-/>
-        <div className="absolute bottom-0 w-full bg-black/50 text-white text-center py-2 text-sm font-medium">
-          {title}
+        <Image
+          src={src}
+          alt={title}
+          fill
+          sizes={`${cardW}px`}
+          className="object-cover"
+          draggable={false}
+        />
+
+        <div className="absolute bottom-0 w-full bg-black/50 text-white text-center py-2">
+          <div className="text-sm font-medium">{title}</div>
+
+          {category && (
+            <div className="text-xs text-teal-300 mt-1">{category}</div>
+          )}
         </div>
       </div>
     </button>
   )
 );
-Card.displayName = "Card";
 
+Card.displayName = 'Card';
 interface ThreeDCarouselProps {
-  projects: { id: string; title: string; image: string }[];
+  projects: {
+    id: string;
+    title: string;
+    image: string;
+    category?: string;
+  }[];
   radius?: number;
   cardW?: number;
   cardH?: number;
@@ -59,25 +76,28 @@ export default function ThreeDCarousel({
   cardH = 240,
   onProjectClick,
 }: ThreeDCarouselProps) {
- const [vw, setVw] = useState(0);
+  const [vw, setVw] = useState(0);
 
-useEffect(() => {
-  const update = () => setVw(window.innerWidth);
+  useEffect(() => {
+    const update = () => setVw(window.innerWidth);
 
-  update();
+    update();
 
-  window.addEventListener("resize", update);
-  return () => window.removeEventListener("resize", update);
-}, []);
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
   useEffect(() => {
     const onResize = () => setVw(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const effectiveCardW = vw < 480 ? 140 : vw < 768 ? 160 : vw < 1024 ? cardW : 220;
-  const effectiveCardH = vw < 480 ? 190 : vw < 768 ? 220 : vw < 1024 ? cardH : 300;
-  const effectiveRadius = vw < 480 ? 130 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
+  const effectiveCardW =
+    vw < 480 ? 140 : vw < 768 ? 160 : vw < 1024 ? cardW : 220;
+  const effectiveCardH =
+    vw < 480 ? 190 : vw < 768 ? 220 : vw < 1024 ? cardH : 300;
+  const effectiveRadius =
+    vw < 480 ? 130 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
   const wheelRef = useRef<HTMLDivElement>(null);
   const rotationRef = useRef(0);
   const velocityRef = useRef(0);
@@ -85,12 +105,12 @@ useEffect(() => {
   const dragStartRef = useRef(0);
   const initialRotationRef = useRef(0);
   const animationRef = useRef<number>();
-console.log({
-  vw,
-  effectiveCardW,
-  effectiveCardH,
-  effectiveRadius
-});
+  console.log({
+    vw,
+    effectiveCardW,
+    effectiveCardH,
+    effectiveRadius,
+  });
   useEffect(() => {
     const animate = () => {
       if (!isDraggingRef.current) rotationRef.current += 0.05;
@@ -132,13 +152,13 @@ console.log({
   );
 
   const handleCardClick = (id: string) => {
-    console.log("Card clicked:", id);
+    console.log('Card clicked:', id);
     onProjectClick(id);
   };
 
   return (
     <div
-   className="grid place-items-center w-full h-[360px] sm:h-[420px] md:h-[500px] lg:h-[560px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      className="grid place-items-center w-full h-[360px] sm:h-[420px] md:h-[500px] lg:h-[560px] overflow-hidden select-none cursor-grab active:cursor-grabbing"
       onMouseDown={(e) => handleDragStart(e.clientX)}
       onMouseMove={(e) => handleDragMove(e.clientX)}
       onMouseUp={handleDragEnd}
@@ -148,19 +168,20 @@ console.log({
       onTouchEnd={handleDragEnd}
     >
       <div
-    className="relative w-full h-full max-w-6xl"
-    style={{ perspective: 1800 }}
-  >
-    <div
-      ref={wheelRef}
-      className="absolute inset-0 grid place-items-center"
-      style={{ transformStyle: "preserve-3d" }}
-    >
+        className="relative w-full h-full max-w-6xl"
+        style={{ perspective: 1800 }}
+      >
+        <div
+          ref={wheelRef}
+          className="absolute inset-0 grid place-items-center"
+          style={{ transformStyle: 'preserve-3d' }}
+        >
           {cards.map((card) => (
             <Card
               key={card.id}
               src={card.image}
               title={card.title}
+              category={card.category}
               transform={card.transform}
               cardW={effectiveCardW}
               cardH={effectiveCardH}

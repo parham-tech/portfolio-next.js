@@ -1,6 +1,6 @@
 // src/features/Skills/SkillsData.ts
 import { 
-  FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaSearch, FaTachometerAlt, FaPalette, FaShieldAlt, FaRobot, FaBolt 
+  FaHtml5, FaCss3Alt, FaJsSquare, FaReact, FaSearch, FaTachometerAlt, FaPalette, FaShieldAlt, FaRobot, FaVideo, FaCode
 } from "react-icons/fa";
 import { SiTailwindcss, SiNextdotjs, SiTypescript, SiFigma } from "react-icons/si";
 import { MdAccessibilityNew, MdMotionPhotosOn } from "react-icons/md";
@@ -38,12 +38,13 @@ export const skills = [
     ],
   },
   {
-    category: "AI Tools & Productivity",
-    items: [
-      { name: "ChatGPT", level: "Daily Use", icon: FaRobot, color: "text-emerald-500" },
-      { name: "Bolt.new", level: "Prototyping", icon: FaBolt, color: "text-indigo-500" },
-      { name: "Claude", level: "Productivity", icon: FaRobot, color: "text-yellow-500" },
-      { name: "...", level: "and more", icon: FaRobot, color: "text-gray-400" },
-    ],
+category: "AI-Assisted Workflow",
+items: [
+  { name: "ChatGPT", level: "AI-Assisted Development", icon: FaRobot, color: "text-emerald-500" },
+  { name: "Cline", level: "AI Coding Assistant", icon: FaCode, color: "text-blue-500" },
+  { name: "Google Flow", level: "AI Video Creation", icon: FaVideo, color: "text-purple-500" },
+  { name: "Claude", level: "Productivity & Research", icon: FaRobot, color: "text-yellow-500" },
+  { name: "...", level: "and more", icon: FaRobot, color: "text-gray-400" },
+],
   },
 ];

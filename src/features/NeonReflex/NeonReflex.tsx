@@ -33,16 +33,22 @@ export default function NeonReflex({ nodes = 6 }: NeonReflexProps) {
     bgMusicRef.current.loop = true;
     bgMusicRef.current.volume = 0.5;
 
+    // تلاش برای پخش موزیک بلافاصله (اگر قبلاً تعاملی انجام شده باشد)
+    bgMusicRef.current.play().then(() => {
+      musicStartedRef.current = true;
+    }).catch(() => {
+      console.log("منتظر اولین تعامل برای پخش موزیک...");
+    });
+
     const startMusic = () => {
-      if (!musicStartedRef.current) {
-        bgMusicRef.current!.play().catch(() => {
-          console.log("مرورگر اجازه پخش خودکار صدا را نداد.");
-        });
-        musicStartedRef.current = true;
+      if (bgMusicRef.current && bgMusicRef.current.paused) {
+        bgMusicRef.current.play().then(() => {
+          musicStartedRef.current = true;
+        }).catch(() => {});
       }
     };
 
-    // موزیک بعد از اولین تعامل کاربر شروع می‌شود
+    // موزیک با اولین کلیک در کل صفحه شروع می‌شود (اگر قبلاً شروع نشده باشد)
     document.addEventListener("click", startMusic, { once: true });
 
     return () => {

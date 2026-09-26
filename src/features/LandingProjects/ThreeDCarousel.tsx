@@ -57,15 +57,24 @@ export default function ThreeDCarousel({
   cardH = 240,
   onProjectClick,
 }: ThreeDCarouselProps) {
-  const [vw, setVw] = useState<number>(typeof window !== "undefined" ? window.innerWidth : 1024);
+ const [vw, setVw] = useState(0);
+
+useEffect(() => {
+  const update = () => setVw(window.innerWidth);
+
+  update();
+
+  window.addEventListener("resize", update);
+  return () => window.removeEventListener("resize", update);
+}, []);
   useEffect(() => {
     const onResize = () => setVw(window.innerWidth);
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  const effectiveCardW = vw < 480 ? 120 : vw < 768 ? 140 : vw < 1024 ? cardW : 220;
-  const effectiveCardH = vw < 480 ? 160 : vw < 768 ? 200 : vw < 1024 ? cardH : 300;
+  const effectiveCardW = vw < 480 ? 140 : vw < 768 ? 160 : vw < 1024 ? cardW : 220;
+  const effectiveCardH = vw < 480 ? 190 : vw < 768 ? 220 : vw < 1024 ? cardH : 300;
   const effectiveRadius = vw < 480 ? 160 : vw < 768 ? 200 : vw < 1024 ? radius : 320;
   const wheelRef = useRef<HTMLDivElement>(null);
   const rotationRef = useRef(0);
@@ -74,7 +83,12 @@ export default function ThreeDCarousel({
   const dragStartRef = useRef(0);
   const initialRotationRef = useRef(0);
   const animationRef = useRef<number>();
-
+console.log({
+  vw,
+  effectiveCardW,
+  effectiveCardH,
+  effectiveRadius
+});
   useEffect(() => {
     const animate = () => {
       if (!isDraggingRef.current) rotationRef.current += 0.05;

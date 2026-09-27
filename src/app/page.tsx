@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   "Next.js Developer",
   "Frontend Developer Portfolio",
 ],
+ icons: {
+    icon: "/favicon.ico",
+  },
   
   robots: {
     index: true,
@@ -33,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Parham Portfolio",
     images: [
       {
-        url: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
+        url: "og-image.png",
         width: 1200,
         height: 630,
         alt: "Parham Shirinkam - Frontend Developer Portfolio | پرهام شیرین‌کام",
@@ -48,7 +51,7 @@ export const metadata: Metadata = {
     title: "Parham Shirinkam | Frontend Developer Portfolio",
     description:
       "پورتفولیوی شخصی پرهام شیرین‌کام، برنامه‌نویس فرانت‌اند React و Next.js. Parham Shirinkam Portfolio - React & Next.js Frontend Developer. مطور فرونت إند وواجهات المستخدم.",
-    images: ["https://portfolio-next-js-parham.vercel.app/og-image-home.jpg"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/",
@@ -72,7 +75,7 @@ export default function Home() {
       "شیرین کام"
     ],
     url: "https://portfolio-next-js-parham.vercel.app",
-    image: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
+    image: "https://portfolio-next-js-parham.vercel.app/og-image.png",
     description:
       "Frontend Developer specializing in React, Next.js, and TypeScript. طراح و توسعه‌دهنده فرانت‌اند با تخصص در ریکت و نکست‌جی‌اس. مطور واجهات المستخدم المتخصص في رياكت ونكست جي إس.",
     jobTitle: "Frontend Developer",

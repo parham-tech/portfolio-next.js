@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     'Next.js Developer',
     'Frontend Developer Portfolio',
   ],
+
+  icons: {
+  icon: "/og-image.png",
+},
   robots: {
     index: true,
     follow: true,
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
     siteName: 'Parham Portfolio',
     images: [
       {
-        url: 'https://portfolio-next-js-parham.vercel.app/og-image-home.jpg',
+        url: '/og-image.png',
         width: 1200,
         height: 630,
         alt: 'Parham Shirinkam Projects Portfolio | پروژه‌های پرهام شیرین‌کام',
@@ -45,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Projects | Parham Portfolio',
     description:
       'مشاهده پروژه‌های برنامه‌نویسی پرهام شیرین‌کام شامل بازی Snake، بازی Neon Reflex، پالت رنگ و پورتفولیو. Browse Parham Shirinkam projects - React, Next.js, and Tailwind CSS. استكشف مشاريع برمجة الويب.',
-    images: ['https://portfolio-next-js-parham.vercel.app/og-image-home.jpg'],
+    images: ['/favicon.ico'],
   },
   alternates: {
     canonical: 'https://portfolio-next-js-parham.vercel.app/projects',

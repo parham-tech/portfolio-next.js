@@ -126,6 +126,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                       md:text-4xl
                       mb-2
                       `}
+                      aria-hidden="true"
                     />
                   )}
 
@@ -222,6 +223,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                       md:text-4xl
                       mb-2
                       `}
+                      aria-hidden="true"
                     />
                   )}
 

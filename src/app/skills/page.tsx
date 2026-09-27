@@ -13,6 +13,10 @@ export const metadata: Metadata = {
   "Next.js Developer",
   "Frontend Developer Portfolio",
 ],
+
+icons: {
+  icon: "/favicon.ico",
+},
   robots: {
     index: true,
     follow: true,
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "Parham Portfolio",
     images: [
       {
-        url: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Parham Shirinkam Skills Portfolio | مهارت‌های پرهام شیرین‌کام",
@@ -45,7 +49,7 @@ export const metadata: Metadata = {
     title: "Skills | Parham Portfolio",
     description:
       "مهارت‌های تخصصی پرهام شیرین‌کام در زمینه‌های فرانت‌اند React، Next.js، توسعه وب کامپوننت، بهینه‌سازی سرعت و سئو. Check out Parham Shirinkam's professional skills. مهارات برمجة فرونت إند وتطوير الويب.",
-    images: ["https://portfolio-next-js-parham.vercel.app/og-image-home.jpg"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/skills",
@@ -73,7 +77,7 @@ export default function SkillsPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Web Core Best Practices & Quality (SEO, Accessibility, Performance, Security)",
+        name: "Web Core Best Practices & Quality (SEO, Accessibility, Performance)",
       },
       {
         "@type": "ListItem",

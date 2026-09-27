@@ -31,6 +31,10 @@ keywords: [
   "Next.js Developer",
   "Frontend Developer Portfolio",
 ],
+
+icons: {
+  icon: "/favicon.png",
+},
   robots: {
     index: true,
     follow: true,
@@ -48,7 +52,7 @@ keywords: [
     siteName: "Parham Portfolio",
     images: [
       {
-        url: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Parham Shirinkam Interactive Story Portfolio | داستان تعاملی پرهام شیرین‌کام",
@@ -63,7 +67,7 @@ keywords: [
     title: "Interactive Story | Parham Portfolio",
     description:
       "حالت داستانی تعاملی پورتفولیوی پرهام شیرین‌کام. تجربه جذاب Scrollytelling سه‌بعدی و پارالاکس. Experience the interactive storytelling web development mode. تجربة قصة تفاعلية شيقة.",
-    images: ["https://portfolio-next-js-parham.vercel.app/og-image-home.jpg"],
+    images: ["/og-image.png"],
   },
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/story",

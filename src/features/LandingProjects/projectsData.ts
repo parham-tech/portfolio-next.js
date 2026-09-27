@@ -2,15 +2,15 @@ export const projectsData = [
 {
   id: "snake",
   title: "Snake Game",
+  type: "AI-Assisted Game",
   image: "/snake.avif",
-  category: "AI-Assisted Game",
   description: "A classic Snake game built with React and TailwindCSS.",
 },
 {
   id: "neon",
   title: "Neon Reflex",
+  type: "AI-Assisted Game",
   image: "/neon reflex.avif",
-  category: "AI-Assisted Game",
   description: "A fast-paced cyberpunk reflex game with glowing neon UI.",
 },
 

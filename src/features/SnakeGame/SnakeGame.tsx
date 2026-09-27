@@ -21,7 +21,7 @@ export default function SnakeGame() {
   useEffect(() => {
     const updateSize = () => {
       if (window.innerWidth >= 1024) {
-        setCellSize(22);
+        setCellSize(20);
       } else if (window.innerWidth >= 768) {
         setCellSize(18);
       } else {

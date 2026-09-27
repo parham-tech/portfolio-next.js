@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     siteName: "Parham Portfolio",
     images: [
       {
-        url: "og-image.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Parham Shirinkam - Frontend Developer Portfolio | پرهام شیرین‌کام",

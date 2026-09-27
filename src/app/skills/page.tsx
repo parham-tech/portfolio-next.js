@@ -7,21 +7,12 @@ export const metadata: Metadata = {
   description:
     "مهارت‌های تخصصی پرهام شیرین‌کام در زمینه‌های فرانت‌اند React، Next.js، توسعه وب کامپوننت، بهینه‌سازی سرعت و سئو. Check out Parham Shirinkam's professional skills. مهارات برمجة فرونت إند وتطوير الويب.",
   keywords: [
-    "مهارت‌های پرهام شیرین‌کام",
-    "تخصص‌ها",
-    "ریکت",
-    "نکست جی اس",
-    "طراحی فرانت اند",
-    "سئو و بهینه سازی",
-    "Parham Shirinkam skills",
-    "React developer skills",
-    "TypeScript expert",
-    "Frontend skills portfolio",
-    "SEO best practices",
-    "مهارات فرونت اند",
-    "تطوير رياكت",
-    "مطور واجهات المستخدم"
-  ],
+  "Parham Shirinkam",
+  "Frontend Developer",
+  "React Developer",
+  "Next.js Developer",
+  "Frontend Developer Portfolio",
+],
   robots: {
     index: true,
     follow: true,

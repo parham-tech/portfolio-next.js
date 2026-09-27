@@ -24,18 +24,13 @@ export const metadata: Metadata = {
   title: "Interactive Story | Parham Portfolio",
   description:
     "حالت داستانی تعاملی پورتفولیوی پرهام شیرین‌کام. تجربه جذاب Scrollytelling سه‌بعدی و پارالاکس. Experience the interactive storytelling web development mode. تجربة قصة تفاعلية شيقة.",
-  keywords: [
-    "داستان تعاملی پرهام شیرین‌کام",
-    "بازی تعاملی",
-    "اسکرول‌ی‌تلینگ",
-    "انیمیشن پارالاکس",
-    "Interactive Story Parham",
-    "Scrollytelling React",
-    "Web animation parallax",
-    "Interactive portfolio",
-    "قصة تفاعلية",
-    "تحريك ويب"
-  ],
+keywords: [
+  "Parham Shirinkam",
+  "Frontend Developer",
+  "React Developer",
+  "Next.js Developer",
+  "Frontend Developer Portfolio",
+],
   robots: {
     index: true,
     follow: true,

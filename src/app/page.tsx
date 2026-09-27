@@ -6,25 +6,13 @@ export const metadata: Metadata = {
   title: "Parham Shirinkam | Frontend Developer Portfolio",
   description:
     "پورتفولیوی شخصی پرهام شیرین‌کام، برنامه‌نویس فرانت‌اند React و Next.js. Parham Shirinkam Portfolio - React & Next.js Frontend Developer. مطور فرونت إند وواجهات المستخدم.",
-  keywords: [
-    "پرهام شیرین‌کام",
-    "پرهام شیرین کام",
-    "شیرین کام",
-    "برنامه نویس فرانت اند",
-    "توسعه دهنده وب",
-    "پورتفولیو برنامه نویسی",
-    "سایت پرهام شیرین کام",
-    "Parham Shirinkam",
-    "Shirinkam",
-    "Frontend Developer",
-    "Next.js Developer Portfolio",
-    "React Developer",
-    "Web Developer Portfolio",
-    "بارام شيرينكام",
-    "مطور واجهات",
-    "برمجة فرونت اند",
-    "مطور ويب React"
-  ],
+ keywords: [
+  "Parham Shirinkam",
+  "Frontend Developer",
+  "React Developer",
+  "Next.js Developer",
+  "Frontend Developer Portfolio",
+],
   verification: {
     google: "YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE_HERE",
   },
@@ -88,7 +76,7 @@ export default function Home() {
     url: "https://portfolio-next-js-parham.vercel.app",
     image: "https://portfolio-next-js-parham.vercel.app/og-image-home.jpg",
     description:
-      "Professional Frontend Developer specializing in React, Next.js, and TypeScript. طراح و توسعه‌دهنده فرانت‌اند با تخصص در ریکت و نکست‌جی‌اس. مطور واجهات المستخدم المتخصص في رياكت ونكست جي إس.",
+      "Frontend Developer specializing in React, Next.js, and TypeScript. طراح و توسعه‌دهنده فرانت‌اند با تخصص در ریکت و نکست‌جی‌اس. مطور واجهات المستخدم المتخصص في رياكت ونكست جي إس.",
     jobTitle: "Frontend Developer",
     knowsAbout: [
       "React",
@@ -99,7 +87,7 @@ export default function Home() {
       "Web Development",
       "SEO",
       "Scrollytelling",
-      "Three.js",
+      
     ],
     sameAs: [
       "https://github.com/parham-tech",

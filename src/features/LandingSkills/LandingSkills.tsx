@@ -59,7 +59,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
         gap-4 xs:gap-[1.2rem] sm:gap-8
         opacity-0 translate-y-10
         shadow-lg backdrop-blur-md
-        transition-all duration-700
+        transition-all duration-300
         ${activeBoxTheme}
         `}
       >

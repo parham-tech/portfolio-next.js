@@ -365,6 +365,8 @@ export default function ScrollPath({
 
     const skillCards = document.querySelectorAll('.skill-card');
 
+    const projectsSection = document.querySelector('[data-projects-section]');
+
     if (skillsTitle && listContainer && skillCards.length > 0) {
       ScrollTrigger.create({
         trigger: skillsRef.current,
@@ -410,6 +412,27 @@ export default function ScrollPath({
               stagger: 0.05,
             }
           );
+        },
+      });
+    }
+
+    if (projectsSection) {
+      ScrollTrigger.create({
+        trigger: projectsSection,
+        start: 'top 85%',
+        onEnter: () => {
+          gsap.to(projectsSection, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+          });
+        },
+        onLeaveBack: () => {
+          gsap.to(projectsSection, {
+            opacity: 0,
+            y: 40,
+            duration: 0.5,
+          });
         },
       });
     }

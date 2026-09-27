@@ -19,8 +19,10 @@ export default function LandingProjects() {
   const [restartKey, setRestartKey] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   const selectedProject = projectsData.find((p) => p.id === activeProject);
+
 // 🚫 قفل اسکرول و مدیریت فوکوس وقتی modal باز است
 useEffect(() => {
   if (activeProject) {
@@ -103,8 +105,12 @@ useEffect(() => {
 }, [activeProject]);
 
   return (
-    <section className="pt-24  text-center relative z-10">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold  text-white">My Projects</h2>
+    <section 
+      ref={sectionRef}
+      data-projects-section
+      className="pt-24 text-center relative z-10 opacity-0 translate-y-10 transition-all duration-200"
+    >
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">My Projects</h2>
 
       {/* 🎠 Carousel پروژه‌ها */}
       <ThreeDCarousel
@@ -236,7 +242,7 @@ useEffect(() => {
                       href={selectedProject.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2.5 rounded-full font-bold text-sm text-white bg-gradient-to-r from-teal-500 via-blue-600 to-purple-600 hover:scale-105 hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] transition duration-300 flex items-center gap-2"
+                      className="px-6 py-2.5 rounded-full font-bold text-sm text-white bg-gradient-to-r from-teal-500 via-blue-600 to-purple-600 hover:scale-105 hover:shadow-[0_0_20px_rgba(56,189,248,0.5)] transition duration-200 flex items-center gap-2"
                     >
                       <span>  Go to the main website </span>
                       <svg

@@ -13,9 +13,7 @@ export const metadata: Metadata = {
   "Next.js Developer",
   "Frontend Developer Portfolio",
 ],
-  verification: {
-    google: "YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE_HERE",
-  },
+  
   robots: {
     index: true,
     follow: true,

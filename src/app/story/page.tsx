@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 const StoryModeScene = dynamic(
   () =>
-    import("../../features/StoryModeScene/StoryModeScene").then(
+    import("../../features/story/StoryModeScene/StoryModeScene").then(
       (m) => m.StoryModeScene
     ),
   {

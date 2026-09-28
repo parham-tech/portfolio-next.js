@@ -5,8 +5,8 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import type React from "react";
 import Image from "next/image";
 
-import { FloatingParticles } from "@/features/FloatingParticles/FloatingParticles";
-import { ChromaKeyVideo } from "@/features/HeroScrollytelling/ChromaKeyVideo";
+import { FloatingParticles } from "@/effects/FloatingParticles/FloatingParticles";
+import { ChromaKeyVideo } from "@/features/story/HeroScrollytelling/ChromaKeyVideo";
 
 // ابعاد منطقی صحنه‌ی Skills (بر اساس بک‌گراندت)
 const BG_WIDTH = 1523;

@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { FloatingParticles } from '@/features/FloatingParticles/FloatingParticles';
+import { FloatingParticles } from '@/effects/FloatingParticles/FloatingParticles';
 import { ChromaKeyVideo } from './ChromaKeyVideo';
 
 // ابعاد واقعی تصویر/ویدئوی بک‌گراند

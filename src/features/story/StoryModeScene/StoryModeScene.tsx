@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HeroScrollytelling } from "@/features/HeroScrollytelling/HeroScrollytelling";
-import { LowerSectionParallax } from "@/features/StoryModeScene/LowerSectionParallax";
+import { HeroScrollytelling } from "@/features/story/HeroScrollytelling/HeroScrollytelling";
+import { LowerSectionParallax } from "@/features/story/StoryModeScene/LowerSectionParallax";
 
 export function StoryModeScene() {
   const [isLoading, setIsLoading] = useState(true);

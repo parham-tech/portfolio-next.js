@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Skills } from "@/features/Skills";
+import { Skills } from "@/components/sections/Skills";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-next-js-parham.vercel.app"),

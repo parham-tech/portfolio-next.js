@@ -2,7 +2,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
 import { NEON, neonGlow } from "./neonAssets";
 import { getSpeedForRound, pickNextTarget } from "./reflexLogic";
-import GameOverModal from "@/features/GameOver/GameOverModal";
+import GameOverModal from "@/features/games/NeonReflex/GameOverModal";
 
 type NeonReflexProps = {
   nodes?: number;

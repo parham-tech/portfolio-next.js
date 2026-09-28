@@ -3,13 +3,13 @@ import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { projectsData } from "./projectsData";
+import { projectsData } from "../../data/projectsData";
 import { ThreeDCarousel } from "@/features/LandingProjects";
 
 
 // 🎮 Lazy load بازی‌ها
-const SnakeGame = dynamic(() => import("@/features/SnakeGame/SnakeGame"), { ssr: false });
-const NeonReflex = dynamic(() => import("@/features/NeonReflex/NeonReflex"), { ssr: false });
+const SnakeGame = dynamic(() => import("@/features/games/SnakeGame/SnakeGame"), { ssr: false });
+const NeonReflex = dynamic(() => import("@/features/games/NeonReflex/NeonReflex"), { ssr: false });
 const ColorFlowPalette = dynamic(
   () => import("@/features/ColorFlowPalette/ColorFlowPalette"),
   { ssr: false }

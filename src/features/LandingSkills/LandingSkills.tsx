@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { skills } from "@/features/Skills/SkillsData";
+import { skills } from "@/components/sections/Skills/SkillsData";
 import { useThemeContext } from "@/context/ThemeContext";
 
 type LandingSkillsProps = {

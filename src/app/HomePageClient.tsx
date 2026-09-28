@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef } from "react";
-import { Hero } from "@/features/Hero";
+import { Hero } from "@/components/sections/Hero";
 import { LandingSkills } from "@/features/LandingSkills";
 import { ScrollPath } from "@/components/ScrollPath";
 import { LandingProjects } from "@/features/LandingProjects";
 import { useStoryMode } from "@/context/StoryModeContext";
-import { StoryModeScene } from "@/features/StoryModeScene/StoryModeScene";
+import { StoryModeScene } from "@/features/story/StoryModeScene/StoryModeScene";
 
 export default function HomePageClient() {
   const monitorRef = useRef<HTMLDivElement>(null);

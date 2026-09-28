@@ -6,16 +6,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
-  //       maxWidth: {
-  //   'screen-xl': '1600px',
-  // },
-      
+      screens: {
+        xs: "480px",
+      },
+
       keyframes: {
         diagonal: {
           "0%, 100%": { transform: "translate(0, 0)" },
           "50%": { transform: "translate(70px, 70px)" }, 
         },
       },
+
       animation: {
         diagonal: "diagonal 10s ease-in-out infinite",
       },
@@ -23,4 +24,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;

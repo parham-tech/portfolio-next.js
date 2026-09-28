@@ -207,8 +207,7 @@ export default function NeonReflex({ nodes = 6 }: NeonReflexProps) {
               <button
                 key={i}
                 onClick={() => handleHit(i)}
-                className="relative aspect-square w-[70%] rounded-full border border-white/10 bg-black/40 hover:bg-black/30 transition-transform duration-150 focus:outline-none"
-                style={{ boxShadow: neonGlow(color, isActive ? 26 : 10), transform: isActive ? "scale(1.06)" : "scale(1.0)" }}
+className="relative aspect-square w-[55%] xs:w-[60%] rounded-full border border-white/10 bg-black/40 hover:bg-black/30 transition-transform duration-150 focus:outline-none"                style={{ boxShadow: neonGlow(color, isActive ? 26 : 10), transform: isActive ? "scale(1.06)" : "scale(1.0)" }}
               >
                 {isActive && <div className="absolute inset-0 rounded-full" style={ringStyle(color)} />}
                 <div

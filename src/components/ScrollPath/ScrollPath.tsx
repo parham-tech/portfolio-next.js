@@ -455,7 +455,7 @@ export default function ScrollPath({
         top-0
         w-full
         pointer-events-none
-        z-[1000]
+        z-[10]
       "
       style={{
         height: docH,

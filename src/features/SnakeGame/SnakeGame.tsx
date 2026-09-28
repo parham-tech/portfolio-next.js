@@ -1,16 +1,24 @@
-
 "use client";
+
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 const GRID_SIZE = 20;
+
 const INITIAL_SNAKE = [{ x: 10, y: 10 }];
 const INITIAL_DIRECTION = { x: 1, y: 0 };
+
+type Direction = {
+  x: number;
+  y: number;
+};
 
 export default function SnakeGame() {
   const [snake, setSnake] = useState(INITIAL_SNAKE);
   const [food, setFood] = useState({ x: 5, y: 5 });
-  const [direction, setDirection] = useState(INITIAL_DIRECTION);
+  const [direction, setDirection] = useState<Direction>(
+    INITIAL_DIRECTION
+  );
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
@@ -35,7 +43,7 @@ export default function SnakeGame() {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
-  // 🔊 صداها
+  // 🔊 Sounds
   const eatSoundRef = useRef<HTMLAudioElement | null>(null);
   const gameOverSoundRef = useRef<HTMLAudioElement | null>(null);
 
@@ -53,36 +61,49 @@ export default function SnakeGame() {
     };
   }, []);
 
-  // 🎮 کنترل جهت
+  // 🎮 Change direction
+  const changeDirection = (newDirection: Direction) => {
+    // Prevent moving directly into the opposite direction
+    if (
+      direction.x + newDirection.x === 0 &&
+      direction.y + newDirection.y === 0
+    ) {
+      return;
+    }
+
+    setDirection(newDirection);
+    setIsFocused(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // ⌨️ Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isFocused) return;
 
       if (
-        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)
+        ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(
+          e.key
+        )
       ) {
         e.preventDefault();
       }
 
       switch (e.key) {
         case "ArrowUp":
-          if (direction.y === 1) return;
-          setDirection({ x: 0, y: -1 });
+          changeDirection({ x: 0, y: -1 });
           break;
 
         case "ArrowDown":
-          if (direction.y === -1) return;
-          setDirection({ x: 0, y: 1 });
+          changeDirection({ x: 0, y: 1 });
           break;
 
         case "ArrowLeft":
-          if (direction.x === 1) return;
-          setDirection({ x: -1, y: 0 });
+          changeDirection({ x: -1, y: 0 });
           break;
 
         case "ArrowRight":
-          if (direction.x === -1) return;
-          setDirection({ x: 1, y: 0 });
+          changeDirection({ x: 1, y: 0 });
           break;
       }
     };
@@ -92,7 +113,7 @@ export default function SnakeGame() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [direction, isFocused]);
 
-  // 🐍 حرکت مار
+  // 🐍 Snake movement
   useEffect(() => {
     if (gameOver) return;
 
@@ -101,12 +122,20 @@ export default function SnakeGame() {
         const newSnake = [...prev];
 
         const head = {
-          x: (newSnake[0].x + direction.x + GRID_SIZE) % GRID_SIZE,
-          y: (newSnake[0].y + direction.y + GRID_SIZE) % GRID_SIZE,
+          x:
+            (newSnake[0].x + direction.x + GRID_SIZE) %
+            GRID_SIZE,
+          y:
+            (newSnake[0].y + direction.y + GRID_SIZE) %
+            GRID_SIZE,
         };
 
-        // برخورد با خودش
-        if (newSnake.some((s) => s.x === head.x && s.y === head.y)) {
+        // Collision with itself
+        if (
+          newSnake.some(
+            (s) => s.x === head.x && s.y === head.y
+          )
+        ) {
           gameOverSoundRef.current?.play();
           setGameOver(true);
           return prev;
@@ -114,7 +143,7 @@ export default function SnakeGame() {
 
         newSnake.unshift(head);
 
-        // خوردن غذا
+        // Eat food
         if (head.x === food.x && head.y === food.y) {
           eatSoundRef.current?.play();
           setScore((s) => s + 1);
@@ -134,21 +163,24 @@ export default function SnakeGame() {
     return () => clearInterval(interval);
   }, [direction, food, gameOver]);
 
+  // 🔄 Reset game
   const resetGame = () => {
     setSnake(INITIAL_SNAKE);
     setFood({ x: 5, y: 5 });
     setDirection(INITIAL_DIRECTION);
     setGameOver(false);
     setScore(0);
+    setIsFocused(true);
+    document.body.style.overflow = "hidden";
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 py-10 bg-black text-white rounded-2xl shadow-[0_0_40px_#00ffff30] border border-cyan-500/20">
-      {/* 🧊 صفحه بازی */}
+    <div className="w-fit flex flex-col items-center justify-center gap-6 p-6 bg-black text-white rounded-2xl shadow-[0_0_40px_#00ffff30] border border-cyan-500/20">
+      {/* 🧊 Game Board */}
       <div
         tabIndex={0}
         role="application"
-        aria-label="Snake Game Board. Focus to play. Use Arrow keys to move."
+        aria-label="Snake Game Board. Focus to play. Use Arrow keys or touch controls to move."
         onFocus={() => {
           setIsFocused(true);
           document.body.style.overflow = "hidden";
@@ -192,7 +224,59 @@ export default function SnakeGame() {
         })}
       </div>
 
-      {/* 🎯 امتیاز و وضعیت */}
+      {/* 📱 Mobile Controls */}
+      <div
+        className="grid grid-cols-3 gap-2 md:hidden"
+        aria-label="Snake touch controls"
+      >
+        <div />
+
+        <button
+          type="button"
+          aria-label="Move up"
+          onClick={() => changeDirection({ x: 0, y: -1 })}
+          className="w-12 h-12 rounded-lg bg-cyan-600/80 hover:bg-cyan-500 active:scale-95 text-white text-2xl font-bold shadow-[0_0_15px_#00ffff50] transition-all touch-manipulation"
+        >
+          ↑
+        </button>
+
+        <div />
+
+        <button
+          type="button"
+          aria-label="Move left"
+          onClick={() => changeDirection({ x: -1, y: 0 })}
+          className="w-12 h-12 rounded-lg bg-cyan-600/80 hover:bg-cyan-500 active:scale-95 text-white text-2xl font-bold shadow-[0_0_15px_#00ffff50] transition-all touch-manipulation"
+        >
+          ←
+        </button>
+
+        <div />
+
+        <button
+          type="button"
+          aria-label="Move right"
+          onClick={() => changeDirection({ x: 1, y: 0 })}
+          className="w-12 h-12 rounded-lg bg-cyan-600/80 hover:bg-cyan-500 active:scale-95 text-white text-2xl font-bold shadow-[0_0_15px_#00ffff50] transition-all touch-manipulation"
+        >
+          →
+        </button>
+
+        <div />
+
+        <button
+          type="button"
+          aria-label="Move down"
+          onClick={() => changeDirection({ x: 0, y: 1 })}
+          className="w-12 h-12 rounded-lg bg-cyan-600/80 hover:bg-cyan-500 active:scale-95 text-white text-2xl font-bold shadow-[0_0_15px_#00ffff50] transition-all touch-manipulation"
+        >
+          ↓
+        </button>
+
+        <div />
+      </div>
+
+      {/* 🎯 Score & Status */}
       <div className="text-center text-cyan-300 space-y-2">
         {gameOver ? (
           <div className="flex flex-col items-center gap-4">
@@ -205,6 +289,7 @@ export default function SnakeGame() {
             />
 
             <button
+              type="button"
               onClick={resetGame}
               className="px-6 py-2 bg-cyan-600 hover:bg-cyan-800 rounded-lg text-white font-bold shadow-[0_0_25px_#00ffff] hover:shadow-[0_0_35px_#00ffff80] transition-all"
             >
@@ -219,11 +304,10 @@ export default function SnakeGame() {
 
         <p className="text-xs text-gray-400 mt-2">
           {isFocused
-            ? "🟢 Game Active - Use Arrow Keys to Move"
+            ? "🟢 Game Active - Use Arrow Keys or Touch Controls"
             : "⌨️ Click or Tab here to Focus & Play"}
         </p>
       </div>
     </div>
   );
 }
-

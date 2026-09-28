@@ -45,7 +45,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
               autoPlay
               playsInline
               controls={false}
-              className="max-w-[400px] rounded-lg shadow-2xl md:h-[70%] h-[60%] mt-[2rem]"
+              className="max-w-[400px] rounded-lg shadow-2xl md:h-[90%] xs:h-[80%] h-[70%]  mt-[2rem]"
               onEnded={() => setShowLoop(true)}
             />
           ) : (
@@ -57,7 +57,7 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
               loop
               playsInline
               controls={false}
-              className="max-w-[400px] rounded-lg shadow-2xl opacity-90 h-[55%] xs:h-[60%] md:h-[70%]  mt-[2rem] "
+              className="max-w-[400px] rounded-lg shadow-2xl opacity-90 md:h-[90%] xs:h-[80%] h-[70%]  mt-[2rem] "
             />
           )}
         </motion.div>
@@ -74,7 +74,8 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
   whileTap={{ scale: 0.95 }}
   onClick={onRestart}
   className="
-    w-40 px-6 py-2
+    w-32 xs:w-40 px-6 py-2
+    text-sm xs:text-base
     rounded-lg
     border border-cyan-400
     bg-[#061923]
@@ -95,7 +96,8 @@ export default function GameOverModal({ score, onClose, onRestart }: GameOverMod
   whileTap={{ scale: 0.95 }}
   onClick={onClose}
   className="
-    w-40 px-6 py-2
+   w-32 xs:w-40 px-6 py-2
+   text-sm xs:text-base
     rounded-lg
     border border-pink-500
     bg-[#210817]

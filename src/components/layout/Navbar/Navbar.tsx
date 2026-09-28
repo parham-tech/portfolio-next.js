@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useThemeContext } from "@/context/ThemeContext";
 import { Menu, X } from "lucide-react";
-import ThemeSwitcherCarousel from "@/components/ThemeSwitcherCarousel";
+import ThemeSwitcherCarousel from "@/components/ui/ThemeSwitcherCarousel";
 import { useStoryMode } from "@/context/StoryModeContext";
 
 

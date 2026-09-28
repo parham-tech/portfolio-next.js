@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 import { projectsData } from "../../data/projectsData";
 import { ThreeDCarousel } from "@/features/LandingProjects";
 
@@ -16,6 +17,8 @@ const ColorFlowPalette = dynamic(
 );
 
 export default function LandingProjects() {
+  const pathname = usePathname();
+  const isProjectsPage = pathname === "/projects";
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [restartKey, setRestartKey] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -23,6 +26,10 @@ export default function LandingProjects() {
   const sectionRef = useRef<HTMLElement | null>(null);
 
   const selectedProject = projectsData.find((p) => p.id === activeProject);
+
+  const animationClasses = isProjectsPage
+    ? "pt-24 text-center relative z-10"
+    : "pt-24 text-center relative z-10 opacity-0 translate-y-10 transition-all duration-200";
 
 // 🚫 قفل اسکرول و مدیریت فوکوس وقتی modal باز است
 useEffect(() => {
@@ -110,7 +117,7 @@ useEffect(() => {
       <section
         ref={sectionRef}
         data-projects-section
-        className="pt-24 text-center relative z-10 opacity-0 translate-y-10 transition-all duration-200"
+        className={animationClasses}
       >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
           My Projects

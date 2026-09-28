@@ -2,8 +2,8 @@ import "./globals.css";
 import type { ReactNode } from "react";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { StoryModeProvider } from "@/context/StoryModeContext";
-import { ThemeBackground } from "@/components/ThemeBackground";
-import { Navbar } from "@/features/Navbar";
+import { ThemeBackground } from "@/components/layout/ThemeBackground";
+import { Navbar } from "@/components/layout/Navbar";
 import { ScrollProgressProvider } from "@/context/ScrollProgressContext";
 
 export default function RootLayout({ children }: { children: ReactNode }) {

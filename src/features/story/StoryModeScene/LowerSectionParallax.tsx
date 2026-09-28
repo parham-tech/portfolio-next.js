@@ -2,8 +2,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ScrollingGrassBand } from "@/features/ScrollingGrass/ScrollingGrassBand";
-import { LandingSkillsStory } from "@/features/LandingSkillsStory/LandingSkillsStory";
+import { ScrollingGrassBand } from "@/features/story/ScrollingGrass/ScrollingGrassBand";
+import { LandingSkillsStory } from "@/features/story/LandingSkillsStory/LandingSkillsStory";
 
 const SCROLL_RANGE = 400;
 const SNAP_THRESHOLD = 0.5;

@@ -1,7 +1,7 @@
 // src/features/Skills/Skills.tsx
-"use client";
-import { motion } from "framer-motion";
-import { skills } from "./SkillsData";
+'use client';
+import { motion } from 'framer-motion';
+import { skills } from './SkillsData';
 
 export default function SkillsSection() {
   return (
@@ -21,24 +21,24 @@ export default function SkillsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2, duration: 0.6 }}
               viewport={{ once: true }}
-className="bg-gradient-to-l from-white/60 to-white/95 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-6"            >
+              className="bg-gradient-to-l from-white/60 to-white/95 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-6"
+            >
               <h3 className="text-xl  font-semibold mb-4 text-black">
                 {group.category}
               </h3>
               <ul className="space-y-4">
-           {group.items.map((skill) => {
-  const Icon = skill.icon;
-  return (
-    <li key={skill.name} className="flex items-center gap-4">
-      {Icon && <Icon className={`${skill.color} text-3xl`} />}
-      <div>
-        <p className="font-medium text-black">{skill.name}</p>
-        <p className="text-sm text-gray-800">{skill.level}</p>
-      </div>
-    </li>
-  );
-})}
-
+                {group.items.map((skill) => {
+                  const Icon = skill.icon;
+                  return (
+                    <li key={skill.name} className="flex items-center gap-4">
+                      {Icon && <Icon className={`${skill.color} text-3xl`} />}
+                      <div>
+                        <p className="font-medium text-black">{skill.name}</p>
+                        <p className="text-sm text-gray-800">{skill.level}</p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </motion.div>
           ))}

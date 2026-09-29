@@ -41,7 +41,7 @@ const contactLinks = [
 
 export default function Contact() {
   return (
-    <section className="min-h-screen flex items-center justify-center px-6">
+    <section className="min-h-screen py-16 flex items-center justify-center px-6">
       <div className="max-w-4xl w-full">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

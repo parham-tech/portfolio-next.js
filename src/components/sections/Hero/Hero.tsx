@@ -4,6 +4,7 @@ import { useState } from "react";
 import WeatherModal from "@/features/Weather/WeatherModal";
 import { useThemeContext } from "@/context/ThemeContext";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 type HeroProps = {
   monitorRef: React.RefObject<HTMLDivElement>;
@@ -109,63 +110,28 @@ export default function Hero({ monitorRef }: HeroProps) {
           className="flex flex-col sm:flex-row gap-4 mt-6 justify-center md:justify-start"
         >
           {/* 🔹 Primary Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
-            style={{
-              backgroundColor: colors.primary.bg,
-              color: colors.primary.text,
-              // ⬇️ دوتا transition جدا
-              transition: `
-        background-color 0.25s ease-in-out, 
-        color 0.25s ease-in-out, 
-        all var(--site-transition) ease
-      `,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = colors.primary.hover;
-              e.currentTarget.style.color = colors.primary.text; // اگه رنگ متن در hover خاصه، اینجا ست کن
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = colors.primary.bg;
-              e.currentTarget.style.color = colors.primary.text;
-            }}
-            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-            aria-label="View My Work"
-          >
-            View My Work
-          </motion.button>
+          <Link
+  href="/projects"
+  className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto text-sm md:text-lg inline-block"
+  style={{
+    backgroundColor: colors.primary.bg,
+    color: colors.primary.text,
+  }}
+>
+  View My Work
+</Link>
 
           {/* 🔹 Secondary Button */}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-            className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto sm:w-auto text-sm md:text-lg"
-            style={{
-              backgroundColor: colors.secondary.bg,
-              color: colors.primary.hover,
-              transition: `
-        background-color 0.25s ease-in-out, 
-        color 0.25s ease-in-out, 
-        all var(--site-transition) ease
-      `,
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = colors.secondary.hover;
-              e.currentTarget.style.color = colors.secondary.text;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = colors.secondary.bg;
-              e.currentTarget.style.color = colors.secondary.text;
-            }}
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-            aria-label="Get in Touch"
-          >
-            Get in Touch
-          </motion.button>
+        <Link
+  href="/contact"
+  className="px-6 py-2 sm:py-3 rounded-lg shadow w-auto text-sm md:text-lg inline-block"
+  style={{
+    backgroundColor: colors.secondary.bg,
+    color: colors.primary.hover,
+  }}
+>
+  Get In Touch
+</Link>
         </motion.div>
       </motion.div>
 

@@ -31,11 +31,14 @@ const contactLinks = [
     external: true,
   },
   {
-    title: "Resume",
-    value: "Download PDF",
-    href: "/Parham-Shirinkam-Frontend-Developer-Resume.pdf",
-    icon: FileText,
-    external: false,
+  
+  title: "Resume",
+  value: "Download PDF",
+  href: "/Parham_Shirinkam_CV.pdf",
+  icon: FileText,
+  external: false,
+  download: true,
+
   },
 ];
 
@@ -66,6 +69,7 @@ export default function Contact() {
                 <a
                   key={item.title}
                   href={item.href}
+                  download={item.download ? true : undefined}
                   target={item.external ? "_blank" : undefined}
                   rel={
                     item.external

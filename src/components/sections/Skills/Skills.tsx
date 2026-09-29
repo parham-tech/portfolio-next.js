@@ -21,7 +21,7 @@ export default function SkillsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2, duration: 0.6 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-l from-white/60 to-white/95 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-6"
+              className="bg-gradient-to-l from-white/60 to-white/90 backdrop-blur-md border border-white/20 shadow-lg rounded-xl p-6"
             >
               <h3 className="text-xl  font-semibold mb-4 text-black">
                 {group.category}

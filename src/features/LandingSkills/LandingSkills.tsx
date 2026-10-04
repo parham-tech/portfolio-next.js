@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRef } from "react";
-import { skills } from "@/components/sections/Skills/SkillsData";
-import { useThemeContext } from "@/context/ThemeContext";
+import { useRef } from 'react';
+import { skills } from '@/components/sections/Skills/SkillsData';
+import { useThemeContext } from '@/context/ThemeContext';
 
 type LandingSkillsProps = {
   skillsRef: React.RefObject<HTMLHeadingElement>;
@@ -13,14 +13,14 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
   const { activeSite } = useThemeContext();
 
   const boxThemes: Record<string, string> = {
-    "bg-day-gradient": "box-day-gradient",
-    "bg-green-gradient": "box-green-gradient",
-    "bg-purple-gradient": "box-purple-gradient",
-    "bg-red-gradient": "box-red-gradient",
-    "bg-dark-gradient": "box-dark-gradient",
+    'bg-day-gradient': 'box-day-gradient',
+    'bg-green-gradient': 'box-green-gradient',
+    'bg-purple-gradient': 'box-purple-gradient',
+    'bg-red-gradient': 'box-red-gradient',
+    'bg-dark-gradient': 'box-dark-gradient',
   };
 
-  const activeBoxTheme = boxThemes[activeSite] || "box-day-gradient";
+  const activeBoxTheme = boxThemes[activeSite] || 'box-day-gradient';
 
   const allItems = skills.flatMap((group) => group.items);
 
@@ -29,7 +29,6 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
   return (
     <section className="relative flex flex-col justify-center pt-16 sm:pt-24 pb-10 sm:pb-16 overflow-hidden">
-
       {/* Title */}
       <h2
         ref={skillsRef}
@@ -43,7 +42,6 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
       >
         My Skills
       </h2>
-
 
       {/* Skills Box */}
       <div
@@ -63,11 +61,8 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
         ${activeBoxTheme}
         `}
       >
-
-
         {/* Row 1 */}
         <div className="overflow-hidden group">
-
           <ul
             className="
             flex
@@ -77,9 +72,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
             group-hover:[animation-play-state:paused]
             "
           >
-
             {[...firstRow, ...firstRow].map((skill, idx) => {
-
               const Icon = skill.icon;
 
               return (
@@ -116,7 +109,6 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                   hover:scale-110
                   "
                 >
-
                   {Icon && (
                     <Icon
                       className={`
@@ -130,41 +122,37 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                     />
                   )}
 
-                  <p className="
+                  <p
+                    className="
                   text-sm
                   sm:text-base
                   font-medium
                   line-clamp-2
                   text-center
-                  ">
+                  "
+                  >
                     {skill.name}
                   </p>
 
-
-                  <span className="
+                  <span
+                    className="
                   text-xs
                   sm:text-sm
                   text-gray-500
                   line-clamp-1
                   text-center
-                  ">
+                  "
+                  >
                     {skill.level}
                   </span>
-
-
                 </li>
               );
             })}
-
           </ul>
-
         </div>
-
-
 
         {/* Row 2 */}
         <div className="overflow-hidden group">
-
           <ul
             className="
             flex
@@ -174,9 +162,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
             group-hover:[animation-play-state:paused]
             "
           >
-
             {[...secondRow, ...secondRow].map((skill, idx) => {
-
               const Icon = skill.icon;
 
               return (
@@ -213,7 +199,6 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                   hover:scale-110
                   "
                 >
-
                   {Icon && (
                     <Icon
                       className={`
@@ -227,38 +212,35 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                     />
                   )}
 
-                  <p className="
+                  <p
+                    className="
                   text-sm
                   sm:text-base
                   font-medium
                   line-clamp-2
                   text-center
-                  ">
+                  "
+                  >
                     {skill.name}
                   </p>
 
-
-                  <span className="
+                  <span
+                    className="
                   text-xs
                   sm:text-sm
                   text-gray-500
                   line-clamp-1
                   text-center
-                  ">
+                  "
+                  >
                     {skill.level}
                   </span>
-
                 </li>
               );
             })}
-
           </ul>
-
         </div>
-
-
       </div>
-
     </section>
   );
 }

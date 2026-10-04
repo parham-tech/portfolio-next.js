@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { HeroScrollytelling } from "@/features/story/HeroScrollytelling/HeroScrollytelling";
 import { LowerSectionParallax } from "@/features/story/StoryModeScene/LowerSectionParallax";
+import { MobileNotice } from "@/features/story/StoryModeScene/MobileNotice";
 
 export function StoryModeScene() {
   const [isLoading, setIsLoading] = useState(true);
@@ -135,6 +136,8 @@ export function StoryModeScene() {
 
   return (
     <>
+      <MobileNotice />
+
       {isLoading && (
         <div
           className={`fixed inset-0 bg-black flex flex-col items-center justify-center text-white font-sans gap-4 z-[9999] transition-opacity duration-500 ${

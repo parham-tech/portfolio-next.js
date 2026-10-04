@@ -112,7 +112,7 @@ export default function Navbar() {
             href="/story"
             className="px-3 py-2 rounded-xl text-sm font-medium border transition bg-white/10 border-white/30 hover:bg-white/20"
           >
-            Story
+            Story Mode
           </Link>
         </div>
         <ul className="hidden md:flex gap-8 font-medium">

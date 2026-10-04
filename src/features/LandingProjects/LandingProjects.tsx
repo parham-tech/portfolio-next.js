@@ -114,11 +114,15 @@ useEffect(() => {
 
   return (
     <>
-      <section
-        ref={sectionRef}
-        data-projects-section
-        className={animationClasses}
-      >
+    <motion.section
+  ref={sectionRef}
+  data-projects-section
+  initial={{ opacity: 0, y: 50 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.2 }}
+  transition={{ duration: 0.6, ease: "easeOut" }}
+  className="pt-24 text-center relative z-10"
+>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
           My Projects
         </h2>
@@ -128,7 +132,7 @@ useEffect(() => {
           projects={projectsData}
           onProjectClick={(id) => setActiveProject(id)}
         />
-      </section>
+      </motion.section>
 
       {/* 🪟 Modal پروژه‌ها - Using Portal to escape parent transforms */}
       {typeof document !== "undefined" &&

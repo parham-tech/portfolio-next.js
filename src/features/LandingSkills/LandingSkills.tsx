@@ -97,7 +97,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
                   shadow
 
-                  p-3 sm:p-4
+                  p-1 xs:p-2 sm:p-4
 
                   flex-shrink-0
 
@@ -124,9 +124,10 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
                   <p
                     className="
-                  text-sm
-                  sm:text-base
-                  font-medium
+                  text-xs
+                  font-semibold
+                  xs:text-base
+                  xs:font-medium
                   line-clamp-2
                   text-center
                   "
@@ -136,8 +137,8 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
                   <span
                     className="
-                  text-xs
-                  sm:text-sm
+                  text-[10px]
+                  xs:text-sm
                   text-gray-500
                   line-clamp-1
                   text-center
@@ -187,7 +188,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
                   shadow
 
-                  p-3 sm:p-4
+                  p-1 xs:p-2 sm:p-4
 
                   flex-shrink-0
 
@@ -213,10 +214,11 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                   )}
 
                   <p
-                    className="
-                  text-sm
-                  sm:text-base
-                  font-medium
+                       className="
+                  text-xs
+                  font-semibold
+                  xs:text-base
+                  xs:font-medium
                   line-clamp-2
                   text-center
                   "
@@ -226,8 +228,8 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
 
                   <span
                     className="
-                  text-xs
-                  sm:text-sm
+                  text-[10px]
+                  xs:text-sm
                   text-gray-500
                   line-clamp-1
                   text-center

@@ -3,20 +3,24 @@ import LandingProjects from '@/features/LandingProjects/LandingProjects';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://portfolio-next-js-parham.vercel.app'),
-  title: 'Projects | Parham Portfolio',
+
+  title: 'Projects | Parham Shirinkam — Frontend Developer',
+
   description:
-    'مشاهده پروژه‌های برنامه‌نویسی پرهام شیرین‌کام شامل بازی Snake، بازی Neon Reflex، پالت رنگ و پورتفولیو. Browse Parham Shirinkam projects - React, Next.js, and Tailwind CSS. استكشف مشاريع برمجة الويب.',
+    'Explore web development projects by Parham Shirinkam, featuring React, Next.js, TypeScript, and modern frontend experiences.',
+
   keywords: [
     'Parham Shirinkam',
     'Frontend Developer',
-    'React Developer',
-    'Next.js Developer',
-    'Frontend Developer Portfolio',
+    'React Projects',
+    'Next.js Projects',
+    'Frontend Portfolio',
   ],
 
   icons: {
-  icon: "/favicon.ico",
-},
+    icon: '/favicon.ico',
+  },
+
   robots: {
     index: true,
     follow: true,
@@ -24,40 +28,48 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       'max-image-preview': 'large',
+      'max-video-preview': -1,
+      'max-snippet': -1,
     },
   },
+
   openGraph: {
-    title: 'Projects | Parham Portfolio',
+    title: 'Projects | Parham Shirinkam — Frontend Developer',
+
     description:
-      'مشاهده پروژه‌های برنامه‌نویسی پرهام شیرین‌کام شامل بازی Snake، بازی Neon Reflex، پالت رنگ و پورتفولیو. Browse Parham Shirinkam projects - React, Next.js, and Tailwind CSS. استكشف مشاريع برمجة الويب.',
+      'Explore React, Next.js, and modern frontend projects created by Parham Shirinkam.',
+
     url: 'https://portfolio-next-js-parham.vercel.app/projects',
-    siteName: 'Parham Portfolio',
+
+    siteName: 'Parham Shirinkam Portfolio',
+
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Parham Shirinkam Projects Portfolio | پروژه‌های پرهام شیرین‌کام',
+        alt: 'Parham Shirinkam - Frontend Developer Projects',
       },
     ],
-    locale: 'fa_IR',
-    alternateLocale: ['en_US', 'ar_AE'],
+
+    locale: 'en_US',
+
     type: 'website',
   },
+
   twitter: {
     card: 'summary_large_image',
-    title: 'Projects | Parham Portfolio',
+
+    title: 'Projects | Parham Shirinkam — Frontend Developer',
+
     description:
-      'مشاهده پروژه‌های برنامه‌نویسی پرهام شیرین‌کام شامل بازی Snake، بازی Neon Reflex، پالت رنگ و پورتفولیو. Browse Parham Shirinkam projects - React, Next.js, and Tailwind CSS. استكشف مشاريع برمجة الويب.',
+      'Explore React, Next.js, TypeScript, and modern frontend projects created by Parham Shirinkam.',
+
     images: ['/og-image.png'],
   },
+
   alternates: {
     canonical: 'https://portfolio-next-js-parham.vercel.app/projects',
-    languages: {
-      'en-US': 'https://portfolio-next-js-parham.vercel.app/projects',
-      'fa-IR': 'https://portfolio-next-js-parham.vercel.app/fa/projects',
-      'ar-AE': 'https://portfolio-next-js-parham.vercel.app/ar/projects',
-    },
   },
 };
 
@@ -65,12 +77,17 @@ export default function ProjectsPage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'Projects of Parham Shirinkam | پروژه‌های پرهام شیرین‌کام',
+
+    name: 'Projects | Parham Shirinkam',
+
     description:
-      'A showcase of web development projects, games, and responsive designs created by Parham Shirinkam.',
+      'A showcase of web development projects, games, and responsive frontend experiences created by Parham Shirinkam.',
+
     url: 'https://portfolio-next-js-parham.vercel.app/projects',
+
     mainEntity: {
       '@type': 'ItemList',
+
       itemListElement: [
         {
           '@type': 'ListItem',
@@ -79,8 +96,9 @@ export default function ProjectsPage() {
             '@type': 'CreativeWork',
             name: 'Snake Game',
             description:
-              'A classic Snake game built with React and TailwindCSS.',
-            image: 'https://portfolio-next-js-parham.vercel.app/snake.avif',
+              'A classic Snake game built with React and Tailwind CSS.',
+            image:
+              'https://portfolio-next-js-parham.vercel.app/snake.avif',
           },
         },
         {
@@ -90,7 +108,7 @@ export default function ProjectsPage() {
             '@type': 'CreativeWork',
             name: 'Neon Reflex',
             description:
-              'A fast-paced cyberpunk reflex game with glowing neon UI.',
+              'A cyberpunk-inspired reflex game with neon UI effects.',
             image:
               'https://portfolio-next-js-parham.vercel.app/neon-reflex.avif',
           },
@@ -102,8 +120,9 @@ export default function ProjectsPage() {
             '@type': 'WebApplication',
             name: 'Crypto Dashboard',
             description:
-              'A responsive cryptocurrency dashboard for tracking crypto prices and market data, built with Next.js and React.',
-            image: 'https://portfolio-next-js-parham.vercel.app/crypto.avif',
+              'A cryptocurrency dashboard built with Next.js and React for tracking market data.',
+            image:
+              'https://portfolio-next-js-parham.vercel.app/crypto.avif',
           },
         },
         {
@@ -113,9 +132,9 @@ export default function ProjectsPage() {
             '@type': 'WebSite',
             name: 'Mahan Balaei',
             description:
-              'A modern personal website for fitness coach Mahan Balaei, built with Next.js, React, and Tailwind CSS.',
-
-            image: 'https://portfolio-next-js-parham.vercel.app/mahan.avif',
+              'A modern fitness coach website built with Next.js, React, and Tailwind CSS.',
+            image:
+              'https://portfolio-next-js-parham.vercel.app/mahan.avif',
           },
         },
       ],
@@ -128,6 +147,7 @@ export default function ProjectsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
       <main>
         <LandingProjects />
       </main>

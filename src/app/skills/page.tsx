@@ -3,20 +3,24 @@ import { Skills } from "@/components/sections/Skills";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-next-js-parham.vercel.app"),
-  title: "Skills | Parham Portfolio",
-  description:
-    "مهارت‌های تخصصی پرهام شیرین‌کام در زمینه‌های فرانت‌اند React، Next.js، توسعه وب کامپوننت، بهینه‌سازی سرعت و سئو. Check out Parham Shirinkam's professional skills. مهارات برمجة فرونت إند وتطوير الويب.",
-  keywords: [
-  "Parham Shirinkam",
-  "Frontend Developer",
-  "React Developer",
-  "Next.js Developer",
-  "Frontend Developer Portfolio",
-],
 
-icons: {
-  icon: "/favicon.ico",
-},
+  title: "Skills | Parham Shirinkam — Frontend Developer",
+
+  description:
+    "Explore Parham Shirinkam's frontend development skills, including React, Next.js, TypeScript, Tailwind CSS, performance, accessibility, and modern web practices.",
+
+  keywords: [
+    "Parham Shirinkam",
+    "Frontend Developer",
+    "React Developer",
+    "Next.js Developer",
+    "Frontend Skills",
+  ],
+
+  icons: {
+    icon: "/favicon.ico",
+  },
+
   robots: {
     index: true,
     follow: true,
@@ -24,40 +28,48 @@ icons: {
       index: true,
       follow: true,
       "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
     },
   },
+
   openGraph: {
-    title: "Skills | Parham Portfolio",
+    title: "Skills | Parham Shirinkam — Frontend Developer",
+
     description:
-      "مهارت‌های تخصصی پرهام شیرین‌کام در زمینه‌های فرانت‌اند React، Next.js، توسعه وب کامپوننت، بهینه‌سازی سرعت و سئو. Check out Parham Shirinkam's professional skills. مهارات برمجة فرونت إند وتطوير الويب.",
+      "Frontend development skills including React, Next.js, TypeScript, Tailwind CSS, performance, accessibility, and modern web technologies.",
+
     url: "https://portfolio-next-js-parham.vercel.app/skills",
-    siteName: "Parham Portfolio",
+
+    siteName: "Parham Shirinkam Portfolio",
+
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Parham Shirinkam Skills Portfolio | مهارت‌های پرهام شیرین‌کام",
+        alt: "Parham Shirinkam - Frontend Developer Skills",
       },
     ],
-    locale: "fa_IR",
-    alternateLocale: ["en_US", "ar_AE"],
+
+    locale: "en_US",
+
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Skills | Parham Portfolio",
+
+    title: "Skills | Parham Shirinkam — Frontend Developer",
+
     description:
-      "مهارت‌های تخصصی پرهام شیرین‌کام در زمینه‌های فرانت‌اند React، Next.js، توسعه وب کامپوننت، بهینه‌سازی سرعت و سئو. Check out Parham Shirinkam's professional skills. مهارات برمجة فرونت إند وتطوير الويب.",
+      "Explore Parham Shirinkam's frontend development skills with React, Next.js, TypeScript, and modern web technologies.",
+
     images: ["/og-image.png"],
   },
+
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/skills",
-    languages: {
-      "en-US": "https://portfolio-next-js-parham.vercel.app/skills",
-      "fa-IR": "https://portfolio-next-js-parham.vercel.app/fa/skills",
-      "ar-AE": "https://portfolio-next-js-parham.vercel.app/ar/skills",
-    },
   },
 };
 
@@ -65,24 +77,29 @@ export default function SkillsPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Skills of Parham Shirinkam | مهارت‌های پرهام شیرین‌کام",
-    description: "Technical frontend development skills, web best practices, and animation tools of Parham Shirinkam.",
+
+    name: "Skills | Parham Shirinkam",
+
+    description:
+      "Technical frontend development skills, web best practices, and modern UI technologies used by Parham Shirinkam.",
+
     url: "https://portfolio-next-js-parham.vercel.app/skills",
+
     itemListElement: [
       {
         "@type": "ListItem",
         position: 1,
-        name: "Frontend Development (HTML, CSS, JavaScript, React, Next.js, TypeScript, TailwindCSS)",
+        name: "Frontend Development (HTML, CSS, JavaScript, React, Next.js, TypeScript, Tailwind CSS)",
       },
       {
         "@type": "ListItem",
         position: 2,
-        name: "Web Core Best Practices & Quality (SEO, Accessibility, Performance)",
+        name: "Web Quality & Best Practices (SEO, Accessibility, Performance)",
       },
       {
         "@type": "ListItem",
         position: 3,
-        name: "Design & Animations (UI/UX, Figma, Framer Motion, GSAP)",
+        name: "UI Development & Animations (Figma, Framer Motion, GSAP)",
       },
       {
         "@type": "ListItem",
@@ -98,6 +115,7 @@ export default function SkillsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
       <main>
         <Skills />
       </main>

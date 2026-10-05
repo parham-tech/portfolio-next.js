@@ -1,4 +1,3 @@
-// src/app/story/page.tsx
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 
@@ -10,10 +9,17 @@ const StoryModeScene = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center text-white font-sans gap-4" dir="rtl">
+      <div
+        className="min-h-screen bg-black flex flex-col items-center justify-center text-white font-sans gap-4"
+        dir="rtl"
+      >
         <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-lg font-semibold animate-pulse text-yellow-400">در حال بارگذاری داستان تعاملی...</p>
-        <p className="text-sm text-gray-400">لطفاً شکیبا باشید، جلوه‌های بصری در حال آماده‌سازی هستند.</p>
+        <p className="text-lg font-semibold animate-pulse text-yellow-400">
+          در حال بارگذاری داستان تعاملی...
+        </p>
+        <p className="text-sm text-gray-400">
+          لطفاً شکیبا باشید، جلوه‌های بصری در حال آماده‌سازی هستند.
+        </p>
       </div>
     ),
   }
@@ -21,20 +27,25 @@ const StoryModeScene = dynamic(
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-next-js-parham.vercel.app"),
-  title: "Interactive Story | Parham Portfolio",
-  description:
-    "حالت داستانی تعاملی پورتفولیوی پرهام شیرین‌کام. تجربه جذاب Scrollytelling سه‌بعدی و پارالاکس. Experience the interactive storytelling web development mode. تجربة قصة تفاعلية شيقة.",
-keywords: [
-  "Parham Shirinkam",
-  "Frontend Developer",
-  "React Developer",
-  "Next.js Developer",
-  "Frontend Developer Portfolio",
-],
 
-icons: {
-  icon: "/favicon.png",
-},
+  title: "Interactive Story | Parham Shirinkam — Frontend Developer",
+
+  description:
+    "Experience Parham Shirinkam's interactive story mode featuring scrollytelling, animations, and modern frontend development techniques.",
+
+  keywords: [
+    "Parham Shirinkam",
+    "Frontend Developer",
+    "React Developer",
+    "Next.js Developer",
+    "Scrollytelling",
+    "Interactive Web Experience",
+  ],
+
+  icons: {
+    icon: "/favicon.png",
+  },
+
   robots: {
     index: true,
     follow: true,
@@ -42,66 +53,97 @@ icons: {
       index: true,
       follow: true,
       "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
     },
   },
+
   openGraph: {
-    title: "Interactive Story | Parham Portfolio",
+    title: "Interactive Story | Parham Shirinkam — Frontend Developer",
+
     description:
-      "حالت داستانی تعاملی پورتفولیوی پرهام شیرین‌کام. تجربه جذاب Scrollytelling سه‌بعدی و پارالاکس. Experience the interactive storytelling web development mode. تجربة قصة تفاعلية شيقة.",
+      "An interactive scrollytelling experience built with modern frontend technologies, animations, and creative web development.",
+
     url: "https://portfolio-next-js-parham.vercel.app/story",
-    siteName: "Parham Portfolio",
+
+    siteName: "Parham Shirinkam Portfolio",
+
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Parham Shirinkam Interactive Story Portfolio | داستان تعاملی پرهام شیرین‌کام",
+        alt: "Parham Shirinkam Interactive Story Experience",
       },
     ],
-    locale: "fa_IR",
-    alternateLocale: ["en_US", "ar_AE"],
+
+    locale: "en_US",
+
     type: "website",
   },
+
   twitter: {
     card: "summary_large_image",
-    title: "Interactive Story | Parham Portfolio",
+
+    title: "Interactive Story | Parham Shirinkam — Frontend Developer",
+
     description:
-      "حالت داستانی تعاملی پورتفولیوی پرهام شیرین‌کام. تجربه جذاب Scrollytelling سه‌بعدی و پارالاکس. Experience the interactive storytelling web development mode. تجربة قصة تفاعلية شيقة.",
+      "Explore an interactive scrollytelling experience created by Parham Shirinkam using modern frontend technologies.",
+
     images: ["/og-image.png"],
   },
+
   alternates: {
     canonical: "https://portfolio-next-js-parham.vercel.app/story",
-    languages: {
-      "en-US": "https://portfolio-next-js-parham.vercel.app/story",
-      "fa-IR": "https://portfolio-next-js-parham.vercel.app/fa/story",
-      "ar-AE": "https://portfolio-next-js-parham.vercel.app/ar/story",
-    },
   },
 };
 
 export default function StoryPage() {
   const jsonLd = {
     "@context": "https://schema.org",
+
     "@type": "WebPage",
-    name: "Interactive Story Mode - Parham Shirinkam | داستان تعاملی پرهام شیرین‌کام",
-    description: "An interactive scrollytelling visual and storytelling presentation of Parham's design and code skills.",
+
+    name: "Interactive Story Mode | Parham Shirinkam",
+
+    description:
+      "An interactive scrollytelling visual experience showcasing frontend development, animation, and creative web techniques.",
+
     url: "https://portfolio-next-js-parham.vercel.app/story",
   };
 
   return (
     <>
-      {/* Preloading critical grass images to bypass dynamic component JS chunk rendering delay */}
-      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-left.png&w=1200&q=75" as="image" />
-      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-center.png&w=1200&q=75" as="image" />
-      <link rel="preload" href="/_next/image?url=%2Fgrass%2Fgrass-right.png&w=1200&q=75" as="image" />
-      
-      {/* Preloading main background video */}
-      <link rel="preload" href="/videos/bg-loop.mp4" as="video" type="video/mp4" />
+      <link
+        rel="preload"
+        href="/_next/image?url=%2Fgrass%2Fgrass-left.png&w=1200&q=75"
+        as="image"
+      />
+
+      <link
+        rel="preload"
+        href="/_next/image?url=%2Fgrass%2Fgrass-center.png&w=1200&q=75"
+        as="image"
+      />
+
+      <link
+        rel="preload"
+        href="/_next/image?url=%2Fgrass%2Fgrass-right.png&w=1200&q=75"
+        as="image"
+      />
+
+      <link
+        rel="preload"
+        href="/videos/bg-loop.mp4"
+        as="video"
+        type="video/mp4"
+      />
 
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+
       <StoryModeScene />
     </>
   );

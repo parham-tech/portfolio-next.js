@@ -41,6 +41,10 @@ export function LowerSectionParallax() {
   const grassWrapRef = useRef<HTMLDivElement | null>(null);
   const [grassH, setGrassH] = useState(0);
 
+  // ✅ برای اندازه‌گیری ارتفاع واقعی محتوا و جلوگیری از فضای خالی زیر کامپوننت
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [contentH, setContentH] = useState(0);
+
   // ✅ viewport width برای کنترل دستی
   const [vw, setVw] = useState(0);
 
@@ -83,6 +87,21 @@ export function LowerSectionParallax() {
 
     ro.observe(el);
     setGrassH(el.getBoundingClientRect().height);
+
+    return () => ro.disconnect();
+  }, []);
+
+  // ✅ اندازه‌گیری ارتفاع کل محتوای متحرک
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const ro = new ResizeObserver(() => {
+      setContentH(el.offsetHeight);
+    });
+
+    ro.observe(el);
+    setContentH(el.offsetHeight);
 
     return () => ro.disconnect();
   }, []);
@@ -172,8 +191,16 @@ export function LowerSectionParallax() {
     <section
       ref={containerRef}
       className="relative z-[20] w-full overflow-visible"
+      style={{
+        height: contentH
+          ? `${contentH - (enableParallax ? MAX_VERTICAL_LIFT : 0)}px`
+          : undefined,
+      }}
     >
-      <div style={{ transform: `translate3d(0, ${translateY}px, 0)`, marginBottom: `${translateY}px` }}>
+      <div
+        ref={contentRef}
+        style={{ transform: `translate3d(0, ${translateY}px, 0)` }}
+      >
         {/* Grass */}
         <div ref={grassWrapRef} style={{ marginTop: grassOverlapPx }}>
           <ScrollingGrassBand progress={displayProgress} />

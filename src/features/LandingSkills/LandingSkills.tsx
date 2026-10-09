@@ -214,7 +214,7 @@ export default function LandingSkills({ skillsRef }: LandingSkillsProps) {
                   )}
 
                   <p
-                       className="
+                    className="
                   text-xs
                   font-semibold
                   xs:text-base

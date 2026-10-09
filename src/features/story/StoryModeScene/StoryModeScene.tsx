@@ -151,7 +151,7 @@ export function StoryModeScene() {
         </div>
       )}
 
-      <section className="relative w-full">
+      <section className="relative w-full bg-[#05070f]">
         <div className="relative z-[10] w-full">
           <HeroScrollytelling />
         </div>

@@ -7,6 +7,8 @@ import {
   ReactNode,
 } from "react";
 
+import { usePathname } from "next/navigation";
+
 type StoryModeContextType = {
   isStoryMode: boolean;
   toggleStoryMode: () => void;
@@ -18,11 +20,14 @@ const StoryModeContext = createContext<StoryModeContextType | undefined>(
 );
 
 export function StoryModeProvider({ children }: { children: ReactNode }) {
-  const [isStoryMode, setIsStoryMode] = useState(false);
+  const pathname = usePathname();
+  const [isStoryModeState, setIsStoryModeState] = useState(false);
 
-  const toggleStoryMode = () => setIsStoryMode((v) => !v);
+  const isStoryMode = pathname === "/story" || isStoryModeState;
 
-  const setStoryMode = (value: boolean) => setIsStoryMode(value);
+  const toggleStoryMode = () => setIsStoryModeState((v) => !v);
+
+  const setStoryMode = (value: boolean) => setIsStoryModeState(value);
 
   return (
     <StoryModeContext.Provider

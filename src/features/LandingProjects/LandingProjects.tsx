@@ -1,24 +1,29 @@
-"use client";
-import { useEffect, useState, useRef } from "react";
-import { createPortal } from "react-dom";
-import { AnimatePresence, motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { usePathname } from "next/navigation";
-import { projectsData } from "../../data/projectsData";
-import { ThreeDCarousel } from "@/features/LandingProjects";
-
+'use client';
+import { useEffect, useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+import { projectsData } from '../../data/projectsData';
+import { ThreeDCarousel } from '@/features/LandingProjects';
 
 // 🎮 Lazy load بازی‌ها
-const SnakeGame = dynamic(() => import("@/features/games/SnakeGame/SnakeGame"), { ssr: false });
-const NeonReflex = dynamic(() => import("@/features/games/NeonReflex/NeonReflex"), { ssr: false });
+const SnakeGame = dynamic(
+  () => import('@/features/games/SnakeGame/SnakeGame'),
+  { ssr: false }
+);
+const NeonReflex = dynamic(
+  () => import('@/features/games/NeonReflex/NeonReflex'),
+  { ssr: false }
+);
 const ColorFlowPalette = dynamic(
-  () => import("@/features/ColorFlowPalette/ColorFlowPalette"),
+  () => import('@/features/ColorFlowPalette/ColorFlowPalette'),
   { ssr: false }
 );
 
 export default function LandingProjects() {
   const pathname = usePathname();
-  const isProjectsPage = pathname === "/projects";
+  const isProjectsPage = pathname === '/projects';
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [restartKey, setRestartKey] = useState(0);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -28,101 +33,98 @@ export default function LandingProjects() {
   const selectedProject = projectsData.find((p) => p.id === activeProject);
 
   const animationClasses = isProjectsPage
-    ? "pt-24 text-center relative z-10"
-    : "pt-24 text-center relative z-10 opacity-0 translate-y-10 transition-all duration-200";
+    ? 'pt-24 text-center relative z-10'
+    : 'pt-24 text-center relative z-10 opacity-0 translate-y-10 transition-all duration-200';
 
-// 🚫 قفل اسکرول و مدیریت فوکوس وقتی modal باز است
-useEffect(() => {
-  if (activeProject) {
-    triggerRef.current = document.activeElement as HTMLElement;
+  // 🚫 قفل اسکرول و مدیریت فوکوس وقتی modal باز است
+  useEffect(() => {
+    if (activeProject) {
+      triggerRef.current = document.activeElement as HTMLElement;
 
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.overflow = "hidden";
-  } else {
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
 
-    if (triggerRef.current) {
-      triggerRef.current.focus();
-    }
-  }
-
-  return () => {
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
-  };
-}, [activeProject]);
-
-
-
-// 🎯 انتقال فوکوس به اولین عنصر قابل تعامل مودال
-useEffect(() => {
-  if (activeProject && modalRef.current) {
-    setTimeout(() => {
-      const firstFocusable = modalRef.current?.querySelector(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
-      ) as HTMLElement;
-
-      firstFocusable?.focus();
-    }, 0);
-  }
-}, [activeProject]);
-
-
-// ⌨️ مدیریت Escape و Tab داخل مودال
-useEffect(() => {
-  if (!activeProject) return;
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      setActiveProject(null);
-      return;
-    }
-
-    if (e.key === "Tab") {
-      if (!modalRef.current) return;
-
-      const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
-      );
-
-      const firstElement = focusableElements[0] as HTMLElement;
-      const lastElement = focusableElements[
-        focusableElements.length - 1
-      ] as HTMLElement;
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          lastElement.focus();
-          e.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          firstElement.focus();
-          e.preventDefault();
-        }
+      if (triggerRef.current) {
+        triggerRef.current.focus();
       }
     }
-  };
 
-  window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, [activeProject]);
 
-  return () => {
-    window.removeEventListener("keydown", handleKeyDown);
-  };
-}, [activeProject]);
+  // 🎯 انتقال فوکوس به اولین عنصر قابل تعامل مودال
+  useEffect(() => {
+    if (activeProject && modalRef.current) {
+      setTimeout(() => {
+        const firstFocusable = modalRef.current?.querySelector(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
+        ) as HTMLElement;
+
+        firstFocusable?.focus();
+      }, 0);
+    }
+  }, [activeProject]);
+
+  // ⌨️ مدیریت Escape و Tab داخل مودال
+  useEffect(() => {
+    if (!activeProject) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveProject(null);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (!modalRef.current) return;
+
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="0"]), iframe'
+        );
+
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeProject]);
 
   return (
     <>
-    <motion.section
-  ref={sectionRef}
-  data-projects-section
-  initial={{ opacity: 0, y: 50 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, amount: 0.2 }}
-  transition={{ duration: 0.6, ease: "easeOut" }}
-  className="pt-24 text-center relative z-10"
->
+      <motion.section
+        ref={sectionRef}
+        data-projects-section
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
+        className="pt-24 text-center relative z-10"
+      >
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
           My Projects
         </h2>
@@ -135,7 +137,7 @@ useEffect(() => {
       </motion.section>
 
       {/* 🪟 Modal پروژه‌ها - Using Portal to escape parent transforms */}
-      {typeof document !== "undefined" &&
+      {typeof document !== 'undefined' &&
         createPortal(
           <AnimatePresence>
             {activeProject && (
@@ -149,7 +151,7 @@ useEffect(() => {
                 <motion.div
                   ref={modalRef}
                   className={`bg-white/10 w-[85%] md:w-[95%] h-[95%] md:h-[90%] md:mt-[3%] backdrop-blur-md border border-white/10 p-4 md:p-8 rounded-xl  ${
-                    selectedProject?.liveUrl ? "md:w-[100px]" : "md:w-[800px]"
+                    selectedProject?.liveUrl ? 'md:w-[100px]' : 'md:w-[800px]'
                   } max-h-[calc(100vh-2.5rem)] flex justify-center`}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.9, opacity: 0 }}
@@ -168,13 +170,13 @@ useEffect(() => {
                   </button>
 
                   {/* 🐍 Snake Game */}
-                  {activeProject === "snake" && <SnakeGame />}
+                  {activeProject === 'snake' && <SnakeGame />}
 
                   {/* 🎨 Color Flow Palette */}
-                  {activeProject === "colorflow" && <ColorFlowPalette />}
+                  {activeProject === 'colorflow' && <ColorFlowPalette />}
 
                   {/* ⚡ Neon Reflex */}
-                  {activeProject === "neon" && (
+                  {activeProject === 'neon' && (
                     <NeonReflex
                       key={restartKey} // 🔑 باعث ری‌استارت بازی می‌شود
                     />
@@ -249,8 +251,8 @@ useEffect(() => {
                           />
                           {/* Helpful tooltip overlay */}
                           <div className="absolute bottom-2 left-2 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-[10px] text-gray-300 pointer-events-none select-none">
-                            💡 This is a live preview. Press the button below
-                            to switch completely.💡
+                            💡 This is a live preview. Press the button below to
+                            switch completely.💡
                           </div>
                         </div>
                       </div>

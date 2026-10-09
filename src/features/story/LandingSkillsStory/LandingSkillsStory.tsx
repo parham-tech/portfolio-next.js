@@ -717,7 +717,7 @@ export function LandingSkillsStory({ sceneProgress = 0 }: { sceneProgress?: numb
                   muted
                   playsInline
                   loop={false}
-                  className="select-none object-cover pointer-events-none w-full h-full  -translate-y-[40px]"
+                  className="select-none object-cover pointer-events-none w-full h-full"
                 />
               ) : (
                 <Image
